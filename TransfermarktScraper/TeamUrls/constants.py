@@ -82,7 +82,6 @@ LEAGUES_TO_PARSE = [
     {
         'id': 3,
         'toAddElsewhere': [
-            {'name': 'VfB Stuttgart', 'leagueToAddIn': None},
             {'name': 'FC Schalke 04', 'leagueToAddIn': None},
             {'name': 'Hertha BSC', 'leagueToAddIn': None}
         ],
@@ -94,7 +93,6 @@ LEAGUES_TO_PARSE = [
         'toAddElsewhere': [
             {'name': "1.FC Heidenheim 1846", 'leagueToAddIn': 3},
             {'name': "SV Darmstadt 98", 'leagueToAddIn': 3},
-            {'name': "Hamburger SV", 'leagueToAddIn': 3}
         ],
         'url': 'https://www.transfermarkt.com/bundesliga/startseite/wettbewerb/L2'
     },
@@ -142,6 +140,7 @@ LEAGUES_TO_PARSE = [
 	{
 		'id': 6,
 		'toAddElsewhere': [
+			{ 'name': 'CS Marítimo', 'leagueToAddIn': None}
 			{ 'name': 'FC Paços de Ferreira', 'leagueToAddIn': None },
 			{ 'name': 'CD Santa Clara', 'leagueToAddIn': None },
 		],
@@ -152,7 +151,8 @@ LEAGUES_TO_PARSE = [
 		'id': None,
 		'toAddElsewhere': [
 			{ 'name': 'Moreirense FC', 'leagueToAddIn': 6 },
-			{ 'name': 'SC Farense', 'leagueToAddIn': 6 }
+			{ 'name': 'SC Farense', 'leagueToAddIn': 6 },
+			{ 'name': 'CF Estrela Amadora SAD', 'leagueToAddIn': 6 }
 		],
 		'url': 'https://www.transfermarkt.com/liga-nos/startseite/wettbewerb/PO2'
 	},
@@ -173,7 +173,6 @@ LEAGUES_TO_PARSE = [
 			{ 'name': 'Heracles Almelo', 'leagueToAddIn': 7 },
 			{ 'name': 'PEC Zwolle', 'leagueToAddIn': 7 },
 			{ 'name': 'Almere City FC', 'leagueToAddIn': 7 }
-
 		],
 		'url': 'https://www.transfermarkt.com/eredivisie/startseite/wettbewerb/NL2'
 	}
