@@ -1,21 +1,10 @@
-## Leagues to be supported in Dream Team Transfers ##
-SUPPORTED_LEAGUES = [
-	'Premier League',
-	'Championship',
-	'La Liga',
-	'Bundesliga',
-	'Serie A',
-	'Ligue 1',
-	'Liga Portugal',
-	'Eredivisie'
-]
-
-## Leagues needed to be parsed to build team list for 23/24 season due to 22/23 relegation/promotion)
+# leagues needed to be parsed to build accurate team list for 23/24 supported leagues
+# put context of promotion of relegation onto 22/23 league tables
 LEAGUES_TO_PARSE = [
 	## PREMIER LEAGUE ##
     {
         'id': 0,
-        'toAddElsewhere': {
+        'to_add_elsewhere': {
             'Leicester City': 1,
             'Leeds United': 1,
             'Southampton FC': 1
@@ -25,7 +14,7 @@ LEAGUES_TO_PARSE = [
 	## CHAMPIONSHIP ##
     {
         'id': 1,
-        'toAddElsewhere': {
+        'to_add_elsewhere': {
             'Burnley FC': 0,
             'Sheffield United': 0,
             'Luton Town': 0,
@@ -38,7 +27,7 @@ LEAGUES_TO_PARSE = [
 	## LEAGUE ONE ##
     {
         'id': None,
-        'toAddElsewhere': {
+        'to_add_elsewhere': {
             'Plymouth Argyle': 1,
             'Ipswich Town': 1,
             'Sheffield Wednesday': 1
@@ -48,7 +37,7 @@ LEAGUES_TO_PARSE = [
 	## LA LIGA ##
     {
         'id': 2,
-        'toAddElsewhere': {
+        'to_add_elsewhere': {
             'Real Valladolid CF': None,
             'RCD Espanyol Barcelona': None,
             'Elche CF': None
@@ -58,7 +47,7 @@ LEAGUES_TO_PARSE = [
     ## LA LIGA 2 ##
     {
         'id': None,
-        'toAddElsewhere': {
+        'to_add_elsewhere': {
             'Granada CF': 2,
             'UD Las Palmas': 2,
             'Deportivo Alavés': 2
@@ -68,7 +57,7 @@ LEAGUES_TO_PARSE = [
     ## BUNDESLIGA ##
     {
         'id': 3,
-        'toAddElsewhere': {
+        'to_add_elsewhere': {
             'FC Schalke 04': None,
             'Hertha BSC': None
         },
@@ -77,7 +66,7 @@ LEAGUES_TO_PARSE = [
     ## BUNDESLIGA 2 ##
     {
         'id': None,
-        'toAddElsewhere': {
+        'to_add_elsewhere': {
             '1.FC Heidenheim 1846': 3,
             'SV Darmstadt 98': 3
         },
@@ -86,7 +75,7 @@ LEAGUES_TO_PARSE = [
 	## SERIE A ##
 	{
 		'id': 4,
-		'toAddElsewhere': {
+		'to_add_elsewhere': {
             'Spezia Calcio': None,
             'US Cremonese': None,
             'UC Sampdoria': None
@@ -96,7 +85,7 @@ LEAGUES_TO_PARSE = [
 	## SERIE B ##
 	{
 		'id': None,
-		'toAddElsewhere': {
+		'to_add_elsewhere': {
             'Frosinone Calcio': 4,
             'Genoa CFC': 4,
             'Cagliari Calcio': 4
@@ -106,7 +95,7 @@ LEAGUES_TO_PARSE = [
 	## LIGUE 1 ##
 	{
 		'id': 5,
-		'toAddElsewhere': {
+		'to_add_elsewhere': {
             'AJ Auxerre': None,
             'AC Ajaccio': None,
             'ESTAC Troyes': None,
@@ -117,7 +106,7 @@ LEAGUES_TO_PARSE = [
 	## LIGUE 2 ##
 	{
 		'id': None,
-		'toAddElsewhere': {
+		'to_add_elsewhere': {
             'Le Havre AC': 5,
             'FC Metz': 5
         },
@@ -126,7 +115,7 @@ LEAGUES_TO_PARSE = [
 	## LIGA PORTUGAL ##
 	{
 		'id': 6,
-		'toAddElsewhere': {
+		'to_add_elsewhere': {
             'CS Marítimo': None,
             'FC Paços de Ferreira': None,
             'CD Santa Clara': None
@@ -136,7 +125,7 @@ LEAGUES_TO_PARSE = [
 	## LIGA PORTUGAL 2 ##
 	{
 		'id': None,
-		'toAddElsewhere': {
+		'to_add_elsewhere': {
             'Moreirense FC': 6,
             'SC Farense': 6,
             'CF Estrela Amadora SAD': 6
@@ -146,7 +135,7 @@ LEAGUES_TO_PARSE = [
 	## EREDIVISIE ##
 	{
 		'id': 7,
-		'toAddElsewhere': {
+		'to_add_elsewhere': {
             'FC Emmen': None,
             'SC Cambuur Leeuwarden': None,
             'FC Groningen': None
@@ -156,7 +145,7 @@ LEAGUES_TO_PARSE = [
 	## KEUKEN KAMPIOEN DIVISIE ##
 	{
 		'id': None,
-		'toAddElsewhere': {
+		'to_add_elsewhere': {
             'Heracles Almelo': 7,
             'PEC Zwolle': 7,
             'Almere City FC': 7

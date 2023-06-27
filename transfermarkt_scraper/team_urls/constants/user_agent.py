@@ -1,7 +1,4 @@
-DUMMY_TEAM_ID = 0
-
-TEAM_LINK_FORMAT_CONDITIONAL = 'startseite'
-
+# define user_agent to inform website requests are coming from browser
 """
 raise Exception(
 	'Define User Agent before scraping transfermarkt.com. This helps informing website that script accessing website is a web browser.'
