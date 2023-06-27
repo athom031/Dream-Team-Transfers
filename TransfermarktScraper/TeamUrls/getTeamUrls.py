@@ -39,6 +39,7 @@ for league in LEAGUES_TO_PARSE:
 
     teamWebpageLinks = soup.find_all(class_="zentriert no-border-rechts")
 
+    teamCount = 0
     for team in teamWebpageLinks:
         (teamName, teamUrl) = (team.a['title'], team.a['href'])
         ## check if valid field for team
@@ -51,13 +52,18 @@ for league in LEAGUES_TO_PARSE:
                 teamsToAddFromLeague.append(
                     [newLeagueName, newLeagueId, teamName, DUMMY_TEAM_ID, teamUrl]
                 )
+
+                teamCount = teamCount + 1
             ## team to be added in current supported league
-            elif(leagueId is not None):
+            elif(teamName not in league['toAddElsewhere'] and leagueId is not None):
                 teamsToAddFromLeague.append(
                     [leagueName, leagueId, teamName, DUMMY_TEAM_ID, teamUrl]
                 )
+                teamCount = teamCount + 1
+
+    ## convert array to df to drop duplicates
+    df = pd.DataFrame(teamsToAddFromLeague)
+    df.drop_duplicates(inplace=True)
+    teamsToAddFromLeague = df.values.tolist()
     ## add all relevant teams from this league to overal teamData array
     teamData.extend(teamsToAddFromLeague)
-
-for team in teamData:
-    print team[2]
