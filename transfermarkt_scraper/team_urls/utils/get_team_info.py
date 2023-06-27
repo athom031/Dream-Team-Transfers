@@ -21,12 +21,13 @@ def get_team_info(soup, league_name, league_id, league_url, league_to_add_elsewh
     """
     team_info = None
 
-    (team_name, team_url) = (soup.a['title'], soup.a['href'])
+    (team_name, team_url, team_logo) = (soup.a['title'], soup.a['href'], soup.find('img')['src'])
     # check if valid field for team
     if(TEAM_URL_FORMAT_CONDITIONAL in team_url and not(team_name.startswith('<'))):
         # team to be added in another league
         if(team_name in league_to_add_elsewhere and league_to_add_elsewhere[team_name] is not None):
             team_info = [
+                team_logo,
                 team_name,
                 league_to_add_elsewhere[team_name],                    # new league id
                 SUPPORTED_LEAGUES[league_to_add_elsewhere[team_name]], # new league name
@@ -36,6 +37,7 @@ def get_team_info(soup, league_name, league_id, league_url, league_to_add_elsewh
         # team to be added in current supported league
         elif(team_name not in league_to_add_elsewhere and league_id is not None):
             team_info = [
+                team_logo,
                 team_name,
                 league_id,
                 league_name,
