@@ -8,36 +8,34 @@ logo = 'logo'
 teams_to_add_elsewhere = 'teams_to_add_elsewhere'
 
 ## LEAGUE DICTIONARY ##
+# format for leagues to be parsed to build accurate team list for 23/24 season
+# adds context of promotion/relegation from 22/23 tables
+"""
+## <LEAGUE NAME> ##
+
+<if team is supported>
+<positive_id>: {
+    name: '<league_name>',
+    url: '<league_url>',
+    nation: '<league_nation>',
+    logo: '<league_logo>',
+    teams_to_add_elsewhere: {
+        '<team_name>': <league_id_to_send_to>
+    }
+}
+
+<if team is not supported>
+<negative_id>: {
+    url: '<league_url>',
+    teams_to_add_elsewhere: {
+        '<team_name>': <league_id_to_send_to>
+    }
+}
+"""
+
 LEAGUES_TO_PARSE = [
-    ## format for leagues to be parsed to build accurate team list for 23/24 season
-    ## adds context of promotion/relegation from 22/23 tables
-    """
-    ## <LEAGUE NAME> ##
-
-    <if team is supported>
-    {
-        id: <league_id>
-        name: '<league_name>',
-        url: '<league_url>',
-        nation: '<league_nation>',
-        logo: '<league_logo>',
-        teams_to_add_elsewhere: {
-            '<team_name>': <league_id_to_send_to>
-        }
-    }
-
-    <if team is not supported>
-    {
-        id: None,
-        url: '<league_url>',
-        teams_to_add_elsewhere: {
-            '<team_name>': <league_id_to_send_to>
-        }
-    }
-    """
     ## PREMIER LEAGUE ##
-    {
-        id: 0,
+    0: {
         name: 'Premier League',
         url: 'https://www.transfermarkt.com/premier-league/startseite/wettbewerb/GB1',
         nation: 'England',
@@ -49,8 +47,7 @@ LEAGUES_TO_PARSE = [
         }
     },
     ## CHAMPIONSHIP ##
-    {
-        id: 1,
+    1: {
         name: 'Championship',
         url: 'https://www.transfermarkt.com/premier-league/startseite/wettbewerb/GB1',
         nation: 'England',
@@ -65,9 +62,8 @@ LEAGUES_TO_PARSE = [
         }
     },
 	## LEAGUE ONE ##
-    {
-        id: None,
-        url: 'https://www.transfermarkt.com/league-one/startseite/wettbewerb/GB3'
+    -1: {
+        url: 'https://www.transfermarkt.com/league-one/startseite/wettbewerb/GB3',
         teams_to_add_elsewhere: {
             'Plymouth Argyle': 1,
             'Ipswich Town': 1,
@@ -75,8 +71,7 @@ LEAGUES_TO_PARSE = [
         }
     },
 	## LA LIGA ##
-    {
-        id: 2,
+    2: {
         name: 'La Liga',
         url: 'https://www.transfermarkt.com/laliga/startseite/wettbewerb/ES1',
         nation: 'Spain',
@@ -88,9 +83,8 @@ LEAGUES_TO_PARSE = [
         }
     },
     ## LA LIGA 2 ##
-    {
-        id: None,
-        url: 'https://www.transfermarkt.com/laliga2/startseite/wettbewerb/ES2'
+    -2: {
+        url: 'https://www.transfermarkt.com/laliga2/startseite/wettbewerb/ES2',
         teams_to_add_elsewhere: {
             'Granada CF': 2,
             'UD Las Palmas': 2,
@@ -98,8 +92,7 @@ LEAGUES_TO_PARSE = [
         }
     },
     ## BUNDESLIGA ##
-    {
-        id: 3,
+    3: {
         name: 'Bundesliga',
         url: 'https://www.transfermarkt.com/bundesliga/startseite/wettbewerb/L1',
         nation: 'Germany',
@@ -110,8 +103,7 @@ LEAGUES_TO_PARSE = [
         }
     },
     ## BUNDESLIGA 2 ##
-    {
-        id: None,
+    -3: {
         url: 'https://www.transfermarkt.com/bundesliga/startseite/wettbewerb/L2',
         teams_to_add_elsewhere: {
             '1.FC Heidenheim 1846': 3,
@@ -119,8 +111,7 @@ LEAGUES_TO_PARSE = [
         }
     },
 	## SERIE A ##
-	{
-        id: 4,
+	4: {
         name: 'Serie A',
         url: 'https://www.transfermarkt.com/serie-a/startseite/wettbewerb/IT1',
         nation: 'Italy',
@@ -132,9 +123,8 @@ LEAGUES_TO_PARSE = [
         }
 	},
 	## SERIE B ##
-	{
-        id: None,
-        url: 'https://www.transfermarkt.com/serie-b/startseite/wettbewerb/IT2'
+	-4: {
+        url: 'https://www.transfermarkt.com/serie-b/startseite/wettbewerb/IT2',
         teams_to_add_elsewhere: {
             'Frosinone Calcio': 4,
             'Genoa CFC': 4,
@@ -142,8 +132,7 @@ LEAGUES_TO_PARSE = [
         }
 	},
 	## LIGUE 1 ##
-	{
-        id: 5,
+	5: {
         name: 'Ligue One',
         url: 'https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR1',
         nation: 'France',
@@ -156,17 +145,15 @@ LEAGUES_TO_PARSE = [
         }
 	},
 	## LIGUE 2 ##
-	{
-        id: None,
+	-5: {
         url: 'https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR2',
-        to_add_elsewhere: {
+        teams_to_add_elsewhere: {
             'Le Havre AC': 5,
             'FC Metz': 5
         }
 	},
 	## LIGA PORTUGAL ##
-	{
-        id: 6,
+	6: {
         name: 'Liga Portugal',
         url: 'https://www.transfermarkt.com/liga-nos/startseite/wettbewerb/PO1',
         nation: 'Portugal',
@@ -178,8 +165,7 @@ LEAGUES_TO_PARSE = [
         }
 	},
 	## LIGA PORTUGAL 2 ##
-	{
-        id: None,
+	-6: {
         url: 'https://www.transfermarkt.com/liga-nos/startseite/wettbewerb/PO2',
 		teams_to_add_elsewhere: {
             'Moreirense FC': 6,
@@ -188,8 +174,7 @@ LEAGUES_TO_PARSE = [
         }
 	},
 	## EREDIVISIE ##
-	{
-        id: 7,
+	7: {
         name: 'Eredivisie',
         url: 'https://www.transfermarkt.com/eredivisie/startseite/wettbewerb/NL1',
         nation: 'Netherlands',
@@ -201,8 +186,7 @@ LEAGUES_TO_PARSE = [
         }
 	},
 	## KEUKEN KAMPIOEN DIVISIE ##
-	{
-        id: None,
+	-7: {
         url: 'https://www.transfermarkt.com/eredivisie/startseite/wettbewerb/NL2',
         teams_to_add_elsewhere: {
             'Heracles Almelo': 7,
