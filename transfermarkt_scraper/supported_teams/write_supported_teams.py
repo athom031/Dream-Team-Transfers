@@ -1,38 +1,62 @@
 import pandas as pd
 # project defined imports
-from constants.user_agent import USER_AGENT
 from constants.leagues_to_parse import LEAGUES_TO_PARSE
-from utils.get_league_info import get_league_info
+# from utils.get_league_info import get_league_info
+from utils.get_league_soup import get_league_soup
 from utils.get_team_info import get_team_info
-
-# inform website that requests are coming from browser
-headers = { 'User-Agent': USER_AGENT }
 
 # create team data list which will be converted into data frame
 team_data = []
 
-for league in LEAGUES_TO_PARSE:
-    # create team data sub list from each league to append to team_data
+for league_id, league in LEAGUES_TO_PARSE.items():
+    # list of teams from current league that are supported for 23/24 season
     supported_league_team_data = []
 
-    # get soup to parse from league webpage and other league info
-    (league_soup, league_name, league_id, league_url, league_to_add_elsewhere) = get_league_info(league, headers)
+    # get league team info with Beautiful Soup from league page
+    league_team_soup = get_league_soup(league['url'])
 
-    # check soup for valid team data
-    for soup in league_soup:
-        team_info = get_team_info(soup, league_name, league_id, league_url, league_to_add_elsewhere)
+    # extract team info from league team soup
+    for team_soup in league_team_soup:
+        (
+            next_season_league_id,
+            team_name,
+            team_small_logo,
+            team_url
+        ) = get_team_info(team_soup, league_id, league)
 
-        # add team data if valid
-        if team_info is not None:
-            supported_league_team_data.append(team_info)
+        # if team is supported for 23/24 season, get 23/24 season league info
+        if(next_season_league_id is not None):
 
-    # add all supported team data from this league
+            next_season_league = LEAGUES_TO_PARSE[next_season_league_id]
+
+            (
+                league_name,
+                league_nation,
+                league_logo
+            ) = (next_season_league['name'], next_season_league['nation'], next_season_league['logo'])
+
+            supported_league_team_data.append([
+                # team info
+                team_name, team_small_logo, team_url,
+                # league info
+                next_season_league_id, league_name, league_nation, league_logo
+            ])
+
+    # add all supported team data from this league to team data list
     team_data.extend(supported_league_team_data)
 
 # team_data to data frame
 df = pd.DataFrame(
     team_data,
-    columns=['team_logo', 'team_name', 'league_id', 'league_name', 'team_url']
+    columns=[
+        'team_name',
+        'team_small_logo',
+        'team_url',
+        'league_id',
+        'league_name',
+        'league_nation',
+        'league_logo'
+    ]
 )
 
 # format data frame
