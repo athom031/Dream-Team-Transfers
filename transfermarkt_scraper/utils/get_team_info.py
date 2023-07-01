@@ -1,5 +1,5 @@
 # project defined imports
-from constants.webpage_tags import TEAM_URL_FORMAT_CONDITIONAL
+from transfermarkt_scraper.constants.webpage_tags import TEAM_URL_FORMAT_CONDITIONAL
 
 def get_team_info(team_soup, league_id, league):
     # valid team soup example
