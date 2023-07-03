@@ -1,5 +1,6 @@
 import csv
 import os
+from bs4 import BeautifulSoup
 # project defined imports
 from transfermarkt_scraper.constants.csv_names import (
     CSV,
@@ -9,6 +10,7 @@ from transfermarkt_scraper.constants.csv_names import (
 )
 from transfermarkt_scraper.constants.webpage_tags import BASE_WEBPAGE, WEBPAGE_TEAM_TABLE_CLASS
 from transfermarkt_scraper.utils.get_page_soup import get_page_soup
+from transfermarkt_scraper.utils.get_player_tags import get_player_tags
 
 # Get the absolute path of the current script
 script_path = os.path.abspath(__file__)
@@ -30,17 +32,23 @@ with open(file_path, 'r') as csv_file:
         break
 
     # based on header find where team_url is
-    team_url = csv_header.index(TEAM_URL)
+    team_url_index = csv_header.index(TEAM_URL)
 
     # create array for player_data
     supported_players_data = []
 
     for team in reader:
-        page_soup = get_page_soup(TEAM_URL, WEBPAGE_TEAM_BIG_LOGO_CLASS)
-        print(page_soup)
-
-        players_in_team = []
+        # get list of player tags
+        player_tags = get_player_tags(team[team_url_index])
+        print(player_tags)
         break
+
+
+        # for tr_tag in tbody_tag.find_all('tr'):
+        #      # Check if the class attribute contains "even" or "odd"
+        #     if 'even' in tr_tag.get('class', []) or 'odd' in tr_tag.get('class', []):
+        #         # Append the <tr> tag to the array
+        #         rows.append(tr_tag)
 
     # team_id = 0
     # t_name_idx = 1
