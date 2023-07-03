@@ -10,6 +10,7 @@ from transfermarkt_scraper.constants.csv_names import (
 )
 from transfermarkt_scraper.constants.webpage_tags import BASE_WEBPAGE, WEBPAGE_TEAM_TABLE_CLASS
 from transfermarkt_scraper.utils.get_page_soup import get_page_soup
+from transfermarkt_scraper.utils.get_player_data import get_player_data
 from transfermarkt_scraper.utils.get_player_tags import get_player_tags
 
 # Get the absolute path of the current script
@@ -40,7 +41,16 @@ with open(file_path, 'r') as csv_file:
     for team in reader:
         # get list of player tags
         player_tags = get_player_tags(team[team_url_index])
-        print(player_tags)
+
+        for player_tag in player_tags:
+            # parse player_tag to get player data
+            player_data = get_player_data(player_tag)
+
+            # add player data to array
+            supported_players_data.append(player_data)
+
+
+        print(supported_players_data)
         break
 
 
