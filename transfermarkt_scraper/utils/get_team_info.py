@@ -1,5 +1,5 @@
 # project defined imports
-from transfermarkt_scraper.constants.webpage_tags import TEAM_URL_FORMAT_CONDITIONAL
+from transfermarkt_scraper.constants.webpage_tags import WEBPAGE_VALID_TEAM_CONDITIONAL
 
 def get_team_info(team_soup, league_id, league):
     # valid team soup example
@@ -28,7 +28,7 @@ def get_team_info(team_soup, league_id, league):
     ) = (team_soup.a['title'], team_soup.a['href'], team_soup.find('img')['src'])
 
     # check if valid field for team
-    if(TEAM_URL_FORMAT_CONDITIONAL in team_url and not(team_name.startswith('<'))):
+    if(WEBPAGE_VALID_TEAM_CONDITIONAL in team_url and not(team_name.startswith('<'))):
 
         # team to be added in another league
         if(
