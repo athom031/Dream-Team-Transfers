@@ -5,4 +5,4 @@
 **/__init__.pyc
 
 # ignore all .DS_Store
-**/DS_Store
+**/.DS_Store
