@@ -15,6 +15,7 @@ from transfermarkt_scraper.constants.csv_names import (
     PLAYER_PHOTO,
     PLAYER_POSITION,
     PLAYER_SHORTENED_NAME,
+    READ,
     SUPPORTED_PLAYERS,
     SUPPORTED_TEAMS,
     TEAM_ID,
@@ -35,7 +36,7 @@ script_dir = os.path.dirname(script_path)
 file_path = os.path.join(script_dir, '..', SUPPORTED_TEAMS, SUPPORTED_TEAMS + CSV)
 
 # open csv file
-with open(file_path, 'r') as csv_file:
+with open(file_path, READ) as csv_file:
     # create csv reader object
     reader = csv.reader(csv_file)
 

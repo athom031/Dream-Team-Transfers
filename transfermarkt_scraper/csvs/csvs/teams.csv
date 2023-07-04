@@ -1,0 +1,157 @@
+team_id,team_name,team_logo_small_pic,team_logo_big_pic,league_id
+0,AFC Bournemouth,https://tmssl.akamaized.net/images/wappen/small/989.png?lm=1457991811,https://tmssl.akamaized.net/images/wappen/head/989.png?lm=1457991811,0
+1,Arsenal FC,https://tmssl.akamaized.net/images/wappen/small/11.png?lm=1489787850,https://tmssl.akamaized.net/images/wappen/head/11.png?lm=1489787850,0
+2,Aston Villa,https://tmssl.akamaized.net/images/wappen/small/405.png?lm=1469443765,https://tmssl.akamaized.net/images/wappen/head/405.png?lm=1469443765,0
+3,Brentford FC,https://tmssl.akamaized.net/images/wappen/small/1148.png?lm=1625150543,https://tmssl.akamaized.net/images/wappen/head/1148.png?lm=1625150543,0
+4,Brighton & Hove Albion,https://tmssl.akamaized.net/images/wappen/small/1237.png?lm=1492718902,https://tmssl.akamaized.net/images/wappen/head/1237.png?lm=1492718902,0
+5,Burnley FC,https://tmssl.akamaized.net/images/wappen/small/1132_1686900149.png?lm=1686900149,https://tmssl.akamaized.net/images/wappen/head/1132_1686900149.png?lm=1686900149,0
+6,Chelsea FC,https://tmssl.akamaized.net/images/wappen/small/631.png?lm=1682435911,https://tmssl.akamaized.net/images/wappen/head/631.png?lm=1682435911,0
+7,Crystal Palace,https://tmssl.akamaized.net/images/wappen/small/873.png?lm=1457723287,https://tmssl.akamaized.net/images/wappen/head/873.png?lm=1457723287,0
+8,Everton FC,https://tmssl.akamaized.net/images/wappen/small/29.png?lm=1445949846,https://tmssl.akamaized.net/images/wappen/head/29.png?lm=1445949846,0
+9,Fulham FC,https://tmssl.akamaized.net/images/wappen/small/931.png?lm=1556831687,https://tmssl.akamaized.net/images/wappen/head/931.png?lm=1556831687,0
+10,Liverpool FC,https://tmssl.akamaized.net/images/wappen/small/31.png?lm=1456567819,https://tmssl.akamaized.net/images/wappen/head/31.png?lm=1456567819,0
+11,Luton Town,https://tmssl.akamaized.net/images/wappen/small/1031.png?lm=1457723228,https://tmssl.akamaized.net/images/wappen/head/1031.png?lm=1457723228,0
+12,Manchester City,https://tmssl.akamaized.net/images/wappen/small/281.png?lm=1467356331,https://tmssl.akamaized.net/images/wappen/head/281.png?lm=1467356331,0
+13,Manchester United,https://tmssl.akamaized.net/images/wappen/small/985.png?lm=1457975903,https://tmssl.akamaized.net/images/wappen/head/985.png?lm=1457975903,0
+14,Newcastle United,https://tmssl.akamaized.net/images/wappen/small/762.png?lm=1472921161,https://tmssl.akamaized.net/images/wappen/head/762.png?lm=1472921161,0
+15,Nottingham Forest,https://tmssl.akamaized.net/images/wappen/small/703.png?lm=1598890289,https://tmssl.akamaized.net/images/wappen/head/703.png?lm=1598890289,0
+16,Sheffield United,https://tmssl.akamaized.net/images/wappen/small/350.png?lm=1409254138,https://tmssl.akamaized.net/images/wappen/head/350.png?lm=1409254138,0
+17,Tottenham Hotspur,https://tmssl.akamaized.net/images/wappen/small/148.png?lm=1544345801,https://tmssl.akamaized.net/images/wappen/head/148.png?lm=1544345801,0
+18,West Ham United,https://tmssl.akamaized.net/images/wappen/small/379.png?lm=1464675260,https://tmssl.akamaized.net/images/wappen/head/379.png?lm=1464675260,0
+19,Wolverhampton Wanderers,https://tmssl.akamaized.net/images/wappen/small/543.png?lm=1467496784,https://tmssl.akamaized.net/images/wappen/head/543.png?lm=1467496784,0
+20,Birmingham City,https://tmssl.akamaized.net/images/wappen/small/337.png?lm=1672321276,https://tmssl.akamaized.net/images/wappen/head/337.png?lm=1672321276,1
+21,Blackburn Rovers,https://tmssl.akamaized.net/images/wappen/small/164.png?lm=1495228542,https://tmssl.akamaized.net/images/wappen/head/164.png?lm=1495228542,1
+22,Bristol City,https://tmssl.akamaized.net/images/wappen/small/698.png?lm=1571314125,https://tmssl.akamaized.net/images/wappen/head/698.png?lm=1571314125,1
+23,Cardiff City,https://tmssl.akamaized.net/images/wappen/small/603.png?lm=1478337063,https://tmssl.akamaized.net/images/wappen/head/603.png?lm=1478337063,1
+24,Coventry City,https://tmssl.akamaized.net/images/wappen/small/990.png?lm=1684518179,https://tmssl.akamaized.net/images/wappen/head/990.png?lm=1684518179,1
+25,Huddersfield Town,https://tmssl.akamaized.net/images/wappen/small/1110.png?lm=1567439677,https://tmssl.akamaized.net/images/wappen/head/1110.png?lm=1567439677,1
+26,Hull City,https://tmssl.akamaized.net/images/wappen/small/3008.png?lm=1562662491,https://tmssl.akamaized.net/images/wappen/head/3008.png?lm=1562662491,1
+27,Ipswich Town,https://tmssl.akamaized.net/images/wappen/small/677.png?lm=1407655249,https://tmssl.akamaized.net/images/wappen/head/677.png?lm=1407655249,1
+28,Leeds United,https://tmssl.akamaized.net/images/wappen/small/399.png?lm=1645652224,https://tmssl.akamaized.net/images/wappen/head/399.png?lm=1645652224,1
+29,Leicester City,https://tmssl.akamaized.net/images/wappen/small/1003.png?lm=1472229265,https://tmssl.akamaized.net/images/wappen/head/1003.png?lm=1472229265,1
+30,Middlesbrough FC,https://tmssl.akamaized.net/images/wappen/small/641.png?lm=1443702192,https://tmssl.akamaized.net/images/wappen/head/641.png?lm=1443702192,1
+31,Millwall FC,https://tmssl.akamaized.net/images/wappen/small/1028.png?lm=1564722431,https://tmssl.akamaized.net/images/wappen/head/1028.png?lm=1564722431,1
+32,Norwich City,https://tmssl.akamaized.net/images/wappen/small/1123.png?lm=1655469640,https://tmssl.akamaized.net/images/wappen/head/1123.png?lm=1655469640,1
+33,Plymouth Argyle,https://tmssl.akamaized.net/images/wappen/small/2262.png?lm=1411464792,https://tmssl.akamaized.net/images/wappen/head/2262.png?lm=1411464792,1
+34,Preston North End,https://tmssl.akamaized.net/images/wappen/small/466.png?lm=1414769167,https://tmssl.akamaized.net/images/wappen/head/466.png?lm=1414769167,1
+35,Queens Park Rangers,https://tmssl.akamaized.net/images/wappen/small/1039.png?lm=1464680692,https://tmssl.akamaized.net/images/wappen/head/1039.png?lm=1464680692,1
+36,Rotherham United,https://tmssl.akamaized.net/images/wappen/small/1194.png?lm=1407655489,https://tmssl.akamaized.net/images/wappen/head/1194.png?lm=1407655489,1
+37,Sheffield Wednesday,https://tmssl.akamaized.net/images/wappen/small/1035.png?lm=1643214896,https://tmssl.akamaized.net/images/wappen/head/1035.png?lm=1643214896,1
+38,Southampton FC,https://tmssl.akamaized.net/images/wappen/small/180.png?lm=1444560086,https://tmssl.akamaized.net/images/wappen/head/180.png?lm=1444560086,1
+39,Stoke City,https://tmssl.akamaized.net/images/wappen/small/512.png?lm=1472243727,https://tmssl.akamaized.net/images/wappen/head/512.png?lm=1472243727,1
+40,Sunderland AFC,https://tmssl.akamaized.net/images/wappen/small/289.png?lm=1485645633,https://tmssl.akamaized.net/images/wappen/head/289.png?lm=1485645633,1
+41,Swansea City,https://tmssl.akamaized.net/images/wappen/small/2288_1658400314.png?lm=1658400315,https://tmssl.akamaized.net/images/wappen/head/2288_1658400314.png?lm=1658400315,1
+42,Watford FC,https://tmssl.akamaized.net/images/wappen/small/1010.png?lm=1468103673,https://tmssl.akamaized.net/images/wappen/head/1010.png?lm=1468103673,1
+43,West Bromwich Albion,https://tmssl.akamaized.net/images/wappen/small/984.png?lm=1457991758,https://tmssl.akamaized.net/images/wappen/head/984.png?lm=1457991758,1
+44,Athletic Bilbao,https://tmssl.akamaized.net/images/wappen/small/621.png?lm=1565768743,https://tmssl.akamaized.net/images/wappen/head/621.png?lm=1565768743,2
+45,Atlético de Madrid,https://tmssl.akamaized.net/images/wappen/small/13.png?lm=1519120744,https://tmssl.akamaized.net/images/wappen/head/13.png?lm=1519120744,2
+46,CA Osasuna,https://tmssl.akamaized.net/images/wappen/small/331.png?lm=1686070937,https://tmssl.akamaized.net/images/wappen/head/331.png?lm=1686070937,2
+47,Celta de Vigo,https://tmssl.akamaized.net/images/wappen/small/940.png?lm=1406966406,https://tmssl.akamaized.net/images/wappen/head/940.png?lm=1406966406,2
+48,Cádiz CF,https://tmssl.akamaized.net/images/wappen/small/2687.png?lm=1683542431,https://tmssl.akamaized.net/images/wappen/head/2687.png?lm=1683542431,2
+49,Deportivo Alavés,https://tmssl.akamaized.net/images/wappen/small/1108.png?lm=1596131395,https://tmssl.akamaized.net/images/wappen/head/1108.png?lm=1596131395,2
+50,FC Barcelona,https://tmssl.akamaized.net/images/wappen/small/131.png?lm=1406739548,https://tmssl.akamaized.net/images/wappen/head/131.png?lm=1406739548,2
+51,Getafe CF,https://tmssl.akamaized.net/images/wappen/small/3709.png?lm=1408655116,https://tmssl.akamaized.net/images/wappen/head/3709.png?lm=1408655116,2
+52,Girona FC,https://tmssl.akamaized.net/images/wappen/small/12321.png?lm=1659464404,https://tmssl.akamaized.net/images/wappen/head/12321.png?lm=1659464404,2
+53,Granada CF,https://tmssl.akamaized.net/images/wappen/small/16795.png?lm=1620472393,https://tmssl.akamaized.net/images/wappen/head/16795.png?lm=1620472393,2
+54,RCD Mallorca,https://tmssl.akamaized.net/images/wappen/small/237.png?lm=1407484750,https://tmssl.akamaized.net/images/wappen/head/237.png?lm=1407484750,2
+55,Rayo Vallecano,https://tmssl.akamaized.net/images/wappen/small/367.png?lm=1653488445,https://tmssl.akamaized.net/images/wappen/head/367.png?lm=1653488445,2
+56,Real Betis Balompié,https://tmssl.akamaized.net/images/wappen/small/150.png?lm=1663358526,https://tmssl.akamaized.net/images/wappen/head/150.png?lm=1663358526,2
+57,Real Madrid,https://tmssl.akamaized.net/images/wappen/small/418.png?lm=1580722449,https://tmssl.akamaized.net/images/wappen/head/418.png?lm=1580722449,2
+58,Real Sociedad,https://tmssl.akamaized.net/images/wappen/small/681.png?lm=1614795530,https://tmssl.akamaized.net/images/wappen/head/681.png?lm=1614795530,2
+59,Sevilla FC,https://tmssl.akamaized.net/images/wappen/small/368.png?lm=1408655455,https://tmssl.akamaized.net/images/wappen/head/368.png?lm=1408655455,2
+60,UD Almería,https://tmssl.akamaized.net/images/wappen/small/3302.png?lm=1408654801,https://tmssl.akamaized.net/images/wappen/head/3302.png?lm=1408654801,2
+61,UD Las Palmas,https://tmssl.akamaized.net/images/wappen/small/472.png?lm=1407484865,https://tmssl.akamaized.net/images/wappen/head/472.png?lm=1407484865,2
+62,Valencia CF,https://tmssl.akamaized.net/images/wappen/small/1049.png?lm=1406966320,https://tmssl.akamaized.net/images/wappen/head/1049.png?lm=1406966320,2
+63,Villarreal CF,https://tmssl.akamaized.net/images/wappen/small/1050.png?lm=1408655310,https://tmssl.akamaized.net/images/wappen/head/1050.png?lm=1408655310,2
+64,1.FC Heidenheim 1846,https://tmssl.akamaized.net/images/wappen/small/2036.png?lm=1685457789,https://tmssl.akamaized.net/images/wappen/head/2036.png?lm=1685457789,3
+65,1.FC Köln,https://tmssl.akamaized.net/images/wappen/small/3.png?lm=1656580823,https://tmssl.akamaized.net/images/wappen/head/3.png?lm=1656580823,3
+66,1.FC Union Berlin,https://tmssl.akamaized.net/images/wappen/small/89.png?lm=1402956210,https://tmssl.akamaized.net/images/wappen/head/89.png?lm=1402956210,3
+67,1.FSV Mainz 05,https://tmssl.akamaized.net/images/wappen/small/39.png?lm=1564748880,https://tmssl.akamaized.net/images/wappen/head/39.png?lm=1564748880,3
+68,Bayer 04 Leverkusen,https://tmssl.akamaized.net/images/wappen/small/15.png?lm=1651221781,https://tmssl.akamaized.net/images/wappen/head/15.png?lm=1651221781,3
+69,Bayern Munich,https://tmssl.akamaized.net/images/wappen/small/27.png?lm=1498251238,https://tmssl.akamaized.net/images/wappen/head/27.png?lm=1498251238,3
+70,Borussia Dortmund,https://tmssl.akamaized.net/images/wappen/small/16.png?lm=1396275280,https://tmssl.akamaized.net/images/wappen/head/16.png?lm=1396275280,3
+71,Borussia Mönchengladbach,https://tmssl.akamaized.net/images/wappen/small/18.png?lm=1656585796,https://tmssl.akamaized.net/images/wappen/head/18.png?lm=1656585796,3
+72,Eintracht Frankfurt,https://tmssl.akamaized.net/images/wappen/small/24.png?lm=1403806187,https://tmssl.akamaized.net/images/wappen/head/24.png?lm=1403806187,3
+73,FC Augsburg,https://tmssl.akamaized.net/images/wappen/small/167.png?lm=1656582897,https://tmssl.akamaized.net/images/wappen/head/167.png?lm=1656582897,3
+74,RB Leipzig,https://tmssl.akamaized.net/images/wappen/small/23826.png?lm=1619431624,https://tmssl.akamaized.net/images/wappen/head/23826.png?lm=1619431624,3
+75,SC Freiburg,https://tmssl.akamaized.net/images/wappen/small/60.png?lm=1517249279,https://tmssl.akamaized.net/images/wappen/head/60.png?lm=1517249279,3
+76,SV Darmstadt 98,https://tmssl.akamaized.net/images/wappen/small/105.png?lm=1501493517,https://tmssl.akamaized.net/images/wappen/head/105.png?lm=1501493517,3
+77,SV Werder Bremen,https://tmssl.akamaized.net/images/wappen/small/86.png?lm=1403082298,https://tmssl.akamaized.net/images/wappen/head/86.png?lm=1403082298,3
+78,TSG 1899 Hoffenheim,https://tmssl.akamaized.net/images/wappen/small/533.png?lm=1675591766,https://tmssl.akamaized.net/images/wappen/head/533.png?lm=1675591766,3
+79,VfB Stuttgart,https://tmssl.akamaized.net/images/wappen/small/79.png?lm=1680587427,https://tmssl.akamaized.net/images/wappen/head/79.png?lm=1680587427,3
+80,VfL Bochum,https://tmssl.akamaized.net/images/wappen/small/80.png?lm=1656583090,https://tmssl.akamaized.net/images/wappen/head/80.png?lm=1656583090,3
+81,VfL Wolfsburg,https://tmssl.akamaized.net/images/wappen/small/82.png?lm=1503060755,https://tmssl.akamaized.net/images/wappen/head/82.png?lm=1503060755,3
+82,AC Milan,https://tmssl.akamaized.net/images/wappen/small/5.png?lm=1605166627,https://tmssl.akamaized.net/images/wappen/head/5.png?lm=1605166627,4
+83,AC Monza,https://tmssl.akamaized.net/images/wappen/small/2919.png?lm=1562072734,https://tmssl.akamaized.net/images/wappen/head/2919.png?lm=1562072734,4
+84,ACF Fiorentina,https://tmssl.akamaized.net/images/wappen/small/430.png?lm=1656660160,https://tmssl.akamaized.net/images/wappen/head/430.png?lm=1656660160,4
+85,AS Roma,https://tmssl.akamaized.net/images/wappen/small/12.png?lm=1533302889,https://tmssl.akamaized.net/images/wappen/head/12.png?lm=1533302889,4
+86,Atalanta BC,https://tmssl.akamaized.net/images/wappen/small/800.png?lm=1438547428,https://tmssl.akamaized.net/images/wappen/head/800.png?lm=1438547428,4
+87,Bologna FC 1909,https://tmssl.akamaized.net/images/wappen/small/1025.png?lm=1626441324,https://tmssl.akamaized.net/images/wappen/head/1025.png?lm=1626441324,4
+88,Cagliari Calcio,https://tmssl.akamaized.net/images/wappen/small/1390.png?lm=1626441409,https://tmssl.akamaized.net/images/wappen/head/1390.png?lm=1626441409,4
+89,FC Empoli,https://tmssl.akamaized.net/images/wappen/small/749.png?lm=1626441481,https://tmssl.akamaized.net/images/wappen/head/749.png?lm=1626441481,4
+90,Frosinone Calcio,https://tmssl.akamaized.net/images/wappen/small/8970.png?lm=1438547543,https://tmssl.akamaized.net/images/wappen/head/8970.png?lm=1438547543,4
+91,Genoa CFC,https://tmssl.akamaized.net/images/wappen/small/252.png?lm=1655305880,https://tmssl.akamaized.net/images/wappen/head/252.png?lm=1655305880,4
+92,Hellas Verona,https://tmssl.akamaized.net/images/wappen/small/276.png?lm=1617228746,https://tmssl.akamaized.net/images/wappen/head/276.png?lm=1617228746,4
+93,Inter Milan,https://tmssl.akamaized.net/images/wappen/small/46.png?lm=1618900989,https://tmssl.akamaized.net/images/wappen/head/46.png?lm=1618900989,4
+94,Juventus FC,https://tmssl.akamaized.net/images/wappen/small/506.png?lm=1626441487,https://tmssl.akamaized.net/images/wappen/head/506.png?lm=1626441487,4
+95,SS Lazio,https://tmssl.akamaized.net/images/wappen/small/398.png?lm=1601537785,https://tmssl.akamaized.net/images/wappen/head/398.png?lm=1601537785,4
+96,SSC Napoli,https://tmssl.akamaized.net/images/wappen/small/6195.png?lm=1437135876,https://tmssl.akamaized.net/images/wappen/head/6195.png?lm=1437135876,4
+97,Torino FC,https://tmssl.akamaized.net/images/wappen/small/416.png?lm=1438548174,https://tmssl.akamaized.net/images/wappen/head/416.png?lm=1438548174,4
+98,US Lecce,https://tmssl.akamaized.net/images/wappen/small/1005.png?lm=1417104356,https://tmssl.akamaized.net/images/wappen/head/1005.png?lm=1417104356,4
+99,US Salernitana 1919,https://tmssl.akamaized.net/images/wappen/small/380.png?lm=1601390035,https://tmssl.akamaized.net/images/wappen/head/380.png?lm=1601390035,4
+100,US Sassuolo,https://tmssl.akamaized.net/images/wappen/small/6574.png?lm=1601389908,https://tmssl.akamaized.net/images/wappen/head/6574.png?lm=1601389908,4
+101,Udinese Calcio,https://tmssl.akamaized.net/images/wappen/small/410.png?lm=1437136398,https://tmssl.akamaized.net/images/wappen/head/410.png?lm=1437136398,4
+102,AS Monaco,https://tmssl.akamaized.net/images/wappen/small/162.png?lm=1654781919,https://tmssl.akamaized.net/images/wappen/head/162.png?lm=1654781919,5
+103,Clermont Foot 63,https://tmssl.akamaized.net/images/wappen/small/3524.png?lm=1625739356,https://tmssl.akamaized.net/images/wappen/head/3524.png?lm=1625739356,5
+104,FC Lorient,https://tmssl.akamaized.net/images/wappen/small/1158.png?lm=1406642498,https://tmssl.akamaized.net/images/wappen/head/1158.png?lm=1406642498,5
+105,FC Metz,https://tmssl.akamaized.net/images/wappen/small/347.png?lm=1625391843,https://tmssl.akamaized.net/images/wappen/head/347.png?lm=1625391843,5
+106,FC Nantes,https://tmssl.akamaized.net/images/wappen/small/995.png?lm=1581355747,https://tmssl.akamaized.net/images/wappen/head/995.png?lm=1581355747,5
+107,FC Toulouse,https://tmssl.akamaized.net/images/wappen/small/415.png?lm=1530117274,https://tmssl.akamaized.net/images/wappen/head/415.png?lm=1530117274,5
+108,LOSC Lille,https://tmssl.akamaized.net/images/wappen/small/1082.png?lm=1529521041,https://tmssl.akamaized.net/images/wappen/head/1082.png?lm=1529521041,5
+109,Le Havre AC,https://tmssl.akamaized.net/images/wappen/small/738.png?lm=1408780648,https://tmssl.akamaized.net/images/wappen/head/738.png?lm=1408780648,5
+110,Montpellier HSC,https://tmssl.akamaized.net/images/wappen/small/969.png?lm=1459072367,https://tmssl.akamaized.net/images/wappen/head/969.png?lm=1459072367,5
+111,OGC Nice,https://tmssl.akamaized.net/images/wappen/small/417.png?lm=1408779490,https://tmssl.akamaized.net/images/wappen/head/417.png?lm=1408779490,5
+112,Olympique Lyon,https://tmssl.akamaized.net/images/wappen/small/1041.png?lm=1656668172,https://tmssl.akamaized.net/images/wappen/head/1041.png?lm=1656668172,5
+113,Olympique Marseille,https://tmssl.akamaized.net/images/wappen/small/244.png?lm=1485642163,https://tmssl.akamaized.net/images/wappen/head/244.png?lm=1485642163,5
+114,Paris Saint-Germain,https://tmssl.akamaized.net/images/wappen/small/583.png?lm=1522312728,https://tmssl.akamaized.net/images/wappen/head/583.png?lm=1522312728,5
+115,RC Lens,https://tmssl.akamaized.net/images/wappen/small/826.png?lm=1595457059,https://tmssl.akamaized.net/images/wappen/head/826.png?lm=1595457059,5
+116,RC Strasbourg Alsace,https://tmssl.akamaized.net/images/wappen/small/667.png?lm=1664991833,https://tmssl.akamaized.net/images/wappen/head/667.png?lm=1664991833,5
+117,Stade Brestois 29,https://tmssl.akamaized.net/images/wappen/small/3911.png?lm=1408780312,https://tmssl.akamaized.net/images/wappen/head/3911.png?lm=1408780312,5
+118,Stade Reims,https://tmssl.akamaized.net/images/wappen/small/1421.png?lm=1592601839,https://tmssl.akamaized.net/images/wappen/head/1421.png?lm=1592601839,5
+119,Stade Rennais FC,https://tmssl.akamaized.net/images/wappen/small/273.png?lm=1408779098,https://tmssl.akamaized.net/images/wappen/head/273.png?lm=1408779098,5
+120,Boavista FC,https://tmssl.akamaized.net/images/wappen/small/2503.png?lm=1480959207,https://tmssl.akamaized.net/images/wappen/head/2503.png?lm=1480959207,6
+121,CF Estrela Amadora SAD,https://tmssl.akamaized.net/images/wappen/small/2431.png?lm=1598342709,https://tmssl.akamaized.net/images/wappen/head/2431.png?lm=1598342709,6
+122,Casa Pia AC,https://tmssl.akamaized.net/images/wappen/small/3268.png?lm=1663076157,https://tmssl.akamaized.net/images/wappen/head/3268.png?lm=1663076157,6
+123,FC Arouca,https://tmssl.akamaized.net/images/wappen/small/8024.png?lm=1530096604,https://tmssl.akamaized.net/images/wappen/head/8024.png?lm=1530096604,6
+124,FC Famalicão,https://tmssl.akamaized.net/images/wappen/small/3329.png?lm=1565881258,https://tmssl.akamaized.net/images/wappen/head/3329.png?lm=1565881258,6
+125,FC Porto,https://tmssl.akamaized.net/images/wappen/small/720.png?lm=1486310161,https://tmssl.akamaized.net/images/wappen/head/720.png?lm=1486310161,6
+126,FC Vizela,https://tmssl.akamaized.net/images/wappen/small/6912.png?lm=1662237514,https://tmssl.akamaized.net/images/wappen/head/6912.png?lm=1662237514,6
+127,GD Chaves,https://tmssl.akamaized.net/images/wappen/small/3325.png?lm=1416392512,https://tmssl.akamaized.net/images/wappen/head/3325.png?lm=1416392512,6
+128,GD Estoril Praia,https://tmssl.akamaized.net/images/wappen/small/1465.png?lm=1534340702,https://tmssl.akamaized.net/images/wappen/head/1465.png?lm=1534340702,6
+129,Gil Vicente FC,https://tmssl.akamaized.net/images/wappen/small/2424.png?lm=1624283300,https://tmssl.akamaized.net/images/wappen/head/2424.png?lm=1624283300,6
+130,Moreirense FC,https://tmssl.akamaized.net/images/wappen/small/979.png?lm=1552324606,https://tmssl.akamaized.net/images/wappen/head/979.png?lm=1552324606,6
+131,Portimonense SC,https://tmssl.akamaized.net/images/wappen/small/7378.png?lm=1665922885,https://tmssl.akamaized.net/images/wappen/head/7378.png?lm=1665922885,6
+132,Rio Ave FC,https://tmssl.akamaized.net/images/wappen/small/2425.png?lm=1516613968,https://tmssl.akamaized.net/images/wappen/head/2425.png?lm=1516613968,6
+133,SC Braga,https://tmssl.akamaized.net/images/wappen/small/1075.png?lm=1432893871,https://tmssl.akamaized.net/images/wappen/head/1075.png?lm=1432893871,6
+134,SC Farense,https://tmssl.akamaized.net/images/wappen/small/4294.png?lm=1550150253,https://tmssl.akamaized.net/images/wappen/head/4294.png?lm=1550150253,6
+135,SL Benfica,https://tmssl.akamaized.net/images/wappen/small/294.png?lm=1535908439,https://tmssl.akamaized.net/images/wappen/head/294.png?lm=1535908439,6
+136,Sporting CP,https://tmssl.akamaized.net/images/wappen/small/336.png?lm=1621513752,https://tmssl.akamaized.net/images/wappen/head/336.png?lm=1621513752,6
+137,Vitória Guimarães SC,https://tmssl.akamaized.net/images/wappen/small/2420.png?lm=1432894021,https://tmssl.akamaized.net/images/wappen/head/2420.png?lm=1432894021,6
+138,AZ Alkmaar,https://tmssl.akamaized.net/images/wappen/small/1090.png?lm=1586848339,https://tmssl.akamaized.net/images/wappen/head/1090.png?lm=1586848339,7
+139,Ajax Amsterdam,https://tmssl.akamaized.net/images/wappen/small/610.png?lm=1657054414,https://tmssl.akamaized.net/images/wappen/head/610.png?lm=1657054414,7
+140,Almere City FC,https://tmssl.akamaized.net/images/wappen/small/723.png?lm=1588851577,https://tmssl.akamaized.net/images/wappen/head/723.png?lm=1588851577,7
+141,Excelsior Rotterdam,https://tmssl.akamaized.net/images/wappen/small/798.png?lm=1626701001,https://tmssl.akamaized.net/images/wappen/head/798.png?lm=1626701001,7
+142,FC Utrecht,https://tmssl.akamaized.net/images/wappen/small/200.png?lm=1628450351,https://tmssl.akamaized.net/images/wappen/head/200.png?lm=1628450351,7
+143,FC Volendam,https://tmssl.akamaized.net/images/wappen/small/724.png?lm=1407649576,https://tmssl.akamaized.net/images/wappen/head/724.png?lm=1407649576,7
+144,Feyenoord Rotterdam,https://tmssl.akamaized.net/images/wappen/small/234.png?lm=1457643518,https://tmssl.akamaized.net/images/wappen/head/234.png?lm=1457643518,7
+145,Fortuna Sittard,https://tmssl.akamaized.net/images/wappen/small/385.png?lm=1610789891,https://tmssl.akamaized.net/images/wappen/head/385.png?lm=1610789891,7
+146,Go Ahead Eagles,https://tmssl.akamaized.net/images/wappen/small/1435.png?lm=1540316767,https://tmssl.akamaized.net/images/wappen/head/1435.png?lm=1540316767,7
+147,Heracles Almelo,https://tmssl.akamaized.net/images/wappen/small/1304.png?lm=1488213735,https://tmssl.akamaized.net/images/wappen/head/1304.png?lm=1488213735,7
+148,NEC Nijmegen,https://tmssl.akamaized.net/images/wappen/small/467.png?lm=1460302949,https://tmssl.akamaized.net/images/wappen/head/467.png?lm=1460302949,7
+149,PEC Zwolle,https://tmssl.akamaized.net/images/wappen/small/1269.png?lm=1610790473,https://tmssl.akamaized.net/images/wappen/head/1269.png?lm=1610790473,7
+150,PSV Eindhoven,https://tmssl.akamaized.net/images/wappen/small/383.png?lm=1682925949,https://tmssl.akamaized.net/images/wappen/head/383.png?lm=1682925949,7
+151,RKC Waalwijk,https://tmssl.akamaized.net/images/wappen/small/235.png?lm=1435505083,https://tmssl.akamaized.net/images/wappen/head/235.png?lm=1435505083,7
+152,SC Heerenveen,https://tmssl.akamaized.net/images/wappen/small/306.png?lm=1655978084,https://tmssl.akamaized.net/images/wappen/head/306.png?lm=1655978084,7
+153,Sparta Rotterdam,https://tmssl.akamaized.net/images/wappen/small/468.png?lm=1485262132,https://tmssl.akamaized.net/images/wappen/head/468.png?lm=1485262132,7
+154,Twente Enschede FC,https://tmssl.akamaized.net/images/wappen/small/317.png?lm=1610789581,https://tmssl.akamaized.net/images/wappen/head/317.png?lm=1610789581,7
+155,Vitesse Arnhem,https://tmssl.akamaized.net/images/wappen/small/499.png?lm=1679396090,https://tmssl.akamaized.net/images/wappen/head/499.png?lm=1679396090,7

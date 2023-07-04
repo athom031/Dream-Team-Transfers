@@ -1,3 +1,5 @@
+READ = 'r'
+
 CSV = '.csv'
 
 SUPPORTED_TEAMS = 'supported_teams'
@@ -29,6 +31,22 @@ PLAYER_BIRTH_DATE = 'player_birth_date'
 LEAGUES = 'leagues'
 TEAMS = 'teams'
 PLAYERS = 'players'
-NATIONALITIES = 'nationalities'
+NATIONS = 'nations'
 POSITIONS = 'positions'
 # PREMIER_LEAGUE = 'premier_league'
+
+# PICTURE TAGS
+SMALL_PICTURE_TAG = '/small/'
+BIG_PICTURE_TAG = '/head/'
+TEAM_LOGO_TAG = '/tiny/'
+NATION_FLAG_TAG = '/verysmall/'
+
+# TEAMS.CSV COLUMNS
+TEAM_LOGO_SMALL_PIC = 'team_logo_small_pic'
+TEAM_LOGO_BIG_PIC = 'team_logo_big_pic'
+
+# NATIONALITIES.CSV COLUMNS
+NATION_ID = 'nation_id'
+NATION_NAME = 'nation_name'
+NATION_FLAG_SMALL_PIC = 'nation_flag_small_pic'
+NATION_FLAG_BIG_PIC = 'nation_flag_big_pic'
