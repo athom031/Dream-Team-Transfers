@@ -1,25 +1,24 @@
 import pandas as pd
 # project defined imports
 from transfermarkt_scraper.constants.leagues_to_parse import (
-    URL,
+    LEAGUES_TO_PARSE,
+    LOGO,
     NAME,
     NATION,
-    LOGO,
-    LEAGUES_TO_PARSE
+    URL
 )
 from transfermarkt_scraper.constants.webpage_tags import BASE_WEBPAGE, WEBPAGE_TEAM_IN_LEAGUE_CLASS
 from transfermarkt_scraper.constants.csv_names import (
     CSV,
-    SUPPORTED_TEAMS,
-    # CSV COLUMN NAMES
-    TEAM_ID,
-    TEAM_NAME,
-    TEAM_LOGO,
-    TEAM_URL,
     LEAGUE_ID,
+    LEAGUE_LOGO
     LEAGUE_NAME,
     LEAGUE_NATION,
-    LEAGUE_LOGO
+    SUPPORTED_TEAMS,
+    TEAM_ID,
+    TEAM_LOGO,
+    TEAM_NAME,
+    TEAM_URL
 )
 from transfermarkt_scraper.utils.get_page_soup import get_page_soup
 from transfermarkt_scraper.utils.get_team_info import get_team_info

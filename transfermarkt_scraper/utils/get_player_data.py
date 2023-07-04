@@ -2,20 +2,20 @@ from datetime import datetime
 # project defined imports
 from transfermarkt_scraper.constants.webpage_tags import (
     A,
-    IMG,
     DATA_SRC,
     DIV,
+    HIDE_FOR_SMALL,
+    IMG,
+    SHOW_FOR_SMALL,
     SPAN,
     SRC,
     TABLE,
     TD,
-    TR,
     TITLE,
+    TR,
     WEBPAGE_PLAYER_INFO_TABLE,
     WEBPAGE_PLAYER_IS_LOAN_IMG,
     WEBPAGE_PLAYER_KIT_NUMBER,
-    SHOW_FOR_SMALL,
-    HIDE_FOR_SMALL,
     WEBPAGE_PLAYER_NULL_KIT
 )
 
