@@ -1,13 +1,15 @@
 # project defined imports
 from transfermarkt_scraper.constants.leagues_to_parse import TEAMS_TO_ADD_ELSEWHERE
 from transfermarkt_scraper.constants.webpage_tags import (
+    BASE_WEBPAGE,
     HREF,
     IMG,
+    INVALID_TEAM_CONDITIONAL,
     SRC,
     TITLE,
-    WEBPAGE_INVALID_TEAM_CONDITIONAL
-    WEBPAGE_VALID_TEAM_CONDITIONAL,
+    VALID_TEAM_CONDITIONAL
 )
+
 def get_team_info(team_soup, league_id, league):
     # valid team soup example
     """
@@ -28,16 +30,14 @@ def get_team_info(team_soup, league_id, league):
     # flag that will determine whether team is a supported team for 23/24 season
     next_season_league_id = None
 
-    (
-        team_name,
-        team_url,
-        team_small_logo,
-    ) = (team_soup.a[TITLE], team_soup.a[HREF], team_soup.find(IMG)[SRC])
+    team_name = team_soup.a[TITLE]
+    team_data_url = BASE_WEBPAGE + team_soup.a[HREF]
+    team_crest = team_soup.find(IMG)[SRC]
 
     # check if valid field for team
     if(
-        WEBPAGE_VALID_TEAM_CONDITIONAL in team_url
-        and not(team_name.startswith(WEBPAGE_INVALID_TEAM_CONDITIONAL))
+        VALID_TEAM_CONDITIONAL in team_data_url
+        and not(team_name.startswith(INVALID_TEAM_CONDITIONAL))
     ):
 
         # team to be added in another league
@@ -58,6 +58,6 @@ def get_team_info(team_soup, league_id, league):
     return (
         next_season_league_id,
         team_name,
-        team_small_logo,
-        team_url
+        team_crest,
+        team_data_url
     )

@@ -6,17 +6,17 @@ from transfermarkt_scraper.constants.webpage_tags import (
     DIV,
     HIDE_FOR_SMALL,
     IMG,
+    PLAYER_INFO_TABLE,
+    PLAYER_IS_LOAN_IMG,
+    PLAYER_KIT_NUMBER,
+    PLAYER_NULL_KIT,
     SHOW_FOR_SMALL,
     SPAN,
     SRC,
     TABLE,
     TD,
     TITLE,
-    TR,
-    WEBPAGE_PLAYER_INFO_TABLE,
-    WEBPAGE_PLAYER_IS_LOAN_IMG,
-    WEBPAGE_PLAYER_KIT_NUMBER,
-    WEBPAGE_PLAYER_NULL_KIT
+    TR
 )
 
 # td_player_tags[0] - #
@@ -29,13 +29,13 @@ from transfermarkt_scraper.constants.webpage_tags import (
 """
 def get_player_kit_number(col_tag):
     # find the div with class tm-shirt-number
-    div = col_tag.find(DIV, class_=WEBPAGE_PLAYER_KIT_NUMBER)
+    div = col_tag.find(DIV, class_=PLAYER_KIT_NUMBER)
 
     # Extract the number
     kit_number_text = div.text.strip()
 
     # treat '-' as None
-    kit_number = None if kit_number_text == WEBPAGE_PLAYER_NULL_KIT else int(kit_number_text)
+    kit_number = None if kit_number_text == PLAYER_NULL_KIT else int(kit_number_text)
 
     return kit_number
 
@@ -95,13 +95,13 @@ def check_if_loan_player(col_tag):
     if loan_info is not None:
         # check img tag for src link matches loan link
         img_tag = loan_info.find(IMG)
-        return (img_tag and img_tag.get(SRC) == WEBPAGE_PLAYER_IS_LOAN_IMG)
+        return (img_tag and img_tag.get(SRC) == PLAYER_IS_LOAN_IMG)
     else:
         return False
 
 def get_player_name_pos_and_photo(col_tag):
     # get player table info
-    player_table_tag = col_tag.find(TABLE, class_=WEBPAGE_PLAYER_INFO_TABLE)
+    player_table_tag = col_tag.find(TABLE, class_=PLAYER_INFO_TABLE)
 
     # extract player name from table info tag
     name = player_table_tag.find(SPAN, class_=HIDE_FOR_SMALL).text.strip()
@@ -113,9 +113,9 @@ def get_player_name_pos_and_photo(col_tag):
     position = player_table_tag.find_all(TR)[-1].find(TD).text.strip()
 
     # extract player photo url from table info tag
-    photo_url = player_table_tag.find(IMG)[DATA_SRC]
+    portrait = player_table_tag.find(IMG)[DATA_SRC]
 
-    return (name, shortened_name, position, photo_url)
+    return (name, shortened_name, position, portrait)
 
 # td_player_tags[2] - Date of birth / Age
 """
@@ -150,9 +150,9 @@ def get_nationality(col_tag):
     img_tag = col_tag.find(IMG)
 
     # parse img for nation name and flag url
-    (nationality, flag_url) = (img_tag[TITLE], img_tag[SRC])
+    (nationality, nat_flag) = (img_tag[TITLE], img_tag[SRC])
 
-    return (nationality, flag_url)
+    return (nationality, nat_flag)
 
 # td_player_tags[4] - Current Club (TO BE IGNORED)
 """
@@ -217,16 +217,17 @@ def get_player_data(player_tag):
         # get player kit number if available
         kit_number = get_player_kit_number(tag_number_col)
         birth_date = get_birth_date(tag_dob_age_col)
-        (nationality, flag_url) = get_nationality(tag_nationality_col)
-        (name, shortened_name, position, photo_url) = get_player_name_pos_and_photo(tag_player_col)
+        (nationality, nat_flag) = get_nationality(tag_nationality_col)
+        (name, shortened_name, position, portrait) = get_player_name_pos_and_photo(tag_player_col)
 
         return [
             name,
             shortened_name,
+            market_value,
             kit_number,
             position,
             nationality,
-            flag_url,
-            photo_url,
+            nat_flag,
+            portrait,
             birth_date
         ]
