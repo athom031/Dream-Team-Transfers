@@ -1,4 +1,3 @@
-
 raise Exception(
 	'Define User Agent before scraping transfermarkt.com. This helps informing website that script accessing website is a web browser.'
 	+ '\nInstructions:'
@@ -8,7 +7,7 @@ raise Exception(
 	+ '\n  Safari: Preferences >> Advanced >> Show Develop Menu in menu bar >> Develop Menu >> User Agent'
 )
 
-USER_AGENT = '<define user_agent here and delete exception>'
+USER_AGENT = '<follow instructions laid out in above Exception to find user_agent>'
 
 # used to inform website that requests are coming from browser
 HEADERS = { 'User-Agent': USER_AGENT }

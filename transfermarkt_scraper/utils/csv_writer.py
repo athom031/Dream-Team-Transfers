@@ -1,23 +1,23 @@
 import pandas as pd
 # project defined imports
 from transfermarkt_scraper.constants.csv_names import (
-    BIG_PICTURE_TAG,
+    BIG_TAG,
     CSV,
     CSVS,
+    CURR_TAG,
     LEAGUE_ID,
     LEAGUE_LOGO,
     LEAGUE_LOGO_BIG,
     LEAGUE_LOGO_SMALL,
-    LEAGUE_LOGO_TAG,
     LEAGUE_NAME,
     LEAGUE_NATION,
     LEAGUES,
     NATION_FLAG_BIG,
     NATION_FLAG_SMALL,
-    NATION_FLAG_TAG,
     NATION_ID,
     NATION_NAME,
     NATIONS,
+    PIC_TAGS,
     PLAYER_BIRTH_DATE,
     PLAYER_ID,
     PLAYER_KIT_NUMBER,
@@ -28,7 +28,6 @@ from transfermarkt_scraper.constants.csv_names import (
     PLAYER_PORTRAIT,
     PLAYER_PORTRAIT_BIG,
     PLAYER_PORTRAIT_SMALL,
-    PLAYER_PORTRAIT_TAG,
     PLAYER_POSITION,
     PLAYER_SHORTENED_NAME,
     PLAYERS,
@@ -39,14 +38,13 @@ from transfermarkt_scraper.constants.csv_names import (
     POSITIONS,
     POSITIONS_DICT,
     SCRAPED_DATA,
-    SMALL_PICTURE_TAG,
+    SMALL_TAG,
     SUCCESS,
     SUPPORTED_PLAYERS,
     SUPPORTED_TEAMS,
     TEAM_CREST,
     TEAM_CREST_BIG,
     TEAM_CREST_SMALL,
-    TEAM_CREST_TAG,
     TEAM_ID,
     TEAM_NAME,
     TEAMS
@@ -59,13 +57,19 @@ def prompt_successful_csv_write(file, dir):
     print(SUCCESS + ': \'' + file + CSV + '\' has been written into \'' + dir + '\'')
 
 # manipulate links to get big and small versions of picture
-def get_big_and_small_pics(pic_list, size_tag):
+def get_big_and_small_pics(pic_list, pic_field):
     big_pics = []
     small_pics = []
+
+    pic_tag = PIC_TAGS[pic_field]
     # add big and small version of pics
     for pic in pic_list:
-        big_pics.append(pic.replace(size_tag, BIG_PICTURE_TAG))
-        small_pics.append(pic.replace(size_tag, SMALL_PICTURE_TAG))
+        big_pics.append(
+            pic.replace(pic_tag[CURR_TAG], pic_tag[BIG_TAG])
+        )
+        small_pics.append(
+            pic.replace(pic_tag[CURR_TAG], pic_tag[SMALL_TAG])
+        )
 
     return (big_pics, small_pics)
 
@@ -80,8 +84,8 @@ def write_teams_csv():
     (
         supported_teams[TEAM_CREST_BIG],
         supported_teams[TEAM_CREST_SMALL]
-    ) = get_big_and_small_pics(supported_teams[TEAM_CREST], TEAM_CREST_TAG)
-
+    ) = get_big_and_small_pics(supported_teams[TEAM_CREST], TEAMS)
+    
     # rearrange and maintain only relevant columns
     teams = supported_teams[[TEAM_NAME, TEAM_CREST_BIG, TEAM_CREST_SMALL, LEAGUE_ID]]
 
@@ -102,8 +106,8 @@ def write_nations_csv():
     (
         supported_players[NATION_FLAG_BIG],
         supported_players[NATION_FLAG_SMALL]
-    ) = get_big_and_small_pics(supported_players[PLAYER_NAT_FLAG], NATION_FLAG_TAG)
-
+    ) = get_big_and_small_pics(supported_players[PLAYER_NAT_FLAG], NATIONS)
+    
     # rename player columns to make relevant for nations.csv
     supported_players[NATION_NAME] = supported_players[PLAYER_NATIONALITY]
 
@@ -135,7 +139,7 @@ def write_leagues_csv():
     (
         supported_teams[LEAGUE_LOGO_BIG],
         supported_teams[LEAGUE_LOGO_SMALL]
-    ) = get_big_and_small_pics(supported_teams[LEAGUE_LOGO], LEAGUE_LOGO_TAG)
+    ) = get_big_and_small_pics(supported_teams[LEAGUE_LOGO], LEAGUES)
 
     # get nation id that matches nation league belongs to
     nation_ids = []
@@ -203,7 +207,7 @@ def write_players_csv():
     (
         supported_players[PLAYER_PORTRAIT_BIG],
         supported_players[PLAYER_PORTRAIT_SMALL]
-    ) = get_big_and_small_pics(supported_players[PLAYER_PORTRAIT], PLAYER_PORTRAIT_TAG)
+    ) = get_big_and_small_pics(supported_players[PLAYER_PORTRAIT], PLAYERS)
 
     position_ids = []
     for position in supported_players[PLAYER_POSITION]:

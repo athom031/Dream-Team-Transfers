@@ -29,14 +29,6 @@ PLAYER_NAT_FLAG         = 'player_nat_flag_pic'
 PLAYER_PORTRAIT         = 'player_portrait_pic'
 PLAYER_BIRTH_DATE       = 'player_birth_date'
 
-# picture tags
-BIG_PICTURE_TAG         = '/head/'
-SMALL_PICTURE_TAG       = '/small/'
-TEAM_CREST_TAG          = '/tiny/'
-NATION_FLAG_TAG         = '/verysmall/'
-LEAGUE_LOGO_TAG         = '/header/'
-PLAYER_PORTRAIT_TAG     = '/small/'
-
 TEAMS                   = 'teams'
 # teams.csv additional column names
 TEAM_CREST_BIG          = 'team_crest_big_pic'
@@ -168,3 +160,38 @@ POSITIONS_DICT= {
         POSITION_GROUPING: ATTACKER
     }
 }
+
+# GLITCHED LINKS
+GLITCHED_CRESTS = {
+    'Burnley FC': 'https://tmssl.akamaized.net/images/wappen/tiny/1132.png?lm=1686818840',
+    'Swansea City': 'https://tmssl.akamaized.net/images/wappen/tiny/2288.png?lm=1658400285'
+}
+
+# PICTURE TAGS
+CURR_TAG = 'curr'
+SMALL_TAG = 'small'
+BIG_TAG = 'big'
+
+PIC_TAGS = {
+    LEAGUES: {
+        CURR_TAG: '/header/',
+        SMALL_TAG: '/small/',
+        BIG_TAG: '/header/'
+    },
+    NATIONS: {
+        CURR_TAG: '/verysmall/',
+        SMALL_TAG: '/small/',
+        BIG_TAG: '/head/'
+    },
+    PLAYERS: {
+        CURR_TAG: '/small/',
+        SMALL_TAG: '/small/',
+        BIG_TAG: '/header/'
+    },
+    TEAMS: {
+        CURR_TAG: '/tiny/',
+        SMALL_TAG: '/small/',
+        BIG_TAG: '/head/'
+    }
+}
+
