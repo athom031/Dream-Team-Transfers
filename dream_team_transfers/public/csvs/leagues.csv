@@ -1,0 +1,9 @@
+league_id,league_name,league_logo_big_pic,league_logo_small_pic,nation_id
+0,Premier League,https://tmssl.akamaized.net/images/logo/header/gb1.png?lm=1521104656,https://tmssl.akamaized.net/images/logo/small/gb1.png?lm=1521104656,37
+1,Championship,https://tmssl.akamaized.net/images/logo/header/gb2.png?lm=1643026970,https://tmssl.akamaized.net/images/logo/small/gb2.png?lm=1643026970,37
+2,La Liga,https://tmssl.akamaized.net/images/logo/header/es1.png?lm=1557051003,https://tmssl.akamaized.net/images/logo/small/es1.png?lm=1557051003,105
+3,Bundesliga,https://tmssl.akamaized.net/images/logo/header/l1.png?lm=1525905518,https://tmssl.akamaized.net/images/logo/small/l1.png?lm=1525905518,44
+4,Serie A,https://tmssl.akamaized.net/images/logo/header/it1.png?lm=1656073460,https://tmssl.akamaized.net/images/logo/small/it1.png?lm=1656073460,60
+5,Ligue One,https://tmssl.akamaized.net/images/logo/header/fr1.png?lm=1648360140,https://tmssl.akamaized.net/images/logo/small/fr1.png?lm=1648360140,41
+6,Liga Portugal,https://tmssl.akamaized.net/images/logo/header/po1.png?lm=1626110146,https://tmssl.akamaized.net/images/logo/small/po1.png?lm=1626110146,94
+7,Eredivisie,https://tmssl.akamaized.net/images/logo/header/nl1.png?lm=1674743474,https://tmssl.akamaized.net/images/logo/small/nl1.png?lm=1674743474,81

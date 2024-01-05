@@ -1,0 +1,15 @@
+position_id,position_name,position_acronym,position_grouping
+0,Goalkeeper,GK,Goalkeeper
+1,Centre-Back,CB,Defender
+2,Left-Back,LB,Defender
+3,Right-Back,RB,Defender
+4,Central Midfielder,CM,Midfielder
+5,Defensive Midfielder,DM,Midfielder
+6,Left Midfielder,LM,Midfielder
+7,Right Midfielder,RM,Midfielder
+8,Attacking Midfielder,AM,Midfielder
+9,Left Winger,LW,Attacker
+10,Right Winger,RW,Attacker
+11,Centre-Forward,CF,Attacker
+12,Second Striker,SS,Attacker
+13,Striker,ST,Attacker
