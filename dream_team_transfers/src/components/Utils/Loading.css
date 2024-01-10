@@ -1,0 +1,45 @@
+/* Loading.css */
+
+@keyframes grow-shrink {
+    0% { transform: scale(.75); }
+    50% { transform: scale(.85); }
+    100% { transform: scale(.75); }
+}
+
+@keyframes loading {
+    0% { content: "Loading"; }
+    25% { content: "Loading."; }
+    50% { content: "Loading.."; }
+    75% { content: "Loading..."; }
+    100% { content: "Loading"; }
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: black;
+    flex-direction: column;
+}
+
+h3 {
+    color: #B98F44;
+    font-family: 'Saira Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 3em;
+    letter-spacing: 4px;
+}
+
+h3::after {
+    content: "";
+    animation: loading 4s infinite;
+}
+
+body {
+    background-color: black;
+}
+
+.logo {
+    animation: grow-shrink 4s infinite ease-in-out;
+}
