@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import { initializeDB, getTeamData, getTeamPicked } from './db/db-utils';
+import { initializeDB, getTeamPicked } from './db/db-utils';
 import Loading from './components/Utils/Loading';
 
 function App() {

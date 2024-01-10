@@ -9,7 +9,7 @@ function Loading() {
             className="logo"
             alt="loading logo"
         />
-        <h3></h3>
+        <h3> </h3>
     </div>
   );
 }
