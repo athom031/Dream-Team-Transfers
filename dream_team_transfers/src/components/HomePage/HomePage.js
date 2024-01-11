@@ -1,7 +1,8 @@
 import './HomePage.css';
 
 import React, { useEffect, useState } from 'react';
-
+import styled from 'styled-components';
+import { darken } from 'polished';
 import { PREMIER_LEAGUE_TEAM_INFOS } from '../../constants/pl-team-infos';
 
 function HomePage() {
@@ -12,6 +13,21 @@ function HomePage() {
   const [photoIndex, setPhotoIndex] = useState(0);
 
   const DREAM_TEAM_LOGO = process.env.PUBLIC_URL + '/logo512.png';
+
+  const SubmitButton = styled.button`
+    background-color: ${props => props.backgroundColor};
+    color: ${props => props.color};
+    border: 2px solid ${props => props.borderColor};
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: ${props => darken(0.1, props.backgroundColor)};
+      color: ${props => darken(0.1, props.color)};
+      border-color: ${props => darken(0.1, props.borderColor)};
+    }
+  `;
 
   useEffect(() => {
     // this code activates when teamIndex changes
@@ -133,7 +149,13 @@ function HomePage() {
           </div>
 
           <div className='submit-button'>
-            Final Submit button goes here
+          <SubmitButton
+            backgroundColor={selectedTeam !== null ? PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].primary_color : '#808080'}
+            color={selectedTeam !== null ? PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].secondary_color : '#FFFFFF'}
+            borderColor={selectedTeam !== null ? PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].third_color : '#5A5A5A'}
+          >
+            Submit
+          </SubmitButton>
           </div>
 
         </div>
