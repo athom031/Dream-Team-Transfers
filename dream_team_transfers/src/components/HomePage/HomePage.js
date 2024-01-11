@@ -8,7 +8,6 @@ import { PREMIER_LEAGUE_TEAM_INFOS } from '../../constants/pl-team-infos';
 function HomePage() {
   const [teamIndex, setTeamIndex] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState(null);
-  const [hoverTimeout, setHoverTimeout] = useState(null);
   const [slideshowPhotos, setSlideshowPhotos] = useState([]);
   const [photoIndex, setPhotoIndex] = useState(0);
   const [isHoveredLeft, setIsHoveredLeft] = useState(false);
@@ -32,23 +31,14 @@ function HomePage() {
   `;
 
   useEffect(() => {
-    // this code activates when teamIndex changes
-
-    // clear any existing timeouts
-    if(hoverTimeout) {
-      clearTimeout(hoverTimeout);
-    }
-
     // set a new timeout to track how long user stays on team selected
-    const newTimeout = setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setSelectedTeam(teamIndex);
-    }, 1000); // 1 second
+    }, 500); // half a second
 
-    setHoverTimeout(newTimeout);
-    // Clear the timeout when the component unmounts
-
+    // Clear the timeout when the component unmounts or when teamIndex changes
     return () => {
-      clearTimeout(hoverTimeout);
+      clearTimeout(timeoutId);
     };
   }, [teamIndex]);
 
