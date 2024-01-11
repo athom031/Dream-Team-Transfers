@@ -25,7 +25,7 @@ function HomePage() {
     const newTimeout = setTimeout(() => {
       setSelectedTeam(teamIndex);
       console.log(teamIndex !== null ? `${PREMIER_LEAGUE_TEAM_INFOS[teamIndex].name} picked` : 'No team selected');
-    }, 1000); // 1 second
+    }, 1500); // 1 second
 
     setHoverTimeout(newTimeout);
     // Clear the timeout when the component unmounts
@@ -63,7 +63,7 @@ function HomePage() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setPhotoIndex((photoIndex + 1) % slideshowPhotos.length);
-    }, 1000);
+    }, 4000);
 
     return () => clearInterval(intervalId);
   }, [photoIndex, slideshowPhotos]);
@@ -89,7 +89,7 @@ function HomePage() {
 
       <div className='title'>
         <h1>
-          Dream Team Transfers
+          DREAM TEAM TRANSFERS
         </h1>
       </div>
 

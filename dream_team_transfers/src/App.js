@@ -15,11 +15,10 @@ function App() {
   }, []);
 
 
-  // if (teamData === null) {
-  //   return (<Loading/>);
-  // } else if (teamData === -1) {
-  if(teamData === -1) {
+  if (teamData === null) {
     return (<Loading/>);
+  } else if (teamData === -1) {
+    return (<HomePage/>);
   } else {
     return (<DreamTeam/>);
   }
