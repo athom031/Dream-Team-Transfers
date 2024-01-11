@@ -1,22 +1,22 @@
-/* HomePage.css */
 body {
-    background-color: #454545;
+  background-color: #454545;
 }
+
 .slideshow-image {
-    width: 30em;
-    height: 20em;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 10px;
+  width: 30em;
+  height: 20em;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 10px;
 }
 
 .title {
-    color: #B98F44;
-    font-family: 'Saira Condensed', sans-serif;
-    font-weight: 900;
-    letter-spacing: 4px;
-    font-size: 2em;
-    text-align: center;
+  color: #B98F44;
+  font-family: 'Saira Condensed', sans-serif;
+  font-weight: 900;
+  letter-spacing: 4px;
+  font-size: 2em;
+  text-align: center;
 }
 
 .intro {
@@ -28,4 +28,70 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.team-selection {
+  display: flex;
+}
+
+.team-picker, .selection-summary-and-submit {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 50%;
+}
+
+.selection-summary-and-submit {
+  justify-content: center;
+}
+
+.team-picker {
+  justify-content: space-between;
+  flex-direction: row;
+  background-color: #899499;
+  border-radius: 10px;
+  margin: 40px;
+}
+
+.arrow-button {
+  height: 25%;
+  width: auto;
+}
+
+.team-summary {
+  display: flex;
+  justify-content: space-between;
+}
+
+.team-logo, .team-name h1 {
+  object-fit: contain;
+}
+
+@keyframes grow-shrink {
+  0% { transform: scale(.85); }
+  50% { transform: scale(1); }
+  100% { transform: scale(.85); }
+}
+
+.team-logo {
+  height: 250px; /* adjust as needed */
+  width: auto;
+  animation: grow-shrink 4s infinite ease-in-out;
+}
+
+.team-name h1 {
+  font-family: 'Saira Condensed', sans-serif;
+  font-weight: 900;
+  letter-spacing: 4px;
+  font-size: 3vw;
+  text-align: center;
+  padding-top: 30px;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* width */
 }
