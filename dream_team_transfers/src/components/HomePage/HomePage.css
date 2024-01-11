@@ -1,5 +1,7 @@
 /* HomePage.css */
-
+body {
+    background-color: #454545;
+}
 .slideshow-image {
     width: 30em;
     height: 20em;
