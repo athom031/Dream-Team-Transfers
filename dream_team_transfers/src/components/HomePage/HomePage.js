@@ -95,11 +95,9 @@ function HomePage() {
   return (
     <div className='home-page'>
 
-      <div className='title'>
-        <h1>
-          DREAM TEAM TRANSFERS
-        </h1>
-      </div>
+      <h1 className='title'>
+        DREAM TEAM TRANSFERS
+      </h1>
 
       <div className='intro'>
 
