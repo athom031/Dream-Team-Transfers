@@ -66,99 +66,93 @@ body {
   justify-content: center;
   align-items: center;
   border: 1px solid white;
-  /* padding: 10% 20%; */
   overflow: hidden;
 }
 
 .slideshow-image {
   position: absolute;
-  top: 5%; /* new */
-  left: 5%; /* new */
-  width: 90%; /* new */
-  height: 90%; /* new */
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
   object-fit: cover;
   object-position: center;
   border-radius: 10px;
-}
-
-
-
-/* .title h1 {
   border: 1px solid white;
-} */
-/*
-
-.title {
-  color: #B98F44;
-  font-family: 'Saira Condensed', sans-serif;
-  font-weight: 900;
-  letter-spacing: 4px;
-  font-size: 2em;
-  text-align: center;
-}
-
-
-.intro {
-  display: flex;
-  height: 100vh;
-}
-
-.concept, .slideshow {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10% 0;
-}
-
-.concept {
-  justify-content: space-between;
-}
-
-.concept-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-  border-right: 1px solid #B98F44;
-}
-
-.concept-icon {
-  height: 3em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.concept-text {
-  flex: 0.3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.concept-text h2 {
-  font-size: 1.5em;
-  text-align: center;
-  color: #B98F44;
-  font-family: 'Saira Condensed', sans-serif;
-  font-weight: 900;
-  letter-spacing: 4px;
-}
-
-.slideshow {
-  justify-content: center;
-}
-
-.slideshow-image {
-  width: 30em;
-  height: 20em;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 10px;
 }
 
 .team-selection {
+  display: flex;
+  border: 1px solid white;
+}
+
+.team-selector, .selection-summary-and-submit {
+  flex: 1;
+  border: 1px solid white;
+}
+
+.team-selection-padding {
+  padding: 2em;
+}
+
+.team-selection-background {
+  background-color: #899499;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.team-picker {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* This will center the children vertically */
+  justify-content: space-between; /* Optional: This will place space between the children */
+
+}
+
+.arrow-button {
+  height: 25%;
+  width: auto;
+}
+
+
+.team-logo, .team-name h1 {
+  object-fit: contain;
+}
+
+.team-name {
+  display: flex;
+}
+.team-name h1 {
+  text-align: center;
+}
+
+@keyframes grow-shrink {
+  0% { transform: scale(.75); }
+  50% { transform: scale(.95); }
+  100% { transform: scale(.75); }
+}
+
+.team-logo {
+  height: 100%;
+  width: auto;
+  animation: grow-shrink 4s infinite ease-in-out;
+}
+
+
+.logo-container {
+  height: 250px;
+  width: 250px;
+  /* flex-grow: 1; This will allow the logo container to take up the remaining space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 50%; /* This will limit the width of the logo container */
+}
+
+
+/* .team-selection {
   display: flex;
 }
 
@@ -182,10 +176,6 @@ body {
   margin: 40px;
 }
 
-.arrow-button {
-  height: 25%;
-  width: auto;
-}
 
 .team-summary {
   display: flex;
