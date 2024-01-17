@@ -1,7 +1,13 @@
+:root {
+  --background-color: #454545;
+  --gold-color: #B98F44;
+  --main-font: 'Saira Condensed', sans-serif;
+}
+
 body {
-  background-color: #454545;
-  color: #B98F44;
-  font-family: 'Saira Condensed', sans-serif;
+  background-color: var(--background-color);
+  color: var(--gold-color);
+  font-family: var(--main-font);
   letter-spacing: 4px;
 }
 
@@ -16,6 +22,7 @@ body {
 .intro {
   width: 100%;
   display: flex;
+  margin: 0;
 }
 
 .concept, .slideshow {
@@ -32,6 +39,15 @@ body {
   padding: 1.67%;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+}
+
+.concept-container:first-child {
+  border-right: 1px solid var(--gold-color);
+}
+
+.concept-container:last-child {
+  border-left: 1px solid var(--gold-color);
 }
 
 .concept-icon-container {
@@ -74,6 +90,7 @@ body {
 
 .team-selection {
   display: flex;
+  margin: 0;
 }
 
 .team-selector {
@@ -81,7 +98,7 @@ body {
 }
 
 .team-selection-padding {
-  padding: 2em;
+  padding: 3em 2em 0 2em;
 }
 
 .team-selection-background {
@@ -90,6 +107,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  border-radius: 10px;
 }
 
 .team-picker {
@@ -172,7 +190,7 @@ body {
 }
 
 .category, .unit {
-  font-size: 1.5em; /* Make the category and unit text smaller */
+  font-size: 1.5em;
 }
 
 .category {
@@ -182,6 +200,5 @@ body {
 .submit-button {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
 }

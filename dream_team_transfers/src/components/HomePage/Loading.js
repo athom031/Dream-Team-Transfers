@@ -1,5 +1,9 @@
 import React from 'react';
-import './Loading.css';
+/* STYLE SHEETS */
+import './LoadingCSS/Loading.css';
+import './LoadingCSS/Loading-laptop.css';
+import './LoadingCSS/Loading-tablet.css';
+import './LoadingCSS/Loading-phone.css';
 
 function Loading() {
   return (
