@@ -25,6 +25,7 @@ function HomePage() {
 
   const SubmitButton = getSubmitButton();
 
+  // used to buffer team selection, waiting half a second
   useEffect(() => {
     // set a new timeout to track how long user stays on team selected
     const timeoutId = setTimeout(() => {
@@ -37,6 +38,7 @@ function HomePage() {
     };
   }, [teamIndex]);
 
+  // changes photos shown in slideshow based on team selected
   useEffect(() => {
     // this code activates once the selectedTeam changes
 
@@ -51,11 +53,12 @@ function HomePage() {
       for (let i = 0; i < 20; i++) {
         newPhotos.push(...PREMIER_LEAGUE_TEAM_INFOS[i].team_photos);
       }
-      // we want the order to be randomized so its not just one team after the other
-      for (let i = newPhotos.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [newPhotos[i], newPhotos[j]] = [newPhotos[j], newPhotos[i]];
-      }
+    }
+
+    // we want the order to be randomized
+    for (let i = newPhotos.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newPhotos[i], newPhotos[j]] = [newPhotos[j], newPhotos[i]];
     }
 
     setPhotoIndex(0);
@@ -65,11 +68,12 @@ function HomePage() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setPhotoIndex((photoIndex + 1) % slideshowPhotos.length);
-    }, 4000);
+    }, 1000/*4000*/);
 
     return () => clearInterval(intervalId);
   }, [photoIndex, slideshowPhotos]);
 
+  // once team is selected, show loading screen for 4 seconds
   useEffect(() => {
     if (teamSubmitted !== null) {
       const timer = setTimeout(() => {
@@ -82,6 +86,7 @@ function HomePage() {
     }
   }, [teamSubmitted]);
 
+  // Team Picker Left Button
   const handleLeftClick = () => {
     if (teamIndex === null) {
       setTeamIndex(19);
@@ -90,6 +95,7 @@ function HomePage() {
     }
   }
 
+  // Team Picker Right Button
   const handleRightClick = () => {
     if (teamIndex === null) {
       setTeamIndex(0);
@@ -98,11 +104,14 @@ function HomePage() {
     }
   }
 
+  // Handles Submission of Team Selection
   const handleSubmit = () => {
     setTeamSubmitted(selectedTeam);
   }
 
   return (
+    // if team is submitted show Loading Screen
+    // after 4 seconds submit team info to DB
     (teamSubmitted !== null) ? (<Loading/>) : (
     <div className='home-page'>
 
