@@ -89,9 +89,8 @@ body, html {
 }
 
 /* CONCEPT STYLES */
-
 .concept {
-    padding: 2em 4em;
+    padding: 4vh 4vw;
 }
 
 .concept-container {
@@ -112,7 +111,6 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2% 5%;
 }
 
 .concept-icon {
@@ -122,9 +120,8 @@ body, html {
 }
 
 .concept-text {
-    height: 30%;
+    height: 40%;
     text-align: center;
-    font-size: 2.5vh;
 }
 
 /* TEAM SELECTOR */
@@ -260,6 +257,15 @@ body, html {
     .title {
         font-size: 4.5vw;
     }
+
+    /* CONCEPT */
+    .concept-icon-container {
+        padding: 2% 5%;
+    }
+
+    .concept-text {
+        font-size: 2.5vh;
+    }
 }
 
 /* Styles for phones and tablets in landscape mode */
@@ -308,16 +314,11 @@ body, html {
     }
 
     /* CONCEPT */
-    .concept {
-        padding: 2vh 2vw;
-    }
-
     .concept-icon-container {
         padding: 2vh 0vw;
     }
 
     .concept-text {
-        height: 40%;
         font-size: 1.75vh;
     }
 
