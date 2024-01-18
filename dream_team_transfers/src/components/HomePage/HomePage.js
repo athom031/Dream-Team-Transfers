@@ -115,123 +115,124 @@ function HomePage() {
     (teamSubmitted !== null) ? (<Loading/>) : (
     <div className='home-page'>
 
+      {/* HOME PAGE TITLE */}
       <h1 className='title'>
         DREAM TEAM TRANSFERS
       </h1>
 
-      <div className='intro'>
+      <div className = 'home-page-content'>
 
-        <div className='concept'>
-          {/* SELL UNWANTED PLAYERS */}
-          <div className='concept-container'>
-            <div className='concept-icon-container'>
-              <img
-                  src={process.env.PUBLIC_URL + '/assets/concept-intro-icons/sell-players.png'}
-                  alt='sell players'
-                  className='concept-icon'
-              />
-            </div>
-            <h2 className='concept-text'>
-              1.<br/>Sell Unwanted Players!
-            </h2>
-          </div>
+        <div className ='intro-and-selection'>
+          {/* CONCEPT DIV */}
+          <div className='concept'>
 
-          {/* BUY HIDDEN GEMS ACROSS EUROPE */}
-          <div className='concept-container'>
-            <div className='concept-icon-container'>
-              <img
-                  src={process.env.PUBLIC_URL + '/assets/concept-intro-icons/european-soccer.png'}
-                  alt='buy players'
-                  className='concept-icon'
-              />
-            </div>
-            <h2 className='concept-text'>
-              2.<br/>Buy Hidden Gems Across Europe!
-            </h2>
-          </div>
-
-          {/* BUILD YOUR DREAM TEAM */}
-          <div className='concept-container'>
-            <div className='concept-icon-container'>
-              <img
-                  src={process.env.PUBLIC_URL + '/assets/concept-intro-icons/team-build.png'}
-                  alt='build team'
-                  className='concept-icon'
-              />
-            </div>
-            <h2 className='concept-text'>
-              3.<br/>Build your Dream Team!
-            </h2>
-          </div>
-
-        </div>
-
-        <div className='slideshow'>
-          <img
-            src={slideshowPhotos[photoIndex]}
-            alt="Premier League Team"
-            className="slideshow-image"
-          />
-        </div>
-
-      </div>
-
-      <div className='team-selection'>
-
-        <div className = 'team-selector'>
-
-          <div className='team-selection-padding'>
-
-            <div className='team-selection-background'>
-
-              <div className='team-picker'>
-
+            {/* BUY PLAYERS */}
+            <div className='concept-container'>
+              <div className='concept-icon-container'>
                 <img
-                  src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/left${isHoveredLeft ? '-hover' : ''}.png`}
-                  onMouseEnter={() => setIsHoveredLeft(true)}
-                  onMouseLeave={() => setIsHoveredLeft(false)}
-                  onClick={handleLeftClick}
-                  className='arrow-button'
-                  alt="left arrow"
+                    src={process.env.PUBLIC_URL + '/assets/concept-intro-icons/european-soccer.png'}
+                    alt='buy players'
+                    className='concept-icon'
                 />
+              </div>
+              <h2 className='concept-text'>
+                1.<br/>Buy Hidden Gems Across Europe!
+              </h2>
+            </div>
 
-                <div className='logo-container'>
+            {/* SELL PLAYERS */}
+            <div className='concept-container'>
+              <div className='concept-icon-container'>
+                <img
+                    src={process.env.PUBLIC_URL + '/assets/concept-intro-icons/sell-players.png'}
+                    alt='sell players'
+                    className='concept-icon'
+                />
+              </div>
+              <h2 className='concept-text'>
+                2.<br/>Sell Unwanted Players!
+              </h2>
+            </div>
+
+            {/* BUILD DREAM TEAM */}
+            <div className='concept-container'>
+              <div className='concept-icon-container'>
+                <img
+                    src={process.env.PUBLIC_URL + '/assets/concept-intro-icons/team-build.png'}
+                    alt='build team'
+                    className='concept-icon'
+                />
+              </div>
+              <h2 className='concept-text'>
+                3.<br/>Build Your Dream Team!
+              </h2>
+            </div>
+
+          </div>
+
+          {/* TEAM SELECTOR */}
+          <div className = 'team-selector'>
+            <div className='team-selection-padding'>
+              <div className='team-selection-background'>
+                <div className='team-picker'>
+
+                  {/* LEFT ARROW */}
                   <img
-                    src={teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].logo : DREAM_TEAM_LOGO}
-                    className="team-logo"
-                    alt={teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].alias + ' logo' : 'Dream Team Transfers Logo'}
+                    src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/left${isHoveredLeft ? '-hover' : ''}.png`}
+                    onMouseEnter={() => setIsHoveredLeft(true)}
+                    onMouseLeave={() => setIsHoveredLeft(false)}
+                    onClick={handleLeftClick}
+                    className='arrow-button'
+                    alt="left arrow"
                   />
+
+                  {/* TEAM PICKER ICON */}
+                  <div className='logo-container'>
+                    <img
+                      src={teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].logo : DREAM_TEAM_LOGO}
+                      className="team-logo"
+                      alt={teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].alias + ' logo' : 'Dream Team Transfers Logo'}
+                    />
+                  </div>
+
+                  {/* RIGHT ARROW */}
+                  <img
+                    src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/right${isHoveredRight ? '-hover' : ''}.png`}
+                    onMouseEnter={() => setIsHoveredRight(true)}
+                    onMouseLeave={() => setIsHoveredRight(false)}
+                    onClick={handleRightClick}
+                    className='arrow-button'
+                    alt='right arrow'
+                  />
+
                 </div>
 
-                <img
-                  src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/right${isHoveredRight ? '-hover' : ''}.png`}
-                  onMouseEnter={() => setIsHoveredRight(true)}
-                  onMouseLeave={() => setIsHoveredRight(false)}
-                  onClick={handleRightClick}
-                  className='arrow-button'
-                  alt='right arrow'
-                />
-
+                {/* TEAM PICKER NAME */}
+                <div className='team-name'>
+                  <h1 style={{ color: teamIndex !== null ? '#FFFFFF' : '#000000' }}>
+                    {teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].alias : 'Select a Team'}
+                  </h1>
+                </div>
               </div>
-
-              <div className='team-name'>
-
-                <h1 style={{ color: teamIndex !== null ? '#FFFFFF' : '#000000' }}>
-                  {teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].alias : 'Select a Team'}
-                </h1>
-
-              </div>
-
             </div>
-
           </div>
 
         </div>
 
-        <div className='selection-summary-and-submit'>
+        <div className='selected-team-information'>
 
+          {/* SLIDESHOW */}
+          <div className='slideshow'>
+            <img
+              src={slideshowPhotos[photoIndex]}
+              alt="Premier League Team"
+              className="slideshow-image"
+            />
+          </div>
+
+          {/* TEAM SUMMARY */}
           <div className='team-summary'>
-
+            {/* TEAM VALUE */}
             <div className='team-value'>
 
               <div className='category'>
@@ -248,6 +249,7 @@ function HomePage() {
 
             </div>
 
+            {/* TEAM BUDGET */}
             <div className='team-budget'>
 
               <div className='category'>
@@ -263,9 +265,9 @@ function HomePage() {
               </div>
 
             </div>
-
           </div>
 
+          {/* SUBMIT BUTTON */}
           <div className='submit-button'>
             <SubmitButton
               team={selectedTeam}
@@ -277,9 +279,7 @@ function HomePage() {
           </div>
 
         </div>
-
       </div>
-
     </div>
   )
   );
