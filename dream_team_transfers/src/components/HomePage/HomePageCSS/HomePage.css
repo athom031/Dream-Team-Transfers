@@ -35,21 +35,8 @@ body, html {
     height: 90vh;
 }
 
-/* TITLE */
-
-.title {
-    height: 10vh;
-    width: 100vw;
-    font-weight: 900;
-    font-size: calc(8vh - 2em);
-    text-align: center;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* CONTENT BASE FLEX SETTINGS */
+/* BASE FLEX SETTINGS */
+.title,
 .home-page-content,
 .intro-and-selection,
 .concept,
@@ -84,6 +71,7 @@ body, html {
     flex-direction: column;
 }
 
+.title,
 .home-page-content,
 .concept,
 .team-picker,
@@ -95,26 +83,31 @@ body, html {
     flex-direction: row;
 }
 
-.intro-and-selection {
-    height: 90vh;
-}
+/* TITLE */
 
-.selected-team-information {
-    height: 90vh;
+.title {
+    height: 10vh;
+    width: 100vw;
+    font-weight: 900;
+    font-size: calc(8vh - 2em);
+    text-align: center;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
 }
 
 /* CONCEPT STYLES */
 
 .concept {
-    padding: 1em 2em;
-    border: 1px solid white;
+    padding: 2em 4em;
 }
 
 .concept-container {
+    display: flex;
+    flex-direction: column;
     width: 25.32%;
-    padding: 1.67% 3.34%;
+    padding: 1.67%;
     box-sizing: border-box;
-    border: 1px solid white;
 }
 
 .concept-container:first-child {
@@ -126,22 +119,22 @@ body, html {
 }
 
 .concept-icon-container {
-    padding: 2% 10%;
+    display: flex;
     justify-content: center;
-    border: 1px solid white;
+    align-items: center;
+    padding: 2% 5%;
 }
 
 .concept-icon {
     width: 100%;
     height: auto;
     object-fit: contain;
-    border: 1px solid white;
 }
 
 .concept-text {
     height: 30%;
     text-align: center;
-    border: 1px solid white;
+    font-size: 2.5vh;
 }
 
 /* TEAM SELECTOR */
