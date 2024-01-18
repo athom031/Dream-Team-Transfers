@@ -18,7 +18,8 @@ function App() {
   if (teamData === null) {
     return (<Loading/>);
   } else if (teamData === -1) {
-    return (<HomePage/>);
+    return (<Loading/>);
+    // <HomePage/>);
   } else {
     return (<DreamTeam/>);
   }
