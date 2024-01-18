@@ -130,10 +130,6 @@ body, html {
     justify-content: center;
 }
 
-.team-selection-padding {
-    padding: 0em 6em;
-}
-
 .team-selection-background {
     background-color: #899499;
     align-items: center;
@@ -148,6 +144,7 @@ body, html {
 .arrow-button {
     height: 25%;
     width: auto;
+    padding: 1em;
 }
 
 .team-logo, .team-name h1 {
@@ -155,8 +152,6 @@ body, html {
 }
 
 .logo-container {
-    height: 25vh;
-    width: 25vw;
     justify-content: center;
     max-width: 50%;
 }
@@ -172,6 +167,7 @@ body, html {
     width: auto;
     animation: grow-shrink 4s infinite ease-in-out;
 }
+
 
 /* SLIDESHOW */
 
@@ -266,6 +262,20 @@ body, html {
     .concept-text {
         font-size: 2.5vh;
     }
+
+    /* TEAM SELECTOR */
+    .team-selection-padding {
+        padding: 0em 6em;
+    }
+
+    .logo-container {
+        height: 25vh;
+        width: 25vw;
+    }
+
+    .team-name {
+        font-size: 1vw;
+    }
 }
 
 /* Styles for phones and tablets in landscape mode */
@@ -294,6 +304,20 @@ body, html {
     .concept-text {
         font-size: 3.5vh;
     }
+
+    /* TEAM SELECTOR */
+    .team-selection-padding {
+        padding: 2em 6em;
+    }
+
+    .logo-container {
+        height: 40vh;
+        width: 40vw;
+    }
+
+    .team-name {
+        font-size: 2vw;
+    }
 }
 
 /* Styles for phones and tablets in portrait mode */
@@ -319,7 +343,20 @@ body, html {
     }
 
     .concept-text {
-        font-size: 1.75vh;
+        font-size: 2vh;
     }
 
+    /* TEAM SELECTOR */
+    .team-selection-padding {
+        padding: 2em 4em;
+    }
+
+    .logo-container {
+        height: 20vh;
+        width: 20vw;
+    }
+
+    .team-name {
+        font-size: 2.5vw;
+    }
 }
