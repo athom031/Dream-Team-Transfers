@@ -212,7 +212,6 @@ body, html {
     margin: 0;
     flex: 2;
     justify-content: center;
-    border: 1px solid white;
 }
 
 .team-value, .team-budget {
@@ -220,25 +219,31 @@ body, html {
     align-items: center;
     padding: 0em 2em;
     justify-content: center;
-    border: 1px solid white;
+}
+
+.team-value {
+    padding: 0vh 0vw 0vh 10vw;
+}
+
+.team-budget {
+    padding: 0vh 10vw 0vh 0vw;
 }
 
 .category, .money, .unit {
     text-align: center;
-    border: 1px solid white;
 }
 
 .money {
-    font-size: 3.5em;
+    font-size: 5vh;
     font-weight: bold;
 }
 
 .category, .unit {
-    font-size: 1.5em;
+    font-size: 2.5vh;
 }
 
 .category {
-    border-bottom: 1px solid currentColor;
+    border-bottom: 1px solid var(--gold-color);
 }
 
 /* SUBMIT BUTTON */
