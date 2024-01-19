@@ -1,19 +1,32 @@
-import React, { useState, useEffect } from 'react'; // Import useState and useEffect
+
 import './DreamTeam.css';
-import { getTeamPicked } from '../../db/db-utils';
-import { PREMIER_LEAGUE_TEAM_INFOS } from '../../constants/pl-team-infos';
+
+import NavBar from './NavBar/NavBar';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import StartingEleven from './StartingEleven/StartingEleven';
+import SquadList from './SquadList/SquadList';
+import PlayerMarket from './PlayerMarket/PlayerMarket';
+import TransferSummary from './TransferSummary/TransferSummary';
+import TeamRestart from './TeamRestart/TeamRestart';
+import PageNotFound from './PageNotFound/PageNotFound';
 
 function DreamTeam() {
-  const [teamPicked, setTeamPicked] = useState(null); // Create a state variable for the picked team
-  useEffect(() => {
-    getTeamPicked().then(pickedTeam => {
-      setTeamPicked(pickedTeam); // Update the state variable when the data is fetched
-    });
-  }, []); // Pass an empty array as the dependency list to run this effect only once, when the component mounts
   return (
-    <div>
-        Hello World, this is the DreamTeam page for {teamPicked !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamPicked].name : 'Loading'}!
-    </div>
-  );
+    <BrowserRouter>
+      <NavBar/>
+      <Routes>
+        <Route path="/squad-list" element={<SquadList />} />
+        <Route path="/player-market" element={<PlayerMarket />} />
+        <Route path="/transfer-summary" element={<TransferSummary />} />
+        <Route path="/team-restart" element={<TeamRestart />} />
+        <Route path="/" element={<StartingEleven />} />
+        <Route path="/home" element={<StartingEleven />} />
+        <Route path="/starting-eleven" element={<StartingEleven />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
+
 export default DreamTeam;
