@@ -258,7 +258,6 @@ body, html {
     .concept-icon-container {
         padding: 2% 5%;
     }
-
     .concept-text {
         font-size: 2.5vh;
     }
@@ -267,12 +266,10 @@ body, html {
     .team-selection-padding {
         padding: 0em 6em;
     }
-
     .logo-container {
-        height: 25vh;
-        width: 25vw;
+        height: 20vw;
+        width: 20vw;
     }
-
     .team-name {
         font-size: 1vw;
     }
@@ -300,7 +297,6 @@ body, html {
     .concept-icon-container {
         padding: 4% 10%;
     }
-
     .concept-text {
         font-size: 3.5vh;
     }
@@ -309,14 +305,17 @@ body, html {
     .team-selection-padding {
         padding: 2em 6em;
     }
-
     .logo-container {
-        height: 40vh;
-        width: 40vw;
+        height: 25vw;
+        width: 25vw;
     }
-
     .team-name {
         font-size: 2vw;
+    }
+
+    /* SLIDESHOW */
+    .slideshow {
+        padding: 25vw 20vw;
     }
 }
 
@@ -341,7 +340,6 @@ body, html {
     .concept-icon-container {
         padding: 2vh 0vw;
     }
-
     .concept-text {
         font-size: 2vh;
     }
@@ -350,13 +348,16 @@ body, html {
     .team-selection-padding {
         padding: 2em 4em;
     }
-
     .logo-container {
-        height: 20vh;
-        width: 20vw;
+        height: 35vw;
+        width: 35vw;
     }
-
     .team-name {
         font-size: 2.5vw;
+    }
+
+    /* SLIDESHOW */
+    .slideshow {
+        padding: 30vw 20vw;
     }
 }
