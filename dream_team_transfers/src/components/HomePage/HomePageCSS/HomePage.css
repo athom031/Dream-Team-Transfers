@@ -240,8 +240,7 @@ body, html {
 
 /* Styles for laptops and larger screens */
 @media screen and (min-width: 1024px) {
-    body,
-    .home-page {
+    body, .home-page {
         overflow: hidden;
     }
 
@@ -279,7 +278,6 @@ body, html {
 @media screen and (max-width: 1023px) and (orientation: landscape) {
 
     body, .home-page {
-        background-color: tan;
         overflow-y: scroll;
         overflow-x: auto;
     }
@@ -294,6 +292,9 @@ body, html {
     }
 
     /* CONCEPT */
+    .concept {
+        padding-top: 10vh;
+    }
     .concept-icon-container {
         padding: 4% 10%;
     }
@@ -317,12 +318,69 @@ body, html {
     .slideshow {
         padding: 25vw 20vw;
     }
+
+    /* TEAM SUMMARY */
+    .team-summary {
+        margin: 0;
+        flex: 2;
+        justify-content: center;
+    }
+
+    .team-value, .team-budget {
+        margin: 0;
+        align-items: center;
+        padding: 0em 2em;
+        justify-content: center;
+    }
+
+    .team-value {
+        padding: 0vh 0vw 0vh 10vw;
+    }
+
+    .team-budget {
+        padding: 0vh 10vw 0vh 0vw;
+    }
+
+    .category, .money, .unit {
+        text-align: center;
+    }
+
+    .money {
+        font-size: 5vh;
+        font-weight: bold;
+    }
+
+    .category, .unit {
+        font-size: 2.5vh;
+    }
+
+    .category {
+        border-bottom: 1px solid var(--gold-color);
+    }
+
+    /* TEAM SUMMARY */
+    .team-value {
+        padding: 5vh 0vw 10vh 15vw;
+    }
+    .team-budget {
+        padding: 5vh 15vw 10vh 0vw;
+    }
+    .money {
+        font-size: 10vh;
+    }
+    .category, .unit {
+        font-size: 5vh;
+    }
+
+    /* SUBMIT BUTTON */
+    .submit-button {
+        padding: 0em 0em 5em 0em;
+    }
 }
 
 /* Styles for phones and tablets in portrait mode */
 @media screen and (max-width: 1023px) and (orientation: portrait) {
     body, .home-page {
-        background-color: skyblue;
         overflow-y: scroll;
         overflow-x: auto;
     }
@@ -359,5 +417,10 @@ body, html {
     /* SLIDESHOW */
     .slideshow {
         padding: 30vw 20vw;
+    }
+
+    /* SUBMIT BUTTON */
+    .submit-button {
+        padding: 5em 0em 5em 0em;
     }
 }
