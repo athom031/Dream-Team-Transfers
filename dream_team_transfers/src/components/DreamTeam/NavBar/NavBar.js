@@ -16,10 +16,10 @@ function NavBar() {
 
     return (
         <div className='nav-bar'>
-            <div className='logo-padding-container'>
+            <div className='nav-logo-padding-container'>
                 <Link
                     to="/home"
-                    className="logo-container"
+                    className="nav-logo-container"
                     onMouseEnter={handleLogoMouseEnter}
                     onMouseLeave={handleLogoMouseLeave}
                 >

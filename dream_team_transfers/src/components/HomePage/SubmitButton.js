@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { PREMIER_LEAGUE_TEAM_INFOS } from '../constants/pl-team-infos';
+import { PREMIER_LEAGUE_TEAM_INFOS } from '../../constants/pl-team-infos';
 import { darken } from 'polished';
 
 export const getSubmitButton = () => {
