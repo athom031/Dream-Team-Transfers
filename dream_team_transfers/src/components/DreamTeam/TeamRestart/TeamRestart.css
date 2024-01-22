@@ -1,7 +1,8 @@
 .team-restart {
-    background-color: #8B6C42;
+    background-color: #FDF5E6;
     width: 100vw;
     height:100vh;
+    color: #FDF5E6;
     /* Add styles for the team-restart div here */
 }
 
@@ -24,8 +25,3 @@
     background-color: #4caf50;
     transition: width 0.1s;
 }
-/*
-Navy-ish Grey (Slate Grey): - This is a medium-dark grey with a hint of blue.
-Olive-ish Grey (Artichoke):  - This is a medium grey with a hint of green.
-Brown-ish Grey (Taupe Grey): #8B8589 - This is a medium grey with a hint of brown.
-Purple-ish Grey (Cool Grey): #8A9597 - This is a medium grey with a hint of purple. */
