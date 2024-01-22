@@ -1,0 +1,11 @@
+
+:root {
+    --dark-grey-color: #454545;
+    --light-grey-color: #899499;
+    --logo-gold-color: #B98F44;
+    --logo-white-color: white;
+    --logo-black-color: black;
+    --main-font: 'Saira Condensed', sans-serif;
+    --letter-spacing: 4px;
+    --border-radius: 10px;
+}

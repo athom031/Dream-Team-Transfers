@@ -205,7 +205,7 @@ function HomePage() {
 
                 {/* TEAM PICKER NAME */}
                 <div className='team-name'>
-                  <h1 style={{ color: teamIndex !== null ? '#FFFFFF' : '#000000' }}>
+                  <h1>
                     {teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].alias : 'Select a Team'}
                   </h1>
                 </div>
