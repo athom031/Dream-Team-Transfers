@@ -1,14 +1,13 @@
 /* Loading.css */
 
 :root {
-    --background-color: black;
+    --black-color: black;
     --gold-color: #B98F44;
     --main-font: 'Saira Condensed', sans-serif;
     --letter-spacing: 4px;
 }
 
 body {
-    background-color: var(--background-color);
     height: 100vh;
     width: 100vw;
 }
@@ -18,7 +17,7 @@ body {
 .loading {
     display: flex;
     justify-content: center;
-    background-color: var(--background-color);
+    background-color: var(--black-color);
     align-items: center;
     height: 100vh;
     width: 100vw;

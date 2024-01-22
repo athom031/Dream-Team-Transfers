@@ -1,0 +1,23 @@
+.team-restart {
+    /* Add styles for the team-restart div here */
+}
+
+.warning {
+    /* Add styles for the warning text here */
+}
+
+.restart-button {
+    /* Add styles for the restart button here */
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #ddd;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.1s;
+}

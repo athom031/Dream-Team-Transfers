@@ -64,7 +64,7 @@ function HomePage() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setPhotoIndex((photoIndex + 1) % slideshowPhotos.length);
-    }, 1000/*4000*/);
+    }, 1000);
 
     return () => clearInterval(intervalId);
   }, [photoIndex, slideshowPhotos]);
@@ -76,7 +76,7 @@ function HomePage() {
         selectTeam(teamSubmitted).then(() => {
           window.location.reload();
         });
-      }, 4000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
