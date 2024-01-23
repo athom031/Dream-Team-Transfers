@@ -1,3 +1,5 @@
+/* TeamRestart.css */
+
 .team-restart {
     background-color: #8B6C42;
     width: 100vw;
@@ -14,33 +16,13 @@
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
-    padding-left: 1rems;
-}
-
-.team-restart-info {
-    width: 50%;
-    padding: 1em 0em 1em 0em;
     padding-left: 1rem;
-}
-
-.restart-title {
-    font-size: 2em;
-    margin-bottom: 1em;
-}
-
-.restart-info-text {
-    font-size: 1.5em;
-    line-height: 1.5em;
 }
 
 .restart-warning {
     text-decoration: underline;
 }
 
-.slideshow-container {
-    width: 50%;
-    height: 60vh;
-}
 
 .restart-button {
     margin-top: 2em;
@@ -79,6 +61,32 @@
     body {
         background-color: white;
     }
+
+    .team-restart-container {
+        flex-direction: row;
+    }
+
+    .team-restart-info {
+        width: 50%;
+        padding: 1em 0em 1em 0em;
+        padding-left: 1rem;
+    }
+
+    .slideshow-container {
+        width: 50%;
+        height: 60vh;
+    }
+
+    .restart-title {
+        font-size: 2em;
+        margin-bottom: 1em;
+    }
+
+    .restart-info-text {
+        font-size: 1.5em;
+        line-height: 1.5em;
+    }
+
 }
 
 /* Styles for phones and tablets in landscape mode */
@@ -87,12 +95,59 @@
         background-color: black;
     }
 
+    .team-restart-container {
+        flex-direction: column;
+    }
+
+    .team-restart-info {
+        width: 100%;
+        padding: 1em 0em 1em 0em;
+        padding-left: 1rem;
+    }
+
+    .restart-title {
+        font-size: 2em;
+    }
+
+    .restart-info-text {
+        font-size: 1.5em;
+    }
+
+
+    .slideshow-container {
+        width: 100%;
+        height: 20vh;
+    }
 }
 
 /* Styles for phones and tablets in portrait mode */
 @media screen and (max-width: 1023px) and (orientation: portrait) {
     body {
         background-color: darkslategrey;
+    }
+
+    .team-restart-container {
+        flex-direction: column;
+    }
+
+    .team-restart-info {
+        width: 100%;
+        padding: 1em 0em 1em 0em;
+        padding-left: 1rem;
+    }
+
+    .restart-title {
+        font-size: 2em;
+    }
+
+    .restart-info-text {
+        font-size: 1.5em;
+    }
+
+
+    .slideshow-container {
+        width: 100vw;
+        height: 20vh;
     }
 
 }
