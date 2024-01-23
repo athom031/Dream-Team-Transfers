@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { restartTeam } from '../../../db/db-utils';
+import Slideshow from '../../Misc/Slideshow';
 
 import './TeamRestart.css';
 
@@ -46,24 +47,42 @@ function TeamRestart() {
 
             <div className='team-restart-container'>
 
-                <h1 className='restart-title'>
-                    Restart Your Dream Team
-                </h1>
+                <div className='team-restart-info'>
 
-                <p>
-                    Restarting your Dream Team will reset all your current progress and start a new 2023 season.
-                    You can choose to manage the same team or select a different Premier League team.
-                </p>
-                <p className="warning">
-                    Please note that restarting your team will permanently erase all your current data and cannot be undone.
-                </p>
-                {/* Insert images or slideshow here if needed */}
-                <button className="restart-button" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
-                    Hold to Confirm Restart
-                </button>
-                <div className="progress-bar">
-                    <div className="progress-bar-fill" style={{width: `${progress}%`}}></div>
+                    <h1 className='restart-title'>
+                        Restart Your Dream Team
+                    </h1>
+
+                    <div className='restart-info-text'>
+                        <ul>
+                            <li>
+                                Restarting your Dream Team will reset all your current progress and start a new 2023 season.
+                            </li>
+                            <li>
+                                You can choose to manage the same team or select a different Premier League team.
+                            </li>
+                            <li className="restart-warning">
+                                Please note that restarting your team will permanently erase all your current data and cannot be undone.
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
+
+                <div className='slideshow-container'>
+                    <div className='slideshow'>
+                        <Slideshow selectedTeam={null} />
+                    </div>
+                </div>
+
+            </div>
+
+            <button className="restart-button" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}>
+                Hold to Confirm Restart
+            </button>
+
+            <div className="progress-bar">
+                <div className="progress-bar-fill" style={{width: `${progress}%`}}></div>
             </div>
 
         </div>

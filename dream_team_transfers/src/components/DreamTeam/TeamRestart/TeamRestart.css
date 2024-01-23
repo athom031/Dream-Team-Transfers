@@ -1,27 +1,92 @@
 .team-restart {
-    background-color: #FDF5E6;
+    background-color: #8B6C42;
     width: 100vw;
     height:100vh;
     color: #FDF5E6;
-    /* Add styles for the team-restart div here */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.warning {
-    /* Add styles for the warning text here */
+.team-restart-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    padding-left: 1rems;
+}
+
+.team-restart-info {
+    width: 50%;
+    padding: 1em 0em 1em 0em;
+    padding-left: 1rem;
+}
+
+.restart-title {
+    font-size: 2em;
+    margin-bottom: 1em;
+}
+
+.restart-info-text {
+    font-size: 1.5em;
+    line-height: 1.5em;
+}
+
+.restart-warning {
+    text-decoration: underline;
+}
+
+.slideshow-container {
+    width: 50%;
+    height: 60vh;
 }
 
 .restart-button {
-    /* Add styles for the restart button here */
+    margin-top: 2em;
+    padding: 1em 2em;
+    font-size: 1.2em;
+    background-color: #FDF5E6;
+    color: #8B6C42;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.restart-button:hover {
+    background-color: #8B6C42;
+    color: #FDF5E6;
+    border: 1px solid #FDF5E6;
 }
 
 .progress-bar {
-    width: 100%;
+    width: 50%;
     height: 20px;
-    background-color: #ddd;
+    background-color: #8B6C42;
+    border-radius: 10px;
+    border: 1px solid #8B6C42;
+    overflow: hidden;
+    margin-top: 1em;
 }
 
 .progress-bar-fill {
     height: 100%;
-    background-color: #4caf50;
-    transition: width 0.1s;
+    background-color: #FDF5E6;
+}
+
+/* Styles for laptops and larger screens */
+@media screen and (min-width: 1024px) {
+
+}
+
+/* Styles for phones and tablets in landscape mode */
+@media screen and (max-width: 1023px) and (orientation: landscape) {
+
+
+}
+
+/* Styles for phones and tablets in portrait mode */
+@media screen and (max-width: 1023px) and (orientation: portrait) {
+
+
 }

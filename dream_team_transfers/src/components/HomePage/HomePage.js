@@ -3,16 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { PREMIER_LEAGUE_TEAM_INFOS } from '../../constants/pl-team-infos';
 import { CURRENCY_UNIT, getCurrencyDenomination, getCurrencyRounded } from '../../utils/money-utils';
 import { selectTeam } from '../../db/db-utils';
-import { getSubmitButton } from './SubmitButton';
-import Loading from './Loading';
+import { getSubmitButton } from '../Misc/SubmitButton';
+import Loading from '../Misc/Loading';
+import Slideshow from '../Misc/Slideshow';
 
 import './HomePage.css';
 
 function HomePage() {
   const [teamIndex, setTeamIndex] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState(null);
-  const [slideshowPhotos, setSlideshowPhotos] = useState([]);
-  const [photoIndex, setPhotoIndex] = useState(0);
   const [isHoveredLeft, setIsHoveredLeft] = useState(false);
   const [isHoveredRight, setIsHoveredRight] = useState(false);
   const [teamSubmitted, setTeamSubmitted] = useState(null);
@@ -33,41 +32,6 @@ function HomePage() {
       clearTimeout(timeoutId);
     };
   }, [teamIndex]);
-
-  // changes photos shown in slideshow based on team selected
-  useEffect(() => {
-    // this code activates once the selectedTeam changes
-
-    let newPhotos;
-
-    if (selectedTeam !== null) {
-      // if a team is selected, use its photos
-      newPhotos = PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_photos;
-    } else {
-      // if no team is selected, use random photos from all teams
-      newPhotos = [];
-      for (let i = 0; i < 20; i++) {
-        newPhotos.push(...PREMIER_LEAGUE_TEAM_INFOS[i].team_photos);
-      }
-    }
-
-    // we want the order to be randomized
-    for (let i = newPhotos.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newPhotos[i], newPhotos[j]] = [newPhotos[j], newPhotos[i]];
-    }
-
-    setPhotoIndex(0);
-    setSlideshowPhotos(newPhotos);
-  }, [selectedTeam]);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setPhotoIndex((photoIndex + 1) % slideshowPhotos.length);
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [photoIndex, slideshowPhotos]);
 
   // once team is selected, show loading screen for 4 seconds
   useEffect(() => {
@@ -219,11 +183,7 @@ function HomePage() {
 
           {/* SLIDESHOW */}
           <div className='slideshow'>
-            <img
-              src={slideshowPhotos[photoIndex]}
-              alt="Premier League Team"
-              className="slideshow-image"
-            />
+            <Slideshow selectedTeam={selectedTeam} />
           </div>
 
           {/* TEAM SUMMARY */}
