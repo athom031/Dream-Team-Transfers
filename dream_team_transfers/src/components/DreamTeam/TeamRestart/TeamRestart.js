@@ -62,7 +62,7 @@ function TeamRestart() {
                                 You can choose to manage the same team or select a different Premier League team.
                             </li>
                             <li className="restart-warning">
-                                Please note that restarting your team will permanently erase all your current data and cannot be undone.
+                                PLEASE NOTE: Restarting will permanently erase all your current data and cannot be undone.
                             </li>
                         </ul>
                     </div>
