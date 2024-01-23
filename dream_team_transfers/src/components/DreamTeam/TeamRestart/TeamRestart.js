@@ -69,21 +69,21 @@ function TeamRestart() {
 
                 </div>
 
-                <div className='slideshow-container'>
-                    <div className='slideshow'>
+                <div className='team-restart-slideshow-container'>
+                    <div className='team-restart-slideshow'>
                         <Slideshow selectedTeam={null} />
                     </div>
                 </div>
 
             </div>
 
-            <button className="restart-button" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}>
-                Hold to Confirm Restart
-            </button>
-
             <div className="progress-bar">
                 <div className="progress-bar-fill" style={{width: `${progress}%`}}></div>
             </div>
+
+            <button className="restart-button" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}>
+                Hold to Confirm Restart
+            </button>
 
         </div>
     );
