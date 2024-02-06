@@ -18,7 +18,7 @@ function TeamRestart() {
                     restartTeam() // Call the teamRestart function
                         .then(() => {
                             console.log("Team should be reset now");
-                            window.location.href = '/home';
+                            window.location.href = '/';
                         })
                         .catch((error) => {
                             console.error("Failed to restart team:", error);
