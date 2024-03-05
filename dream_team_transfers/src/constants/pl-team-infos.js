@@ -34,7 +34,7 @@ export const PREMIER_LEAGUE_TEAM_INFOS = {
             'https://static.tnn.in/thumb/msid-102907573,thumbsize-1363197,width-1280,height-720,resizemode-75/102907573.jpg',
             'https://www.arsenal.com/sites/default/files/styles/tablet_16x9/public/images/Eddie%20cele%20Forest.jpg?auto=webp&itok=OxhxQCI-',
             'https://www.albawaba.net/sites/default/files/styles/d08_standard/public/2023-09/arsenal.jpg?h=aaa1136e&itok=VtQjG_ZG',
-            'https://i2-prod.manchestereveningnews.co.uk/incoming/article27495120.ece/ALTERNATES/s810/0_GettyImages-1596831778.jpg',
+            'https://www.telegraph.co.uk/content/dam/football/2023/11/14/TELEMMGLPICT000356353882_16999835952110_trans_NvBQzQNjv4Bqq4ZJCiq5lwABXAhqKAJFwQGttdw_ifg_svUZ-JVMBjA.jpeg?imwidth=960',
         ],
     },
     2: {
@@ -52,7 +52,7 @@ export const PREMIER_LEAGUE_TEAM_INFOS = {
             'https://storage.googleapis.com/static.elsoldemexico.com.mx/elesto/2023/12/15-partidos-lleva-el-Aston-Villa-sin-perder-en-su-casa-Foto_Reuters-770x450.png',
             'https://images.ps-aws.com/c?url=https%3A%2F%2Fd2x51gyc4ptf2q.cloudfront.net%2Fcontent%2Fuploads%2F2023%2F12%2F07093427%2FLeon-Bailey-Aston-Villa.jpg',
             'https://s-cdn.sportbox.ru/images/styles/upload/fp_fotos/f5/d8/2e6b03c89a0cbd55b2f2772faab2ed3d6574c395bbd85004355825.jpg',
-            'https://i2-prod.mirror.co.uk/sport/football/news/article31282810.ece/ALTERNATES/n615/0_GettyImages-1738875948.jpg',
+            'https://cached.imagescaler.hbpl.co.uk/resize/scaleWidth/1272/cached.offlinehbpl.hbpl.co.uk/news/ORP/AstonVilla_920.jpg',
             'https://prod-media.beinsports.com/image/1698598800639_1e6f1f66-5781-403b-ab81-77923bf311e5.jpg',
         ],
     },
@@ -91,7 +91,7 @@ export const PREMIER_LEAGUE_TEAM_INFOS = {
             'https://www.wearebrighton.com/matchday/wp-content/uploads/2023/08/2023-08-luton-review-800x445.jpg',
             'https://static.independent.co.uk/2023/09/02/19/SEI169862654.jpg',
             'https://cloudfront-us-east-2.images.arcpublishing.com/reuters/KWZISOGMFBOKRKUQ6PRCLE37AY.jpg',
-            'https://i2-prod.kentlive.news/incoming/article8706912.ece/ALTERNATES/s615/0_GettyImages-1609920606.jpg',
+            'https://nbcsports.brightspotcdn.com/dims4/default/cf6c610/2147483647/strip/true/crop/2052x1154+0+0/resize/1440x810!/format/webp/quality/90/?url=https%3A%2F%2Fnbc-sports-production-nbc-sports.s3.us-east-1.amazonaws.com%2Fbrightspot%2Fc6%2F1a%2F584546b1d982b5bf59f1b704fb45%2Fgettyimages-1178240555-e1585091638272.jpg',
         ],
     },
     5: {
@@ -185,7 +185,7 @@ export const PREMIER_LEAGUE_TEAM_INFOS = {
             'https://resources.lcfc.com/leicesterfc/photo/2023/01/03/35138f8b-cfd5-4aea-9dde-217f94bb9ff0/GettyImages-1453487706.jpg',
             'https://v.wpimg.pl/ODIzNTIuYCUoGDhnZg5tMGtAbD0gV2NmPFh0dmZEfXR5AnhjfFo8ImQbKjkgGyY3PQgvNyMUYTM5GSo6ZwUjazoOISYoEip2ZhwrNT0APSEtJSEmIBImKigWYWJ6E3Z3fEotZHlMeCB8JXZgf019d3xIYD45Em05',
             'https://chiswickcalendar.co.uk/wp-content/uploads/2023/07/Fulham-FC.jpg',
-            'https://scontent-sjc3-1.xx.fbcdn.net/v/t1.6435-9/123657308_3376833609030342_8108248149190537084_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=300f58&_nc_ohc=W6NV0VEzp1kAX-v8Eph&_nc_ht=scontent-sjc3-1.xx&cb_e2o_trans=t&oh=00_AfDiS0APjh22PrLl14xzSPxcZvcwbghaH9zYxSU7UNEC2w&oe=65C679A1',
+            'https://images2.minutemediacdn.com/image/upload/c_crop,w_3631,h_2042,x_0,y_335/c_fill,w_2160,ar_16:9,f_auto,q_auto,g_auto/images%2FGettyImages%2Fmmsport%2F90min_en_international_web%2F01hk089sc5zakqxd751v.jpg',
             'https://ca-times.brightspotcdn.com/dims4/default/d570a8b/2147483647/strip/true/crop/3500x2101+0+0/resize/1200x720!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F40%2Fa7%2Fdf249c536b7c73a0ee7c6bdfbc58%2Fbce37445a8604c06b97cda5d86589987',
         ],
     },
@@ -297,7 +297,7 @@ export const PREMIER_LEAGUE_TEAM_INFOS = {
         nickname: 'Garibaldis',
         team_photos: [
             'https://static.independent.co.uk/2023/05/08/22/2023-05-08T210547Z_1665131530_UP1EJ581HXWKI_RTRMADP_3_SOCCER-ENGLAND-NTG-SOU-REPORT.JPG',
-            'https://i2-prod.nottinghampost.com/incoming/article7125657.ece/ALTERNATES/s1200/0_Nottingham-Forest-ahead-of-their-play-offs-semi-final-against-Sheffield-United.jpg',
+            'https://e0.365dm.com/23/01/2048x1152/skysports-nottingham-forest_6021073.jpg?20230111220231',
             'https://ichef.bbci.co.uk/news/1024/cpsprodpb/a265/live/12e124f0-f751-11ed-92cc-b3a9bf1f67e9.jpg',
             'https://static.independent.co.uk/2022/08/14/15/SEI119379329.jpg',
             'https://www.fplplanet.com/wp-content/uploads/2023/08/gibbs-white.jpeg',
@@ -355,7 +355,7 @@ export const PREMIER_LEAGUE_TEAM_INFOS = {
         team_photos: [
             'https://ichef.bbci.co.uk/live-experience/cps/1024/cpsprodpb/11E4D/production/_130039237_westhamimage.jpg',
             'https://s.yimg.com/ny/api/res/1.2/1ZYLqYTcntdgR4g3aFaoRw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02NzU-/https://media.zenfs.com/en/bbc_us_articles_995/06b4dfb9b38924422c988c61ad70b04c',
-            'https://i2-prod.football.london/incoming/article27680797.ece/ALTERNATES/s615/0_GettyImages-1627734115.jpg',
+            'https://cdn1.hammers.news/uploads/25/2023/12/GettyImages-1877193803-1536x1024.jpg',
             'https://e0.365dm.com/23/12/2048x1152/skysports-edson-alvarez-west-ham_6393363.jpg?20231214212535',
             'https://static.standard.co.uk/2023/09/30/17/SOCCER%20West%20Ham%20%2015300692.jpg?crop=8:5,smart&quality=75&auto=webp&width=1024',
         ],
