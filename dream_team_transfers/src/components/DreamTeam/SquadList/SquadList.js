@@ -4,7 +4,13 @@ import { useEffect, useState } from 'react';
 import { getPlayersCSV } from '../../../utils/parse-csv';
 import { type } from '@testing-library/user-event/dist/type';
 
-function SquadList() {
+function SquadList({
+    LeagueCSVData,
+    NationsCSVData,
+    PositionsCSVData,
+    PlayersCSVData,
+    TeamsCSVData
+}) {
     const [teamBudget, setTeamBudget] = useState(-1);
     const [teamValue, setTeamValue] = useState(-1);
     const [teamNickname, setTeamNickname] = useState('');
@@ -18,7 +24,7 @@ function SquadList() {
     /* getting data from db */
     const updateTeamDataIfNeeded = () => {
         getTeamData().then((data) => {
-            console.log(data);
+            // console.log(data);
             setPlayersSold(Object.keys(data.players_sold));
             setPlayersBought(Object.keys(data.players_bought));
             setTeamBudget(data.team_budget);
@@ -68,6 +74,12 @@ function SquadList() {
         )
     }, [allPlayers, playersBought, playersSold]);
 
+
+    console.log('leagues:', LeagueCSVData);
+    console.log('nations:', NationsCSVData);
+    console.log('positions:', PositionsCSVData);
+    console.log('players:', PlayersCSVData);
+    console.log('teams:', TeamsCSVData);
     return (
         <div className='squad-list-page'>
             {/* Team value and budget summary */}
@@ -85,7 +97,7 @@ function SquadList() {
             </div>
 
             {/* Squad List */}
-            {console.log(teamPlayers)}
+            {/* {console.log(teamPlayers)} */}
             <div className='squad-list'>
                 {teamPlayers.map((player) => (
                     <div key={player.player_id}className='squad-list-player'>

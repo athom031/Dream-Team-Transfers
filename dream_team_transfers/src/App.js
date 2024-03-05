@@ -8,20 +8,16 @@ import DreamTeam from './components/DreamTeam/DreamTeam';
 function App() {
   const [teamData, setTeamData] = useState(null);
 
+  // load db data to decide which page to show
   useEffect(() => {
     initializeDB().then(() => {
       getTeamPicked().then(data => setTeamData(data));
     });
   }, []);
 
-
-  if (teamData === null) {
-    return (<Loading/>);
-  } else if (teamData === -1) {
-    return (<HomePage/>);
-  } else {
-    return (<DreamTeam/>);
-  }
+  if (teamData === null) return (<Loading/>);
+  else if (teamData === -1) return (<HomePage/>);
+  else return (<DreamTeam/>);
 }
 
 export default App;
