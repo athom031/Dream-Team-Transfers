@@ -56,7 +56,7 @@
     background-color: var(--restart-beige-color);
 }
 
-/* Styles for laptops and larger screens */
+/* Styles for laptops and larger screens
 @media screen and (min-width: 1024px) {
 
     .team-restart-container {
@@ -94,9 +94,10 @@
     }
 
 }
+*/
 
-/* Styles for phones and tablets in landscape mode */
-@media screen and (max-width: 1023px) and (orientation: landscape) {
+/* Styles for phones and tablets in landscape mode*/
+/* @media screen and (max-width: 1023px) and (orientation: landscape) { */
 
     .team-restart {
         overflow-y:auto;
@@ -117,7 +118,7 @@
     }
 
     .team-restart-slideshow-container {
-        width: 80vw;
+        width: 60vw;
         height: 60vh;
         padding: 0vh 0vh;
     }
@@ -138,16 +139,17 @@
     }
 
     .restart-title {
-        font-size: 1.75em;
+        font-size: 3em;
     }
 
     .restart-info-text {
-        font-size: 1.25em;
+        font-size: 2em;
+
     }
 
-}
+/* } */
 
-/* Styles for phones and tablets in portrait mode */
+/* Styles for phones and tablets in portrait mode
 @media screen and (max-width: 1023px) and (orientation: portrait) {
 
     .team-restart {
@@ -194,3 +196,4 @@
         font-size: 1.25em;
     }
 }
+*/
