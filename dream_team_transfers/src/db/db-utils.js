@@ -14,8 +14,8 @@ export function initializeDB() {
         team_value: 0.0,
         team_positions: {},
         team_kit_updates: {},
-        players_bought: {},
-        players_sold: {},
+        players_bought: [],
+        players_sold: [],
       };
       return db.put(initialData);
     }
@@ -50,8 +50,8 @@ export function selectTeam(selectedTeam) {
           doc.team_value = PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_value;
           doc.team_positions = {};
           doc.team_kit_updates = {};
-          doc.players_bought = {};
-          doc.players_sold = {};
+          doc.players_bought = [];
+          doc.players_sold = [];
 
           return db.put(doc);
         });
@@ -70,8 +70,8 @@ export function restartTeam() {
           doc.team_value = 0.0;
           doc.team_positions = {};
           doc.team_kit_updates = {};
-          doc.players_bought = {};
-          doc.players_sold = {};
+          doc.players_bought = [];
+          doc.players_sold = [];
 
           return db.put(doc);
         });
