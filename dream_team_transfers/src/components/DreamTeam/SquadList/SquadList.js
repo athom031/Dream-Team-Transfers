@@ -1,24 +1,25 @@
 import './SquadList.css';
 import { getTeamData } from '../../../db/db-utils';
-import React, { useEffect, useState } from 'react';
-import { useTable, sortBy } from 'react-table';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useTable, useSortBy } from 'react-table';
+import Loading from '../../Misc/Loading'
 
 function SquadList({
     NationsCSVData,
     PositionsCSVData,
     PlayersCSVData
 }) {
-
+    // not used right now
     const [teamBudget, setTeamBudget] = useState(-1);
     const [teamValue, setTeamValue] = useState(-1);
-
     const [teamNickname, setTeamNickname] = useState('');
 
-    const [teamPicked, setTeamPicked] = useState(-1);
-
+    // used but full integration not set up yet
     const [playersSold, setPlayersSold] = useState([]);
     const [playersBought, setPlayersBought] = useState([]);
     const [kitUpdates, setKitUpdates] = useState({});
+
+    const [teamPicked, setTeamPicked] = useState(-1);
 
     const [relevantNations, setRelevantNations] = useState({});
     const [relevantPositions, setRelevantPositions] = useState({});
@@ -26,10 +27,11 @@ function SquadList({
     const [teamPlayers, setTeamPlayers] = useState([]);
 
     const calculateAge = (birthDate) => {
-        const now = new Date();
-        let age = now.getFullYear() - birthDate.getFullYear();
-        const m = now.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && now.getDate() < birthDate.getDate())) {
+        // Treat "TRANSFER_WINDOW_START" as the date Summer Transfer Window Opened (2023/2024 Season)
+        const TRANSFER_WINDOW_START = new Date('2023-06-14');
+        let age = TRANSFER_WINDOW_START.getFullYear() - birthDate.getFullYear();
+        const m = TRANSFER_WINDOW_START.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && TRANSFER_WINDOW_START.getDate() < birthDate.getDate())) {
             age--;
         }
         return age;
@@ -39,6 +41,7 @@ function SquadList({
         console.log("Selling Player", playerId);
     }
 
+    // retrieve data from db
     useEffect(() => {
         getTeamData().then((data) => {
             setPlayersSold(data.players_sold);
@@ -81,6 +84,7 @@ function SquadList({
                 teamPlayersUpdate.push({
                     nation_id: Number(nation_id),
                     player_birth_date: new Date(player_birth_date),
+                    player_age: calculateAge(new Date(player_birth_date)),
                     player_kit_number: kitUpdates[Number(player_id)] ?? Number(player_kit_number),
                     player_market_value: Number(player_market_value),
                     player_name: player_name,
@@ -89,6 +93,7 @@ function SquadList({
                     position_id: Number(position_id),
                     player_id: Number(player_id),
                 });
+
             }
         }
 
@@ -135,46 +140,99 @@ function SquadList({
         setRelevantPositions(relevantPositionsUpdate);
     }, [teamPlayers]);
 
-    const columns = [{
-        Header: 'Player Image',
-        accessor: 'player_portrait',
-        sortable: false,
-        Cell: row => <img src={row.value} alt="Player" />
-      }, {
-        Header: 'Name',
-        accessor: 'player_name',
-        sortMethod: (a, b) => a.toLowerCase - b.toLowerCase()
-      }, {
-        Header: 'Kit #',
-        accessor: 'player_kit_number'
-      }, {
-        Header: 'Position',
-        accessor: 'position_id',
-        Cell: row => <span>{relevantPositions[row.value].position_acronym}</span>,
-        sortMethod: (a, b) => a - b
-      }, {
-        Header: 'Age',
-        accessor: 'player_birth_date',
-        Cell: row => <span>{calculateAge(row.value)}</span>,
-        sortMethod: (a, b) => a - b
-      }, {
-        Header: 'Nationality',
-        accessor: 'nation_id',
-        Cell: row => <div><img src={relevantNations[row.value].nation_pic} alt="Nation" /><span>{relevantNations[row.value].nation_name}</span></div>,
-        sortMethod: (a, b) => a - b
-      }, {
-        Header: 'Value',
-        accessor: 'player_market_value'
-      }, {
-        Header: 'Sell',
-        accessor: 'player_id',
-        sortable: false,
-        Cell: row => <button onClick={sellPlayer(row.value)}>Sell</button>
-    }];
 
-    return <ReactTable data={teamPlayers} columns={columns} defaultSorted={[{ id: 'player_name', desc: true }]} />;
+    const columns = useMemo(() => {
+        if(teamPlayers.length <= 0 || Object.keys(relevantNations).length <= 0 || Object.keys(relevantPositions).length <= 0) {
+            return [];
+        } else {
+            return [
+                {
+                    Header: 'Profile',
+                    Cell: ({ row }) => <img src={row.original.player_portrait} className='player-profile' />,
+                },
+                {
+                    Header: 'Name',
+                    accessor: 'player_name',
+                },
+                {
+                    Header: 'Age',
+                    accessor: 'player_birth_date',
+                    Cell: ({ row }) => <div>{row.original.player_age}</div>,
+                },
+                {
+                    Header: 'Nation',
+                    accessor: 'nation_id',
+                    Cell: ({ row }) => (
+                        <div className='nation-cell'>
+                            <img src={relevantNations[row.original.nation_id].nation_pic} alt="Flag" />
+                            <div>{relevantNations[row.original.nation_id].nation_name}</div>
+                        </div>
+                    )
+                },
+                {
+                    Header: 'Position',
+                    accessor: 'position_id',
+                    Cell: ({ row }) => <div>{relevantPositions[row.original.position_id].position_acronym}</div>
+                },
+                {
+                    Header: 'Value',
+                    accessor: 'player_market_value',
+                },
+                {
+                    Header: 'Sell',
+                    id: 'sell',
+                    Cell: ({ row }) => (
+                        <button onClick={sellPlayer(row.original.player_id)}>Sell</button>
+                    ),
+                },
+            ]
+        }
+    }, [teamPlayers, relevantNations, relevantPositions]);
 
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        rows,
+        prepareRow,
+    } = useTable({ columns, data: teamPlayers }, useSortBy);
 
+    return columns.length === 0 ?
+        <Loading /> : (
+        <div className="SquadList">
+            <table {...getTableProps()}>
+                <thead>
+                    {headerGroups.map(headerGroup => (
+                        <tr {...headerGroup.getHeaderGroupProps()}>
+                            {headerGroup.headers.map(column => (
+                                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                                    {column.render('Header')}
+                                    <span>
+                                        {column.isSorted
+                                            ? column.isSortedDesc
+                                                ? ' 🔽'
+                                                : ' 🔼'
+                                            : ''}
+                                    </span>
+                                </th>
+                            ))}
+                        </tr>
+                    ))}
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                    {rows.map(row => {
+                        prepareRow(row);
+                        return (
+                            <tr {...row.getRowProps()}>
+                                {row.cells.map(cell => (
+                                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                ))}
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+        </div>
+    );
 }
-
 export default SquadList;
