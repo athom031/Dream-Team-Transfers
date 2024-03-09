@@ -11,11 +11,11 @@ import Dev from '../Dev/Dev';
 import { useState, useEffect } from 'react';
 
 import {
-  getLeaguesCSV,
+  // getLeaguesCSV,
   getNationsCSV,
   getPlayersCSV,
   getPositionsCSV,
-  getTeamsCSV
+  // getTeamsCSV
 } from '../../utils/parse-csv'
 
 import './DreamTeam.css';

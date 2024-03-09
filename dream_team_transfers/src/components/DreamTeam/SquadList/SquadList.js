@@ -137,8 +137,7 @@ function SquadList({
 
         setRelevantNations(relevantNationsUpdate);
         setRelevantPositions(relevantPositionsUpdate);
-    }, [teamPlayers]);
-
+    }, [teamPlayers, NationsCSVData, PositionsCSVData]);
 
     const columns = useMemo(() => {
         if(teamPlayers.length <= 0 || Object.keys(relevantNations).length <= 0 || Object.keys(relevantPositions).length <= 0) {
@@ -147,7 +146,7 @@ function SquadList({
             return [
                 {
                     Header: 'Profile',
-                    Cell: ({ row }) => <img src={row.original.player_portrait} className='player-profile' />,
+                    Cell: ({ row }) => <img src={row.original.player_portrait} className='player-profile' alt='Profile' />,
                 },
                 {
                     Header: 'Name',
@@ -205,7 +204,7 @@ function SquadList({
                 },
             ]
         }
-    }, [teamPlayers, relevantNations, relevantPositions, NationsCSVData, PositionsCSVData]);
+    }, [teamPlayers, relevantNations, relevantPositions]);
 
     const {
         getTableProps,
