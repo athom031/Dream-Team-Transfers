@@ -21,19 +21,19 @@ import {
 import './DreamTeam.css';
 
 function DreamTeam() {
-  const [LeagueCSVData, setLeagueCSVData] = useState(null);
+  // const [LeagueCSVData, setLeagueCSVData] = useState(null);
   const [NationsCSVData, setNationsCSVData] = useState(null);
   const [PlayersCSVData, setPlayersCSVData] = useState(null);
   const [PositionsCSVData, setPositionsCSVData] = useState(null);
-  const [TeamsCSVData, setTeamsCSVData] = useState(null);
+  // const [TeamsCSVData, setTeamsCSVData] = useState(null);
 
   // load in csv files when app loads once and pass it into dream team
   useEffect(() => {
-    getLeaguesCSV().then(data => setLeagueCSVData(data));
+    // getLeaguesCSV().then(data => setLeagueCSVData(data));
     getNationsCSV().then(data => setNationsCSVData(data));
     getPlayersCSV().then(data => setPlayersCSVData(data));
     getPositionsCSV().then(data => setPositionsCSVData(data));
-    getTeamsCSV().then(data => setTeamsCSVData(data));
+    // getTeamsCSV().then(data => setTeamsCSVData(data));
   }, []);
 
   return (
