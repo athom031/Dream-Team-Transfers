@@ -10,11 +10,13 @@
     align-items: center;
     margin: 0;
     padding: 0;
+    overflow-y:auto;
 }
 
 .team-restart-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -23,10 +25,25 @@
 .team-restart-slideshow-container {
     position: relative;
     overflow: hidden;
+    width: 60vw;
+    height: 60vh;
+    padding: 0vh 0vh;
 }
 
 .restart-warning {
-    text-decoration: underline;
+    font-size: 1.5em;
+    opacity: 0; /* Start out hidden */
+    transition: opacity 0.3s ease-in-out; /* Transition the opacity */
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+.restart-warning.show {
+    opacity: 1; /* Fully visible when the .show class is added */
+}
+
+.restart-warning.show span {
+    color:#FF0000;
+    font-weight: bold;
 }
 
 .restart-button {
@@ -37,6 +54,8 @@
     cursor: pointer;
     padding: 1em 2em;
     font-size: 1.2em;
+    margin-top: 1em;
+    margin-bottom: 2em;
 }
 
 .restart-button:hover {
@@ -49,151 +68,26 @@
     background-color: var(--restart-brown-color);
     border-radius: var(--border-radius);
     border: 2px solid var(--restart-brown-color);
+    width: 50%;
+    height: 20px;
 }
 
 .progress-bar-fill {
     height: 100%;
     background-color: var(--restart-beige-color);
+    border-radius: var(--border-radius);
+    border: 2px solid var(--restart-beige-color);
 }
 
-/* Styles for laptops and larger screens
-@media screen and (min-width: 1024px) {
-
-    .team-restart-container {
-        flex-direction: row;
-        padding: 0rem 1rem 0rem 1rem;
-    }
-
-    .team-restart-info {
-        width: 50vw;
-        padding: 0em 1rem 0em 1rem;
-    }
-
-    .team-restart-slideshow-container {
-        height: 100%;
-        width: 50%;
-    }
-
-    .restart-button {
-        margin-top: 1em;
-        margin-bottom: 5em;
-    }
-
-    .progress-bar {
-        width: 50%;
-        height: 20px;
-        overflow:hidden;
-    }
-
-    .restart-title {
-        font-size: 2.5em;
-    }
-
-    .restart-info-text {
-        font-size: 1.75em;
-    }
-
+.team-restart-info {
+    padding-left: 5rem;
+    width: 100vw;
 }
-*/
 
-/* Styles for phones and tablets in landscape mode*/
-/* @media screen and (max-width: 1023px) and (orientation: landscape) { */
-
-    .team-restart {
-        overflow-y:auto;
-    }
-
-    .team-restart-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .team-restart-info {
-        padding-left: 3rem;
-        padding-right: 2rem;
-    }
-
-    .team-restart-info {
-        width: 100vw;
-    }
-
-    .team-restart-slideshow-container {
-        width: 60vw;
-        height: 60vh;
-        padding: 0vh 0vh;
-    }
-
-    .progress-bar {
-        width: 50%;
-        height: 20px;
-    }
-
-    .progress-bar-fill {
-        border-radius: var(--border-radius);
-        border: 2px solid var(--restart-beige-color);
-    }
-
-    .restart-button {
-        margin-top: 1em;
-        margin-bottom: 5em;
-    }
-
-    .restart-title {
-        font-size: 3em;
-    }
-
-    .restart-info-text {
-        font-size: 2em;
-
-    }
-
-/* } */
-
-/* Styles for phones and tablets in portrait mode
-@media screen and (max-width: 1023px) and (orientation: portrait) {
-
-    .team-restart {
-        overflow-y: auto;
-    }
-
-    .team-restart-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .team-restart-info {
-        width: 100vw;
-        padding-left: 3rem;
-        padding-right: 2rem;
-    }
-
-    .team-restart-slideshow-container {
-        width: 100vw;
-        height: 50vh;
-        padding: 0vh 0vh;
-    }
-
-    .progress-bar {
-        width: 50%;
-        height: 20px;
-    }
-
-    .progress-bar-fill {
-        border-radius: var(--border-radius);
-        border: 2px solid var(--restart-beige-color);
-    }
-
-    .restart-button {
-        margin-top: 1em;
-        margin-bottom: 5em;
-    }
-
-    .restart-title {
-        font-size: 1.75em;
-    }
-
-    .restart-info-text {
-        font-size: 1.25em;
-    }
+.restart-title {
+    font-size: 3em;
 }
-*/
+
+.restart-info-text {
+    font-size: 2em;
+}

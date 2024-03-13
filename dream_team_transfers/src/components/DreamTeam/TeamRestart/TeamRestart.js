@@ -48,25 +48,14 @@ function TeamRestart() {
             <div className='team-restart-container'>
 
                 <div className='team-restart-info'>
-
                     <h1 className='restart-title'>
                         Restart Your Dream Team
                     </h1>
-
                     <div className='restart-info-text'>
-                        <ul>
-                            <li>
-                                Restarting your Dream Team will reset all your current progress and start a new 2023 season.
-                            </li>
-                            <li>
-                                You can choose to manage the same team or select a different Premier League team.
-                            </li>
-                            <li className="restart-warning">
-                                PLEASE NOTE: Restarting will permanently erase all your current data and cannot be undone.
-                            </li>
-                        </ul>
+                        <i className="fas fa-redo-alt"></i> Restarting your will reset all your current progress and start a new 2023 season.
+                        <br/>
+                        <i className="fas fa-futbol"></i> You can choose to manage the same team or select a different Premier League team.
                     </div>
-
                 </div>
 
                 <div className='team-restart-slideshow-container'>
@@ -81,9 +70,16 @@ function TeamRestart() {
                 <div className="progress-bar-fill" style={{width: `${progress}%`}}></div>
             </div>
 
+            <div className={`restart-warning ${holdStart ? 'show' : ''}`}>
+                <span><i className="fas fa-exclamation-triangle"></i> PLEASE NOTE: </span>Restarting will permanently erase all your current data and cannot be undone.
+            </div>
+
+
             <button className="restart-button" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}>
                 Hold to Confirm Restart
             </button>
+
+
 
         </div>
     );
