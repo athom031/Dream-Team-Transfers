@@ -1,36 +1,80 @@
 /* #708090 */
+.SquadList {
+    background-color:#708090;
+    color: white;
+    scroll-behavior: smooth;
+}
+
+.nation-cell, .player-profile, .player-position, .player-value, .player-name, .player-kit-number {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
 
 .nation-cell {
-    display: flex;
-    align-items: center;
     gap: 10px;
-    width: 400px;
-    margin-left: 100px;
 }
+.player-position, .player-value, .player-name, .player-kit-number {
+    justify-content: center;
+}
+
+.squad-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+}
+
+.squad-table-header {
+    background-color: #454545;
+    color: white;
+}
+
+.squad-table-header-cell {
+    padding: 10px;
+    color: white;
+    text-align: left;
+}
+
+.squad-table-sort-icon {
+    margin-left: 5px;
+}
+
+.squad-table-row {
+    border-bottom: 1px solid white;
+}
+
+.squad-table-row:nth-child(odd) {
+    background-color: #D3D3D3;
+    color: #454545;
+}
+
+.squad-table-row:nth_child(even) {
+    background-color: #FFFFFF;
+    color: #454545;
+}
+
+.squad-table-cell {
+    padding: 10px;
+    text-align: left;
+}
+
+.squad-table-row:hover {
+    background-color: #8C8C8C;
+    color: white;
+}
+
+.table-container {
+    width: 100vw;
+    overflow-x:auto;
+    display: flex;
+}
+
+.squad-table {
+    width: 100%;
+}
+
 
 .player-profile {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.player-position {
+    border-radius: 15px;
     width: 50px;
-    display: flex;
-    align-items: center;
-    margin-left:25px;
-}
-
-.player-value {
-    width: 100px;
-    display: flex;
-    align-items: center;
-    margin-left:50px;
-}
-
-.player-name {
-    width: 250px;
-    display: flex;
-    align-items: center;
-    margin-left: 50px;
 }
