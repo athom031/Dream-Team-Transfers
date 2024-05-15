@@ -1,5 +1,5 @@
 import './SquadList.css';
-import { getTeamData } from '../../../db/db-utils';
+import { getTeamData, sellPlayer } from '../../../db/db-utils';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useTable, useSortBy } from 'react-table';
 import Loading from '../../Misc/Loading'
@@ -42,13 +42,14 @@ function SquadList({
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
-    const sellPlayer = (playerId) => () => {
-        console.log("Selling Player", playerId);
+    const sellPlayerHelper = (playerId) => () => {
+        sellPlayer(playerId, PlayersCSVData[playerId].player_market_value).then(() => {console.log("Sold Player", playerId);});
     }
 
     // retrieve data from db
     useEffect(() => {
         getTeamData().then((data) => {
+            console.log(data);
             setPlayersSold(data.players_sold);
             setPlayersBought(data.players_bought);
             // setTeamBudget(data.team_budget);
@@ -164,7 +165,7 @@ function SquadList({
                     Cell: ({ row }) => <div className='player-position'>{relevantPositions[row.original.position_id].position_acronym}</div>,
                 },
                 {
-                    Header: 'Kit Number',
+                    Header: 'Kit #',
                     accessor: 'player_kit_number',
                     Cell: ({ row }) => <div className='player-kit-number'>{row.original.player_kit_number}</div>
                 },
@@ -204,7 +205,7 @@ function SquadList({
                     Header: 'Sell',
                     id: 'sell',
                     Cell: ({ row }) => (
-                        <button onClick={sellPlayer(row.original.player_id)}>Sell</button>
+                        <button onClick={sellPlayerHelper(row.original.player_id)}>Sell</button>
                     ),
                 },
             ]
@@ -218,6 +219,8 @@ function SquadList({
         rows,
         prepareRow,
     } = useTable({ columns, data: teamPlayers }, useSortBy);
+
+    console.log()
 
     return columns.length === 0 ?
         <Loading /> : (
