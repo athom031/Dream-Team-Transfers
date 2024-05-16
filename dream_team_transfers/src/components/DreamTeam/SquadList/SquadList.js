@@ -2,7 +2,6 @@ import './SquadList.css';
 import { getTeamData, sellPlayer } from '../../../db/db-utils';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useTable, useSortBy } from 'react-table';
-import Loading from '../../Misc/Loading'
 import { getCurrencyDenomination, getCurrencyDenominationShort, getCurrencyRounded, CURRENCY_UNIT } from '../../../utils/money-utils';
 
 function SquadList({
@@ -13,7 +12,6 @@ function SquadList({
     // not used right now
     const [teamBudget, setTeamBudget] = useState(-1);
     const [teamValue, setTeamValue] = useState(-1);
-    const [teamNickname, setTeamNickname] = useState('');
 
     // used but full integration not set up yet
     const [playersSold, setPlayersSold] = useState([]);
@@ -42,19 +40,43 @@ function SquadList({
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
-    const sellPlayerHelper = (playerId) => () => {
-        const playerValue =
-            Number(PlayersCSVData[playerId].player_market_value);
-        console.log(playerValue);
-        const currBudget = Number(teamBudget);
-        const currValue = Number(teamValue);
-        sellPlayer(playerId, playerValue)
-            .then(() => {
-                setPlayersSold([...playersSold, playerId]);
-                setTeamBudget(String(currBudget + playerValue));
-                setTeamValue(String(currValue - playerValue));
-            });
+
+    function SellButton({ playerId }) {
+        const [isButtonActive, setIsButtonActive] = useState(false);
+        let timer = null;
+        const handleButtonPress = () => {
+            setIsButtonActive(true);
+            timer = setTimeout(() => {
+                const playerValue =
+                    Number(PlayersCSVData[playerId].player_market_value);
+                const currBudget = Number(teamBudget);
+                const currValue = Number(teamValue);
+                sellPlayer(playerId, playerValue)
+                    .then(() => {
+                        setPlayersSold([...playersSold, playerId]);
+                        setTeamBudget(String(currBudget + playerValue));
+                        setTeamValue(String(currValue - playerValue));
+                    });
+                setIsButtonActive(false);
+            }, 2000);
+        }
+        const handleButtonRelease = () => {
+            clearTimeout(timer);
+            if (isButtonActive) {
+                setIsButtonActive(false);
+            }
+        }
+        return (
+            <button
+              className={`squad-list-button ${isButtonActive ? 'active' : ''}`}
+              onMouseDown={handleButtonPress}
+              onMouseUp={handleButtonRelease}
+            >
+              Sell
+            </button>
+          );
     }
+
 
     // retrieve data from db
     useEffect(() => {
@@ -63,7 +85,6 @@ function SquadList({
             setPlayersBought(data.players_bought);
             setTeamBudget(data.team_budget);
             setTeamValue(data.team_value);
-            setTeamNickname(data.team_nickname);
             setTeamPicked(data.team_picked);
             setKitUpdates(data.team_kit_updates);
         });
@@ -214,7 +235,7 @@ function SquadList({
                     Header: 'Sell',
                     id: 'sell',
                     Cell: ({ row }) => (
-                        <button className='squad-list-button' onClick={sellPlayerHelper(row.original.player_id)}>Sell</button>
+                        <SellButton playerId={row.original.player_id} />
                     ),
                 },
             ]
