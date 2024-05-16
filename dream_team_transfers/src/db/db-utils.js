@@ -80,8 +80,6 @@ export function restartTeam() {
 }
 
 export function sellPlayer(playerId, playerPrice) {
-
-  console.log('sellPlayer', playerId, playerPrice);
   return initializeDB()
     .then(
       () => {

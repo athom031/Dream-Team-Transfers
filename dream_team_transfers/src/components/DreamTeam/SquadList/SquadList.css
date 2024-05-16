@@ -5,6 +5,30 @@
     scroll-behavior: smooth;
 }
 
+.squad-w_o-players {
+    margin-left: 2em;
+}
+
+.squad-w_o-players a {
+    color: #D3D3D3;
+}
+
+.squad-list-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #454545;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #D3D3D3; /* Add this line */
+}
+
+.header-description {
+    width: 50%;
+    justify-content: center;
+    margin-left: 2em;
+    /* Add any additional styling you want for the description here */
+}
+
 .nation-cell, .player-profile, .player-position, .player-value, .player-name, .player-kit-number {
     display: flex;
     align-items: center;

@@ -3,7 +3,7 @@ import { getTeamData, sellPlayer } from '../../../db/db-utils';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useTable, useSortBy } from 'react-table';
 import Loading from '../../Misc/Loading'
-import { getCurrencyDenominationShort, getCurrencyRounded, CURRENCY_UNIT } from '../../../utils/money-utils';
+import { getCurrencyDenomination, getCurrencyDenominationShort, getCurrencyRounded, CURRENCY_UNIT } from '../../../utils/money-utils';
 
 function SquadList({
     NationsCSVData,
@@ -11,9 +11,9 @@ function SquadList({
     PlayersCSVData
 }) {
     // not used right now
-    // const [teamBudget, setTeamBudget] = useState(-1);
-    // const [teamValue, setTeamValue] = useState(-1);
-    // const [teamNickname, setTeamNickname] = useState('');
+    const [teamBudget, setTeamBudget] = useState(-1);
+    const [teamValue, setTeamValue] = useState(-1);
+    const [teamNickname, setTeamNickname] = useState('');
 
     // used but full integration not set up yet
     const [playersSold, setPlayersSold] = useState([]);
@@ -43,18 +43,17 @@ function SquadList({
     }
 
     const sellPlayerHelper = (playerId) => () => {
-        sellPlayer(playerId, PlayersCSVData[playerId].player_market_value).then(() => {console.log("Sold Player", playerId);});
+        sellPlayer(playerId, PlayersCSVData[playerId].player_market_value).then(() => setPlayersSold([...playersSold, playerId]));
     }
 
     // retrieve data from db
     useEffect(() => {
         getTeamData().then((data) => {
-            console.log(data);
             setPlayersSold(data.players_sold);
             setPlayersBought(data.players_bought);
-            // setTeamBudget(data.team_budget);
-            // setTeamValue(data.team_value);
-            // setTeamNickname(data.team_nickname);
+            setTeamBudget(data.team_budget);
+            setTeamValue(data.team_value);
+            setTeamNickname(data.team_nickname);
             setTeamPicked(data.team_picked);
             setKitUpdates(data.team_kit_updates);
         });
@@ -63,7 +62,7 @@ function SquadList({
     useEffect(() => {
         const teamPlayersUpdate = [];
 
-        if(PlayersCSVData == null) return;
+        if(PlayersCSVData === null) return;
 
         for(let i = 0; i < PlayersCSVData.length; i++) {
             if(
@@ -220,11 +219,65 @@ function SquadList({
         prepareRow,
     } = useTable({ columns, data: teamPlayers }, useSortBy);
 
-    console.log()
-
     return columns.length === 0 ?
-        <Loading /> : (
+    (
+        <div className='squad-w_o-players'>
+            <h1>No Players Found in Squad</h1>
+            <h4>
+                Looks like you got a little gung-ho and sold the entire team...
+            </h4>
+            <p>
+                Every fan has been there at some point in their life. Maybe <a href="/team-restart">try again</a> with a different team.
+                <br/>
+                Or perhaps you could brave the transfer market and try to assemble a new squad from scratch!
+            </p>
+        </div>
+    )
+    : (
         <div className="SquadList">
+            <div className="squad-list-header">
+                <div className='header-description text-left text-primary'>
+                    <h4>* View the members of your squad </h4>
+                    <h4>* Adjust their Kit Numbers </h4>
+                    <h4>* Sell players to boost your transfer budget!</h4>
+                </div>
+                {/* TEAM SUMMARY */}
+                <div className='team-summary'>
+                    {/* TEAM VALUE */}
+                    <div className='team-value'>
+
+                    <div className='category'>
+                        Value
+                    </div>
+
+                    <div className='money'>
+                        {CURRENCY_UNIT} {getCurrencyRounded(teamValue)}
+                    </div>
+
+                    <div className='unit'>
+                        {getCurrencyDenomination(teamValue)}
+                    </div>
+
+                    </div>
+
+                    {/* TEAM BUDGET */}
+                    <div className='team-budget'>
+
+                    <div className='category'>
+                        Budget
+                    </div>
+
+                    <div className='money'>
+                        {CURRENCY_UNIT} {getCurrencyRounded(teamBudget)}
+                    </div>
+
+                    <div className='unit'>
+                        {getCurrencyDenomination(teamBudget)}
+                    </div>
+
+                    </div>
+                </div>
+            </div>
             <div className="table-container">
                 <table {...getTableProps()} className='squad-table'>
                     <thead className='squad-table-header'>
