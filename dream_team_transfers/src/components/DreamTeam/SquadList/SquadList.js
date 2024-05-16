@@ -204,7 +204,7 @@ function SquadList({
                     Header: 'Sell',
                     id: 'sell',
                     Cell: ({ row }) => (
-                        <button onClick={sellPlayerHelper(row.original.player_id)}>Sell</button>
+                        <button className='squad-list-button' onClick={sellPlayerHelper(row.original.player_id)}>Sell</button>
                     ),
                 },
             ]

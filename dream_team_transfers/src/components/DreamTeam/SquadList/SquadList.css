@@ -102,3 +102,21 @@
     border-radius: 15px;
     width: 50px;
 }
+
+.squad-list-button {
+    background-color: #B98F44; /* for example, green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    border-radius: 5%;
+}
+.squad-list-button:hover {
+    background-color: #8B6C42;
+}
