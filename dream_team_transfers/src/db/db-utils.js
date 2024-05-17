@@ -84,13 +84,8 @@ export function sellPlayer(playerId, playerValue) {
     .then(
       () => {
         return db.get('dtt_data').then(doc => {
-          doc.team_picked = doc.team_picked;
-          doc.team_nickname = doc.team_nickname;
           doc.team_budget = String(Number(doc.team_budget) + playerValue);
           doc.team_value = String(Number(doc.team_value) - playerValue);
-          doc.team_positions = doc.team_positions;
-          doc.team_kit_updates = doc.team_kit_updates;
-          doc.players_bought = doc.players_bought;
           doc.players_sold = [...doc.players_sold, playerId];
 
           return db.put(doc);
