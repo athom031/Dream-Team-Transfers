@@ -1,5 +1,5 @@
 import './SquadList.css';
-import { getTeamData, sellPlayer } from '../../../db/db-utils';
+import { getTeamData, sellPlayer, updateKitNumber } from '../../../db/db-utils';
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useTable, useSortBy } from 'react-table';
 import { getCurrencyDenomination, getCurrencyDenominationShort, getCurrencyRounded, CURRENCY_UNIT } from '../../../utils/money-utils';
@@ -9,24 +9,22 @@ function SquadList({
     PositionsCSVData,
     PlayersCSVData
 }) {
-    // not used right now
+    // reading from db
     const [teamBudget, setTeamBudget] = useState(-1);
     const [teamValue, setTeamValue] = useState(-1);
-
-    // used but full integration not set up yet
+    const [teamPicked, setTeamPicked] = useState(-1);
+    const [relevantNations, setRelevantNations] = useState({});
+    const [relevantPositions, setRelevantPositions] = useState({});
+    const [teamPlayers, setTeamPlayers] = useState([]);
+    // writing to db
     const [playersSold, setPlayersSold] = useState([]);
     const [playersBought, setPlayersBought] = useState([]);
     const [kitUpdates, setKitUpdates] = useState({});
-
-    const [teamPicked, setTeamPicked] = useState(-1);
-
-    const [relevantNations, setRelevantNations] = useState({});
-    const [relevantPositions, setRelevantPositions] = useState({});
-
-    const [teamPlayers, setTeamPlayers] = useState([]);
+    
 
     const calculateAge = (birthDate) => {
-        // Treat "TRANSFER_WINDOW_START" as the date Summer Transfer Window Opened (2023/2024 Season)
+        // Treat "TRANSFER_WINDOW_START" as the 
+        // date Summer Transfer Window Opened (2023/2024 Season)
         const TRANSFER_WINDOW_START = new Date('2023-06-14');
         let age = TRANSFER_WINDOW_START.getFullYear() - birthDate.getFullYear();
         const m = TRANSFER_WINDOW_START.getMonth() - birthDate.getMonth();
@@ -41,48 +39,85 @@ function SquadList({
     }
 
     function SellButton({ playerId }) {
-      const [isButtonActive, setIsButtonActive] = useState(false);
+        const [isButtonActive, setIsButtonActive] = useState(false);
+        const timer = useRef(null);
 
-      const timer = useRef(null); // create a ref for the timer
-
-      const handleButtonPress = () => {
-        setIsButtonActive(true);
-        timer.current = setTimeout(() => {
-          const playerValue =
-            Number(PlayersCSVData[playerId].player_market_value);
-          const currBudget = Number(teamBudget);
-          const currValue = Number(teamValue);
-          sellPlayer(playerId, playerValue)
-            .then(() => {
-              setPlayersSold([...playersSold, playerId]);
-              setTeamBudget(String(currBudget + playerValue));
-              setTeamValue(String(currValue - playerValue));
-            });
-          setIsButtonActive(false);
-        }, 2000);
-      }
-
-      const handleButtonRelease = () => {
-        clearTimeout(timer.current); // clear the timer stored in the ref
-        if (isButtonActive) {
-          setIsButtonActive(false);
+        const handleButtonPress = () => {
+            setIsButtonActive(true);
+            timer.current = setTimeout(() => {
+                const playerValue = Number(PlayersCSVData[playerId].player_market_value);
+                const currBudget = Number(teamBudget);
+                const currValue = Number(teamValue);
+                sellPlayer(playerId, playerValue).then(() => {
+                    setPlayersSold([...playersSold, playerId]);
+                    setTeamBudget(String(currBudget + playerValue));
+                    setTeamValue(String(currValue - playerValue));
+                });
+                setIsButtonActive(false);
+            }, 2000);
         }
-      }
 
-      return (
-        <button
-          className={`squad-list-button ${isButtonActive ? 'active' : ''}`}
-          onMouseDown={handleButtonPress}
-          onMouseUp={handleButtonRelease}
-          onMouseLeave={handleButtonRelease}
-        >
-          <span className={`sell-text ${isButtonActive ? 'active' : ''}`}>Sell</span>
-          {isButtonActive && <div className="fill-effect"></div>}
-        </button>
-      );
+        const handleButtonRelease = () => {
+            clearTimeout(timer.current);
+            if (isButtonActive) {
+                setIsButtonActive(false);
+            }
+        }
+
+        return (
+            <button
+                className={`squad-list-button ${isButtonActive ? 'active' : ''}`}
+                onMouseDown={handleButtonPress}
+                onMouseUp={handleButtonRelease}
+                onMouseLeave={handleButtonRelease}
+            >
+                <span className={`sell-text ${isButtonActive ? 'active' : ''}`}>Sell</span>
+                {isButtonActive && <div className="fill-effect"></div>}
+            </button>
+        );
     }
 
-    // retrieve data from db
+    function EditableKitNumber({ playerId, kitNumber }) {
+        const [isEditing, setIsEditing] = useState(false);
+        const [newKitNumber, setNewKitNumber] = useState(kitNumber);
+
+        const handleEdit = () => {
+            setIsEditing(true);
+        }
+
+        const handleChange = (e) => {
+            setNewKitNumber(e.target.value);
+        }
+
+        const handleBlur = () => {
+            setIsEditing(false);
+            if (newKitNumber !== kitNumber) {
+                updateKitNumber(playerId, newKitNumber).then(() => {
+                    setKitUpdates({
+                        ...kitUpdates,
+                        [playerId]: newKitNumber
+                    });
+                });
+            }
+        }
+
+        return isEditing ? (
+            <input
+                type="number"
+                value={newKitNumber}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="kit-number-input"
+                autoFocus
+            />
+        ) : (
+            <div className='player-kit-number' onClick={handleEdit}>
+                {kitNumber}
+            </div>
+        );
+    }
+
+    // read from db 
     useEffect(() => {
         getTeamData().then((data) => {
             setPlayersSold(data.players_sold);
@@ -97,10 +132,10 @@ function SquadList({
     useEffect(() => {
         const teamPlayersUpdate = [];
 
-        if(PlayersCSVData === null) return;
+        if (PlayersCSVData === null) return;
 
-        for(let i = 0; i < PlayersCSVData.length; i++) {
-            if(
+        for (let i = 0; i < PlayersCSVData.length; i++) {
+            if (
                 playersBought.includes(Number(PlayersCSVData[i].player_id)) ||
                 (
                     !playersSold.includes(Number(PlayersCSVData[i].player_id)) &&
@@ -130,22 +165,20 @@ function SquadList({
                     position_id: Number(position_id),
                     player_id: Number(player_id),
                 });
-
             }
         }
 
         setTeamPlayers(teamPlayersUpdate);
-
     }, [playersSold, playersBought, PlayersCSVData, teamPicked, kitUpdates]);
 
     useEffect(() => {
         const relevantNationsUpdate = {};
         const relevantPositionsUpdate = {};
 
-        if(NationsCSVData == null || PositionsCSVData == null || NationsCSVData.length <= 0 || PositionsCSVData.length <= 0) return;
+        if (NationsCSVData == null || PositionsCSVData == null || NationsCSVData.length <= 0 || PositionsCSVData.length <= 0) return;
 
-        for(let i = 0; i < teamPlayers.length; i++) {
-            if(!relevantNationsUpdate[teamPlayers[i].nation_id]) {
+        for (let i = 0; i < teamPlayers.length; i++) {
+            if (!relevantNationsUpdate[teamPlayers[i].nation_id]) {
                 const {
                     nation_name,
                     nation_flag_small_pic,
@@ -156,7 +189,7 @@ function SquadList({
                 };
             }
 
-            if(!relevantPositionsUpdate[teamPlayers[i].position_id]) {
+            if (!relevantPositionsUpdate[teamPlayers[i].position_id]) {
                 const {
                     position_acronym,
                     position_name,
@@ -175,7 +208,7 @@ function SquadList({
     }, [teamPlayers, NationsCSVData, PositionsCSVData]);
 
     const columns = useMemo(() => {
-        if(teamPlayers.length <= 0 || Object.keys(relevantNations).length <= 0 || Object.keys(relevantPositions).length <= 0) {
+        if (teamPlayers.length <= 0 || Object.keys(relevantNations).length <= 0 || Object.keys(relevantPositions).length <= 0) {
             return [];
         } else {
             return [
@@ -201,7 +234,7 @@ function SquadList({
                 {
                     Header: 'Kit #',
                     accessor: 'player_kit_number',
-                    Cell: ({ row }) => <div className='player-kit-number'>{row.original.player_kit_number}</div>
+                    Cell: ({ row }) => <EditableKitNumber playerId={row.original.player_id} kitNumber={row.original.player_kit_number} />
                 },
                 {
                     Header: 'Nation',
@@ -244,7 +277,7 @@ function SquadList({
                 },
             ]
         }
-    }, [teamPlayers, relevantNations, relevantPositions]);
+    }, [teamPlayers, relevantNations, relevantPositions, kitUpdates]);
 
     const {
         getTableProps,
@@ -276,40 +309,28 @@ function SquadList({
                     <h4>* Adjust their Kit Numbers </h4>
                     <h4>* Sell players to boost your transfer budget!</h4>
                 </div>
-                {/* TEAM SUMMARY */}
                 <div className='team-summary'>
-                    {/* TEAM VALUE */}
                     <div className='team-value'>
-
-                    <div className='category'>
-                        Value
+                        <div className='category'>
+                            Value
+                        </div>
+                        <div className='money'>
+                            {CURRENCY_UNIT} {getCurrencyRounded(teamValue)}
+                        </div>
+                        <div className='unit'>
+                            {getCurrencyDenomination(teamValue)}
+                        </div>
                     </div>
-
-                    <div className='money'>
-                        {CURRENCY_UNIT} {getCurrencyRounded(teamValue)}
-                    </div>
-
-                    <div className='unit'>
-                        {getCurrencyDenomination(teamValue)}
-                    </div>
-
-                    </div>
-
-                    {/* TEAM BUDGET */}
                     <div className='team-budget'>
-
-                    <div className='category'>
-                        Budget
-                    </div>
-
-                    <div className='money'>
-                        {CURRENCY_UNIT} {getCurrencyRounded(teamBudget)}
-                    </div>
-
-                    <div className='unit'>
-                        {getCurrencyDenomination(teamBudget)}
-                    </div>
-
+                        <div className='category'>
+                            Budget
+                        </div>
+                        <div className='money'>
+                            {CURRENCY_UNIT} {getCurrencyRounded(teamBudget)}
+                        </div>
+                        <div className='unit'>
+                            {getCurrencyDenomination(teamBudget)}
+                        </div>
                     </div>
                 </div>
             </div>
