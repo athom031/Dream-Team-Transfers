@@ -120,6 +120,7 @@ function SquadList({
     // read from db 
     useEffect(() => {
         getTeamData().then((data) => {
+            console.log(data.team_kit_updates);
             setPlayersSold(data.players_sold);
             setPlayersBought(data.players_bought);
             setTeamBudget(data.team_budget);
