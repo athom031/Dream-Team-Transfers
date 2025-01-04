@@ -1,6 +1,6 @@
 /* STYLES FOR ALL SCREENS */
 :root {
-    --background-color: black;
+    --black-color: black;
     --gold-color: #B98F44;
     --main-font: 'Saira Condensed', sans-serif;
     --letter-spacing: letter-spacing: 4px;
@@ -11,24 +11,24 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 90vh;
+    height: 100vh;
     width: 100vw;
     text-align: center;
-    background-color: var(--background-color);
+    background-color: var(--black-color);
     color: var(--gold-color);
 }
 
-.not-found-container h1 {
+.not-found-container-title {
     font-size: 6em;
     margin-bottom: 0.5em;
 }
 
-.not-found-container p {
+.not-found-container-text {
     font-size: 2em;
     margin-bottom: 1em;
 }
 
-.home-link {
+.not-found-home-link {
     font-size: 1.5em;
     color: var(--gold-color);
     border-radius: 10px;
@@ -38,7 +38,7 @@
     transition: background-color 0.3s ease;
 }
 
-.home-link:hover {
+.not-found-home-link:hover {
     background-color: var(--gold-color);
-    color: var(--background-color);
+    color: var(--black-color);
 }
