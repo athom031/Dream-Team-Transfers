@@ -79,7 +79,7 @@ function SquadList({
                     player_kit_number,
                     player_market_value,
                     player_name,
-                    player_portrait_small_pic,
+                    player_portrait_big_pic,
                     player_shortened_name,
                     position_id,
                 } = PlayersCSVData[i];
@@ -91,7 +91,7 @@ function SquadList({
                     player_market_value: Number(player_market_value),
                     player_name: player_name,
                     player_shortened_name: player_shortened_name,
-                    player_portrait: player_portrait_small_pic,
+                    player_portrait: player_portrait_big_pic,
                     position_id: Number(position_id),
                     player_id: Number(player_id),
                 });
@@ -159,12 +159,14 @@ function SquadList({
                     }
                 },
                 {
-                    Header: 'Age',
-                    accessor: 'player_birth_date',
-                    Cell: ({ row }) => <div>{row.original.player_age}</div>,
-                    sortType: (rowA, rowB) => {
-                        return rowB.original.player_birth_date - rowA.original.player_birth_date;
-                    }
+                    Header: 'Position',
+                    accessor: 'position_id',
+                    Cell: ({ row }) => <div className='player-position'>{relevantPositions[row.original.position_id].position_acronym}</div>,
+                },
+                {
+                    Header: 'Kit Number',
+                    accessor: 'player_kit_number',
+                    Cell: ({ row }) => <div className='player-kit-number'>{row.original.player_kit_number}</div>
                 },
                 {
                     Header: 'Nation',
@@ -177,9 +179,12 @@ function SquadList({
                     ),
                 },
                 {
-                    Header: 'Position',
-                    accessor: 'position_id',
-                    Cell: ({ row }) => <div className='player-position'>{relevantPositions[row.original.position_id].position_acronym}</div>,
+                    Header: 'Age',
+                    accessor: 'player_birth_date',
+                    Cell: ({ row }) => <div>{row.original.player_age}</div>,
+                    sortType: (rowA, rowB) => {
+                        return rowB.original.player_birth_date - rowA.original.player_birth_date;
+                    }
                 },
                 {
                     Header: 'Value',
@@ -217,38 +222,40 @@ function SquadList({
     return columns.length === 0 ?
         <Loading /> : (
         <div className="SquadList">
-            <table {...getTableProps()} className='squad-table'>
-                <thead>
-                    {headerGroups.map(headerGroup => (
-                        <tr {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map(column => (
-                                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                                    {column.render('Header')}
-                                    <span>
-                                        {column.isSorted
-                                            ? column.isSortedDesc
-                                                ? ' 🔼'
-                                                : ' 🔽'
-                                            : ''}
-                                    </span>
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                </thead>
-                <tbody {...getTableBodyProps()}>
-                    {rows.map(row => {
-                        prepareRow(row);
-                        return (
-                            <tr {...row.getRowProps()}>
-                                {row.cells.map(cell => (
-                                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+            <div className="table-container">
+                <table {...getTableProps()} className='squad-table'>
+                    <thead className='squad-table-header'>
+                        {headerGroups.map(headerGroup => (
+                            <tr {...headerGroup.getHeaderGroupProps()} className='squad-table-header-row'>
+                                {headerGroup.headers.map(column => (
+                                    <th {...column.getHeaderProps(column.getSortByToggleProps())} className='squad-table-header-cell'>
+                                        {column.render('Header')}
+                                        <span className='squad-table-sort-icon'>
+                                            {column.isSorted
+                                                ? column.isSortedDesc
+                                                    ? ' 🔼'
+                                                    : ' 🔽'
+                                                : ''}
+                                        </span>
+                                    </th>
                                 ))}
                             </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
+                        ))}
+                    </thead>
+                    <tbody {...getTableBodyProps()} className='squad-table-body'>
+                        {rows.map(row => {
+                            prepareRow(row);
+                            return (
+                                <tr {...row.getRowProps()} className='squad-table-row'>
+                                    {row.cells.map(cell => (
+                                        <td {...cell.getCellProps()} className='squad-table-cell'>{cell.render('Cell')}</td>
+                                    ))}
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
