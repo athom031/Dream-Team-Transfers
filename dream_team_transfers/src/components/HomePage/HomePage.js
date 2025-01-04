@@ -11,6 +11,8 @@ function HomePage() {
   const [hoverTimeout, setHoverTimeout] = useState(null);
   const [slideshowPhotos, setSlideshowPhotos] = useState([]);
   const [photoIndex, setPhotoIndex] = useState(0);
+  const [isHoveredLeft, setIsHoveredLeft] = useState(false);
+  const [isHoveredRight, setIsHoveredRight] = useState(false);
 
   const DREAM_TEAM_LOGO = process.env.PUBLIC_URL + '/logo512.png';
 
@@ -40,8 +42,7 @@ function HomePage() {
     // set a new timeout to track how long user stays on team selected
     const newTimeout = setTimeout(() => {
       setSelectedTeam(teamIndex);
-      console.log(teamIndex !== null ? `${PREMIER_LEAGUE_TEAM_INFOS[teamIndex].name} picked` : 'No team selected');
-    }, 1500); // 1 second
+    }, 1000); // 1 second
 
     setHoverTimeout(newTimeout);
     // Clear the timeout when the component unmounts
@@ -126,15 +127,33 @@ function HomePage() {
       </div>
 
       <div className='team-selection'>
-
         <div className='team-picker'>
-          <button onClick={handleLeftClick}>Left</button>
           <img
-            src={teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].logo : DREAM_TEAM_LOGO}
-            className="team-logo"
-            alt={teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].alias + ' logo' : 'Dream Team Transfers Logo'}
+            src={`${process.env.PUBLIC_URL}/assets/left-arrow${isHoveredLeft ? '-hover' : ''}.png`}
+            onMouseEnter={() => setIsHoveredLeft(true)}
+            onMouseLeave={() => setIsHoveredLeft(false)}
+            onClick={handleLeftClick}
+            className='arrow-button'
           />
-          <button onClick={handleRightClick}>Right</button>
+          <div className='logo-container'>
+            <img
+              src={teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].logo : DREAM_TEAM_LOGO}
+              className="team-logo"
+              alt={teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].alias + ' logo' : 'Dream Team Transfers Logo'}
+            />
+            <div className='team-name'>
+              <h1 style={{ color: teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].primary_color : '#000000' }}>
+                {teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].alias : 'Select a Team'}
+              </h1>
+            </div>
+          </div>
+          <img
+            src={`${process.env.PUBLIC_URL}/assets/right-arrow${isHoveredRight ? '-hover' : ''}.png`}
+            onMouseEnter={() => setIsHoveredRight(true)}
+            onMouseLeave={() => setIsHoveredRight(false)}
+            onClick={handleRightClick}
+            className='arrow-button'
+          />
         </div>
 
         <div className='selection-summary-and-submit'>
