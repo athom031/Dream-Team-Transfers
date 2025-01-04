@@ -1,32 +1,23 @@
-:root {
-    --grey-color: #454545;
-    --gold-color: #B98F44;
-    --black-color: black;
-    --main-font: 'Saira Condensed', sans-serif;
-    --letter-spacing: 4px;
-}
-
 .nav-bar {
     height: 8vh;
     width: 100vw;
-    background-color: var(--gold-color);
+    background-color: var(--logo-gold-color);
     font-family: var(--main-font);
     letter-spacing: var(--letter-spacing);
     display: flex;
-    border-radius: 10px;
-    /* align-items: center; */
+    border-radius: var(--border-radius);
 }
 
 .nav-bar a {
     text-decoration: none;
-    color: var(--grey-color);
+    color: var(--dark-grey-color);
     font-weight: bold;
     font-size: 1.75em;
     transition: color 0.3s ease, transform 0.2s ease;
 }
 
 .nav-bar a:hover{
-    color: var(--black-color);
+    color: var(--logo-black-color);
     transform: scale(1.1);
 }
 

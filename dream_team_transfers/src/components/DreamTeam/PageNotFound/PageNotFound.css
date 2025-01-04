@@ -1,10 +1,4 @@
 /* STYLES FOR ALL SCREENS */
-:root {
-    --black-color: black;
-    --gold-color: #B98F44;
-    --main-font: 'Saira Condensed', sans-serif;
-    --letter-spacing: letter-spacing: 4px;
-}
 
 .not-found-container {
     display: flex;
@@ -14,8 +8,10 @@
     height: 100vh;
     width: 100vw;
     text-align: center;
-    background-color: var(--black-color);
-    color: var(--gold-color);
+    background-color: var(--logo-black-color);
+    color: var(--logo-gold-color);
+    font-family: var(--letter-spacing);
+    letter-spacing: var(--letter-spacing);
 }
 
 .not-found-container-title {
@@ -30,15 +26,15 @@
 
 .not-found-home-link {
     font-size: 1.5em;
-    color: var(--gold-color);
-    border-radius: 10px;
+    color: var(--logo-gold-color);
+    border-radius: var(--border-radius);
     text-decoration: none;
-    border: .25em solid var(--gold-color);
+    border: .25em solid var(--logo-gold-color);
     padding: 0.5em 1em;
     transition: background-color 0.3s ease;
 }
 
 .not-found-home-link:hover {
-    background-color: var(--gold-color);
-    color: var(--black-color);
+    background-color: var(--logo-gold-color);
+    color: var(--logo-black-color);
 }

@@ -1,16 +1,7 @@
 /* HomePage.css */
 
-:root {
-    --dark-grey-color: #454545;
-    --light-grey-color: #899499;
-    --gold-color: #B98F44;
-    --main-font: 'Saira Condensed', sans-serif;
-    --border-radius: 10px;
-    --letter-spacing: 4px;
-}
-
 body, html {
-    color: var(--gold-color);
+    color: var(--logo-gold-color);
     font-family: var(--main-font);
     letter-spacing: var(--letter-spacing);
     margin: 0;
@@ -20,7 +11,7 @@ body, html {
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: var(--grey-color);
+    background-color: var(--dark-grey-color);
 }
 
 .home-page {
@@ -102,11 +93,11 @@ body, html {
 }
 
 .concept-container:first-child {
-    border-right: 1px dashed var(--gold-color);
+    border-right: 1px dashed var(--logo-gold-color);
 }
 
 .concept-container:last-child {
-    border-left: 1px dashed var(--gold-color);
+    border-left: 1px dashed var(--logo-gold-color);
 }
 
 .concept-icon-container {
@@ -151,6 +142,7 @@ body, html {
 
 .team-logo, .team-name h1 {
     object-fit: contain;
+    color: var(--logo-black-color);
 }
 
 .logo-container {
@@ -228,7 +220,7 @@ body, html {
 }
 
 .category {
-    border-bottom: 1px solid var(--gold-color);
+    border-bottom: 1px solid var(--logo-gold-color);
 }
 
 /* SUBMIT BUTTON */
@@ -357,7 +349,7 @@ body, html {
     }
 
     .category {
-        border-bottom: 1px solid var(--gold-color);
+        border-bottom: 1px solid var(--logo-gold-color);
     }
 
     /* TEAM SUMMARY */
