@@ -1,6 +1,25 @@
 body {
   background-color: #454545;
+  color: #B98F44;
+  font-family: 'Saira Condensed', sans-serif;
+  letter-spacing: 4px;
+  border: 1px solid white;
 }
+
+.title {
+  font-weight: 900;
+  font-size: 4em;
+  text-align: center;
+  border: 1px solid white;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* .title h1 {
+  border: 1px solid white;
+} */
+/*
 
 .title {
   color: #B98F44;
@@ -117,7 +136,7 @@ body {
 }
 
 .team-logo {
-  height: 250px; /* adjust as needed */
+  height: 250px;
   width: auto;
   animation: grow-shrink 4s infinite ease-in-out;
 }
@@ -135,5 +154,4 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* width */
-}
+} */
