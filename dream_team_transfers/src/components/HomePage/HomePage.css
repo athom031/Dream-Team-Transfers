@@ -7,6 +7,7 @@ body {
     height: 20em;
     object-fit: cover;
     object-position: center;
+    border-radius: 10px;
 }
 
 .title {
@@ -15,4 +16,16 @@ body {
     font-weight: 900;
     letter-spacing: 4px;
     font-size: 2em;
+    text-align: center;
+}
+
+.intro {
+  display: flex;
+}
+
+.concept, .slideshow {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
