@@ -5,7 +5,7 @@ function PlayerList() {
   const [players, setPlayers] = useState([]);
 
   useEffect(() => {
-    Papa.parse('/players.csv', {
+    Papa.parse('/csvs/players.csv', {
       download: true,
       header: true,
       complete: (results) => {
