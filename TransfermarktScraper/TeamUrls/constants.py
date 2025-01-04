@@ -18,10 +18,10 @@ LEAGUES_TO_INCLUDE = [
     { 'id': 1, 'name': 'Championship' },
     { 'id': 2, 'name': 'La Liga' },
     { 'id': 3, 'name': 'Bundesliga' },
-    { 'id': 4, 'name': '' },
-    { 'id': 5, 'name': '' },
-    { 'id': 6, 'name': '' },
-    { 'id': 7, 'name': '' }
+    { 'id': 4, 'name': 'Serie A' },
+    { 'id': 5, 'name': 'Ligue 1' },
+    { 'id': 6, 'name': 'Liga Portugal' },
+    { 'id': 7, 'name': 'Eredivisie' }
 ]
 
 LEAGUES_TO_PARSE = [
@@ -99,11 +99,82 @@ LEAGUES_TO_PARSE = [
         'url': 'https://www.transfermarkt.com/bundesliga/startseite/wettbewerb/L2'
     },
 	## SERIE A ##
-	# {
-	# 	id: 4,
-	# 	toAddElsewhere: [
+	{
+		'id': 4,
+		'toAddElsewhere': [
+			{ 'name': 'Spezia Calcio', 'leagueToAddIn': None },
+			{ 'name': 'US Cremonese', 'leagueToAddIn': None },
+			{ 'name': 'UC Sampdoria', 'leagueToAddIn': None }
+		],
+		'url': 'https://www.transfermarkt.com/serie-a/startseite/wettbewerb/IT1'
+	},
+	## SERIE B ##
+	{
+		'id': None,
+		'toAddElsewhere': [
+			{ 'name': 'Frosinone Calcio', 'leagueToAddIn': 4},
+			{ 'name': 'Genoa CFC', 'leagueToAddIn': 4},
+			{ 'name': 'Cagliari Calcio', 'leagueToAddIn': 4}
+		],
+		'url': 'https://www.transfermarkt.com/serie-b/startseite/wettbewerb/IT2'
+	},
+	## LIGUE 1 ##
+	{
+		'id': 5,
+		'toAddElsewhere': [
+			{ 'name': 'AJ Auxerre', 'leagueToAddIn': None },
+			{ 'name': 'AC Ajaccio', 'leagueToAddIn': None },
+			{ 'name': 'ESTAC Troyes', 'leagueToAddIn': None },
+			{ 'name': 'Angers SCO', 'leagueToAddIn': None }
+		],
+		'url': 'https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR1'
+	},
+	## LIGUE 2 ##
+	{
+		'id': None,
+		'toAddElsewhere': [
+			{ 'name': 'Le Havre AC', 'leagueToAddIn': 5 },
+			{ 'name': 'FC Metz', 'leagueToAddIn': 5 }
+		],
+		'url': 'https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR2'
+	},
+	## LIGA PORTUGAL ##
+	{
+		'id': 6,
+		'toAddElsewhere': [
+			{ 'name': 'FC Paços de Ferreira', 'leagueToAddIn': None },
+			{ 'name': 'CD Santa Clara', 'leagueToAddIn': None },
+		],
+		'url': 'https://www.transfermarkt.com/liga-nos/startseite/wettbewerb/PO1'
+	},
+	## LIGA PORTUGAL 2 ##
+	{
+		'id': None,
+		'toAddElsewhere': [
+			{ 'name': 'Moreirense FC', 'leagueToAddIn': 6 },
+			{ 'name': 'SC Farense', 'leagueToAddIn': 6 }
+		],
+		'url': 'https://www.transfermarkt.com/liga-nos/startseite/wettbewerb/PO2'
+	},
+	## EREDIVISIE ##
+	{
+		'id': 7,
+		'toAddElsewhere': [
+			{ 'name': 'FC Emmen', 'leagueToAddIn': None },
+			{ 'name': 'SC Cambuur Leeuwarden', 'leagueToAddIn': None },
+			{ 'name': 'FC Groningen', 'leagueToAddIn': None }
+		],
+		'url': 'https://www.transfermarkt.com/eredivisie/startseite/wettbewerb/NL1'
+	},
+	## KEUKEN KAMPIOEN DIVISIE ##
+	{
+		'id': None,
+		'toAddElsewhere': [
+			{ 'name': 'Heracles Almelo', 'leagueToAddIn': 7 },
+			{ 'name': 'PEC Zwolle', 'leagueToAddIn': 7 },
+			{ 'name': 'Almere City FC', 'leagueToAddIn': 7 }
 
-	# 	],
-	# 	url: ''
-	# }
+		],
+		'url': 'https://www.transfermarkt.com/eredivisie/startseite/wettbewerb/NL2'
+	}
 ]
