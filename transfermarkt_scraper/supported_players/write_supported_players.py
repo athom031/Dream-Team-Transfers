@@ -5,22 +5,20 @@ from bs4 import BeautifulSoup
 # project defined imports
 from transfermarkt_scraper.constants.csv_names import (
     CSV,
-    SUPPORTED_TEAMS,
-    SUPPORTED_PLAYERS,
-    # CSV LEAGUE COL NAMES
-    TEAM_URL,
-    TEAM_ID,
     LEAGUE_ID,
-    # CSV PLAYER COL NAMES
+    PLAYER_BIRTH_DATE,
     PLAYER_ID,
-    PLAYER_NAME,
-    PLAYER_SHORTENED_NAME,
     PLAYER_KIT_NUMBER,
-    PLAYER_POSITION,
-    PLAYER_NATIONALITY,
+    PLAYER_NAME,
     PLAYER_NAT_FLAG,
+    PLAYER_NATIONALITY,
     PLAYER_PHOTO,
-    PLAYER_BIRTH_DATE
+    PLAYER_POSITION,
+    PLAYER_SHORTENED_NAME,
+    SUPPORTED_PLAYERS,
+    SUPPORTED_TEAMS,
+    TEAM_ID,
+    TEAM_URL
 )
 from transfermarkt_scraper.constants.webpage_tags import BASE_WEBPAGE, WEBPAGE_TEAM_TABLE_CLASS
 from transfermarkt_scraper.utils.get_page_soup import get_page_soup

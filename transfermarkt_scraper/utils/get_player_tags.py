@@ -1,6 +1,12 @@
 # project defined imports
 from transfermarkt_scraper.constants.headers import HEADERS
-from transfermarkt_scraper.constants.webpage_tags import CLASS, TBODY, TR, WEBPAGE_TEAM_PLAYER_TAGS, WEBPAGE_TEAM_TABLE_CLASS
+from transfermarkt_scraper.constants.webpage_tags import (
+    CLASS
+    TBODY,
+    TR,
+    WEBPAGE_TEAM_PLAYER_TAGS,
+    WEBPAGE_TEAM_TABLE_CLASS
+)
 from transfermarkt_scraper.utils.get_page_soup import get_page_soup
 
 def get_player_tags(url):

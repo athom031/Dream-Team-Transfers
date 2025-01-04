@@ -1,12 +1,12 @@
 # project defined imports
 from transfermarkt_scraper.constants.leagues_to_parse import TEAMS_TO_ADD_ELSEWHERE
 from transfermarkt_scraper.constants.webpage_tags import (
-    TITLE,
+    HREF,
     IMG,
     SRC,
-    HREF,
-    WEBPAGE_VALID_TEAM_CONDITIONAL,
+    TITLE,
     WEBPAGE_INVALID_TEAM_CONDITIONAL
+    WEBPAGE_VALID_TEAM_CONDITIONAL,
 )
 def get_team_info(team_soup, league_id, league):
     # valid team soup example
