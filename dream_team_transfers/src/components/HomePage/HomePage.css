@@ -34,7 +34,7 @@ body, html {
 .logo-container,
 .team-name,
 .selected-team-information,
-.slideshow,
+.home-page-slideshow,
 .team-summary,
 .team-value,
 .team-budget,
@@ -64,7 +64,7 @@ body, html {
 .logo-container,
 .team-name,
 .team-summary,
-.slideshow
+.home-page-slideshow
 {
     flex-direction: row;
 }
@@ -165,7 +165,7 @@ body, html {
 
 /* SLIDESHOW */
 
-.slideshow {
+.home-page-slideshow {
     position: relative;
     overflow: hidden;
     height: 100%;
@@ -298,7 +298,7 @@ body, html {
     }
 
     /* SLIDESHOW */
-    .slideshow {
+    .home-page-slideshow {
         padding: 25vw 20vw;
     }
 
@@ -398,7 +398,7 @@ body, html {
     }
 
     /* SLIDESHOW */
-    .slideshow {
+    .home-page-slideshow {
         padding: 30vw 20vw;
     }
 

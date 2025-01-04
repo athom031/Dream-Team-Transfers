@@ -182,7 +182,7 @@ function HomePage() {
         <div className='selected-team-information'>
 
           {/* SLIDESHOW */}
-          <div className='slideshow'>
+          <div className='home-page-slideshow'>
             <Slideshow selectedTeam={selectedTeam} />
           </div>
 
