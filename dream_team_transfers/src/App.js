@@ -1,29 +1,22 @@
+import React, { useState, useEffect } from 'react';
+import { initializeDB, getTeamPicked } from './db/db-utils';
+
 function App() {
   const [teamData, setTeamData] = useState(null);
 
   useEffect(() => {
-    initializeDB().then((data) => {
-      getTeamData().then(data => setTeamData(data));
+    initializeDB().then(() => {
+      getTeamPicked().then(data => setTeamData(data));
     });
   }, []);
 
   if (teamData === null) {
-    return <div>Loading...</div>;
-  } else if (!teamData.team_picked) {
-    return (
-      <div>
-        <h1>
-          Team not picked yet!
-        </h1>
-      </div>
-    );
+    return <div>Retrieving info from database...</div>;
+  } else if (teamData === -1) {
+    return <div>No team picked</div>;
   } else {
-    return (
-      <div>
-        <h1>
-          Team picked: {teamData.team_name}
-        </h1>
-      </div>
-    );
+    return <div>Team picked: {teamData}</div>;
   }
 }
+
+export default App;
