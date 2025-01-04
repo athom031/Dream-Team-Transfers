@@ -1,7 +1,6 @@
 # project defined imports
-from transfermarkt_scraper.constants.csv_names import GLITCHED_CRESTS  
-from transfermarkt_scraper.constants.leagues_to_parse import TEAMS_TO_ADD_ELSEWHERE
-from transfermarkt_scraper.constants.webpage_tags import (
+from constants.leagues_to_parse import TEAMS_TO_ADD_ELSEWHERE
+from constants.webpage_tags import (
     BASE_WEBPAGE,
     HREF,
     IMG,
@@ -34,8 +33,8 @@ def get_team_info(team_soup, league_id, league):
     team_name = team_soup.a[TITLE]
     team_data_url = BASE_WEBPAGE + team_soup.a[HREF]
 
-    # assign either the parsed link or solution if found to be glitched
-    team_crest = GLITCHED_CRESTS[team_name] if team_name in GLITCHED_CRESTS else team_soup.find(IMG)[SRC]
+    # parse link for team crest
+    team_crest = team_soup.find(IMG)[SRC]
 
     # check if valid field for team
     if(

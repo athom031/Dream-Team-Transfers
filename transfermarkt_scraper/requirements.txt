@@ -1,0 +1,6 @@
+pandas
+csv
+datetime
+bs4
+os
+requests

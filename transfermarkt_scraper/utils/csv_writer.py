@@ -1,6 +1,6 @@
 import pandas as pd
 # project defined imports
-from transfermarkt_scraper.constants.csv_names import (
+from constants.csv_names import (
     BIG_TAG,
     CSV,
     CSVS,
@@ -49,8 +49,8 @@ from transfermarkt_scraper.constants.csv_names import (
     TEAM_NAME,
     TEAMS
 )
-from transfermarkt_scraper.utils.get_df_from_csv import get_df_from_csv
-from transfermarkt_scraper.utils.get_csv_path import get_csv_path
+from utils.get_df_from_csv import get_df_from_csv
+from utils.get_csv_path import get_csv_path
 
 # prompt user that csv file has been successfully written
 def prompt_successful_csv_write(file, dir):

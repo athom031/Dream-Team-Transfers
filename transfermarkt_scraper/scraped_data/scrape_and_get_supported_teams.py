@@ -1,6 +1,6 @@
 import pandas as pd
 # project defined imports
-from transfermarkt_scraper.constants.csv_names import (
+from constants.csv_names import (
     LEAGUE_ID,
     LEAGUE_LOGO,
     LEAGUE_NAME,
@@ -12,18 +12,18 @@ from transfermarkt_scraper.constants.csv_names import (
     TEAM_ID,
     TEAM_NAME
 )
-from transfermarkt_scraper.constants.leagues_to_parse import (
+from constants.leagues_to_parse import (
     LEAGUES_TO_PARSE,
     LOGO,
     NAME,
     NATION,
     URL
 )
-from transfermarkt_scraper.constants.webpage_tags import TEAM_IN_LEAGUE
-from transfermarkt_scraper.utils.csv_writer import prompt_successful_csv_write
-from transfermarkt_scraper.utils.get_csv_path import get_csv_path
-from transfermarkt_scraper.utils.get_page_soup import get_page_soup
-from transfermarkt_scraper.utils.get_team_info import get_team_info
+from constants.webpage_tags import TEAM_IN_LEAGUE
+from utils.csv_writer import prompt_successful_csv_write
+from utils.get_csv_path import get_csv_path
+from utils.get_page_soup import get_page_soup
+from utils.get_team_info import get_team_info
 
 def scrape_and_get_supported_teams():
     # create list for supported teams to be converted into data frame and written as a csv
@@ -42,7 +42,7 @@ def scrape_and_get_supported_teams():
                 team_data_url
             ) = get_team_info(team_soup, league_id, league)
         
-            # if team is supported for 23/24 season, get 23/24 season league info
+            # if team is supported for 24/25 season, get 24/25 season league info
             if(next_season_league_id is not None):
                 next_season_league = LEAGUES_TO_PARSE[next_season_league_id]
 
@@ -82,3 +82,4 @@ def scrape_and_get_supported_teams():
     supported_teams.to_csv(supported_teams_path, index_label=TEAM_ID)
 
     prompt_successful_csv_write(SUPPORTED_TEAMS, SCRAPED_DATA)
+    

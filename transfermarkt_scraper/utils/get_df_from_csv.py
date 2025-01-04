@@ -2,7 +2,7 @@
 import csv
 import pandas as pd
 # project defined imports
-from transfermarkt_scraper.constants.csv_names import CSV, READ
+from constants.csv_names import CSV, READ
 
 def get_df_from_csv(csv_path):
     # open supported csv file using csv.reader

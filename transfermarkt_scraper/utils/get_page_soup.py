@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 # project defined imports
-from transfermarkt_scraper.constants.headers import HEADERS
+from constants.headers import HEADERS
 
 def get_page_soup(url, element_class):
     # download webpage from url

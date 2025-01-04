@@ -1,8 +1,5 @@
-
 # project defined imports
-
-# project defined imports
-from transfermarkt_scraper.utils.csv_writer import (
+from utils.csv_writer import (
     write_leagues_csv,
     write_nations_csv,
     write_players_csv,

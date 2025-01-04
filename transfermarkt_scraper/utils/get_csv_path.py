@@ -1,6 +1,6 @@
 import os
 # user defined imports
-from transfermarkt_scraper.constants.csv_names import CSV
+from constants.csv_names import CSV
 
 def get_csv_path(dir, file):
     # get path to current script

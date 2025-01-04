@@ -161,12 +161,6 @@ POSITIONS_DICT= {
     }
 }
 
-# GLITCHED LINKS
-GLITCHED_CRESTS = {
-    'Burnley FC': 'https://tmssl.akamaized.net/images/wappen/tiny/1132.png?lm=1686818840',
-    'Swansea City': 'https://tmssl.akamaized.net/images/wappen/tiny/2288.png?lm=1658400285'
-}
-
 # PICTURE TAGS
 CURR_TAG = 'curr'
 SMALL_TAG = 'small'
