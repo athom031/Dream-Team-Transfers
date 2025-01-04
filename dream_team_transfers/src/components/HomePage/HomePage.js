@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
 import { PREMIER_LEAGUE_TEAM_INFOS } from '../../constants/pl-team-infos';
+import { CURRENCY_UNIT, getCurrencyDenomination, getCurrencyRounded } from '../../utils/money-utils';
 
 function HomePage() {
   const [teamIndex, setTeamIndex] = useState(null);
@@ -119,7 +120,7 @@ function HomePage() {
       <div className='team-selection'>
         <div className='team-picker'>
           <img
-            src={`${process.env.PUBLIC_URL}/assets/left-arrow${isHoveredLeft ? '-hover' : ''}.png`}
+            src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/left${isHoveredLeft ? '-hover' : ''}.png`}
             onMouseEnter={() => setIsHoveredLeft(true)}
             onMouseLeave={() => setIsHoveredLeft(false)}
             onClick={handleLeftClick}
@@ -139,7 +140,7 @@ function HomePage() {
             </div>
           </div>
           <img
-            src={`${process.env.PUBLIC_URL}/assets/right-arrow${isHoveredRight ? '-hover' : ''}.png`}
+            src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/right${isHoveredRight ? '-hover' : ''}.png`}
             onMouseEnter={() => setIsHoveredRight(true)}
             onMouseLeave={() => setIsHoveredRight(false)}
             onClick={handleRightClick}
@@ -152,10 +153,26 @@ function HomePage() {
 
           <div className='team-summary'>
             <div className='team-value'>
-              {'Value: ' + (selectedTeam !== null ? `€ ${PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_value / 1000000}` : '?') + ' Million'}
+              <div className='category'>
+                Value:
+              </div>
+              <div className='money'>
+                {CURRENCY_UNIT} {selectedTeam !== null ? getCurrencyRounded(PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_value) : '?'}
+              </div>
+              <div className='unit'>
+                {selectedTeam !== null ? getCurrencyDenomination(PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_value) : ''}
+              </div>
             </div>
             <div className='team-budget'>
-              {'Budget: ' + (selectedTeam !== null ? `€ ${PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_budget / 1000000}` : '?') + ' Million'}
+              <div className='category'>
+                Budget:
+              </div>
+              <div className='money'>
+                {CURRENCY_UNIT} {selectedTeam !== null ? getCurrencyRounded(PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_budget) : '?'}
+              </div>
+              <div className='unit'>
+                {selectedTeam !== null ? getCurrencyDenomination(PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_budget) : ''}
+              </div>
             </div>
           </div>
 

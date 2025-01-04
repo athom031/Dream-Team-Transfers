@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import { initializeDB, getTeamPicked } from './db/db-utils';
-import Loading from './components/Utils/Loading';
+import Loading from './components/HomePage/Loading';
 import HomePage from './components/HomePage/HomePage';
 import DreamTeam from './components/DreamTeam/DreamTeam';
 
