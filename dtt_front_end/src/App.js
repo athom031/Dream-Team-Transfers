@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import Dexie from 'dexie';
 import HomePage from './components/HomePage/HomePage';
 import DreamTeam from './components/DreamTeam/DreamTeam';
-import { DB_NAME, DB_VERSION, DB_ID, DB_SCHEMA } from './constants/db-constants';
+import { getDb, getDbField } from './constants/db-constants';
 
 function App() {
   const [teamPicked, setTeamPicked] = useState(false);
 
   useEffect(() => {
     // if not yet initialized, initialize the database
-    const db = new Dexie(DB_NAME);
-    db.version(DB_VERSION).stores({
-      team: DB_SCHEMA
-    });
+    // and get the team_picked
+    const intervalId = setInterval(() => {
+      getDbField('team_picked').then((teamPicked) => {
+        console.log(teamPicked);
+        setTeamPicked(teamPicked);
+      });
+    }, 500); // Check every second
 
-    // check if a team has been picked (checking browser db)
-    db.team.get(DB_ID).then((team) => {
-      if (team && team.team_picked) {
-        setTeamPicked(true);
-      }
-    });
+    // Clean up the interval on unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
