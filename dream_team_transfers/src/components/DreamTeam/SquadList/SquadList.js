@@ -74,6 +74,7 @@ function SquadList({
           className={`squad-list-button ${isButtonActive ? 'active' : ''}`}
           onMouseDown={handleButtonPress}
           onMouseUp={handleButtonRelease}
+          onMouseLeave={handleButtonRelease}
         >
           <span className={`sell-text ${isButtonActive ? 'active' : ''}`}>Sell</span>
           {isButtonActive && <div className="fill-effect"></div>}
