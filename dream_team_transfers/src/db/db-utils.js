@@ -99,7 +99,8 @@ export function updateKitNumber(playerId, playerKitNumber) {
   .then(
     () => {
       return db.get('dtt_data').then(doc => {
-        doc.team_kit_updates = {...doc.team_kit_updates, playerId: playerKitNumber};
+
+        doc.team_kit_updates[playerId] = playerKitNumber;
         return db.put(doc);
       });
     }
