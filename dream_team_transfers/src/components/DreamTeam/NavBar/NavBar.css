@@ -38,7 +38,7 @@
     align-items: center;
 }
 
-.logo-container {
+.nav-logo-container {
     height: 8vh;
     width: auto;
     display: flex;
@@ -46,11 +46,11 @@
     flex: 0;
 }
 
-.logo-container span {
+.nav-logo-container span {
     align-self: center;
 }
 
-.logo-padding-container {
+.nav-logo-padding-container {
     flex: 3;
     padding: 0em 5em 0em 5em;
 }

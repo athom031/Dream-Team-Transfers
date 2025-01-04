@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { PREMIER_LEAGUE_TEAM_INFOS } from '../../constants/pl-team-infos';
 import { CURRENCY_UNIT, getCurrencyDenomination, getCurrencyRounded } from '../../utils/money-utils';
 import { selectTeam } from '../../db/db-utils';
-import { getSubmitButton } from '../../utils/submit-button';
+import { getSubmitButton } from './SubmitButton';
 import Loading from './Loading';
 
 import './HomePage.css';
