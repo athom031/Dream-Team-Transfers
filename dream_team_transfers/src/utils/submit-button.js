@@ -17,17 +17,17 @@ export const getSubmitButton = () => {
 
   /* Styles for laptops and larger screens */
   @media screen and (min-width: 1024px) {
-    font-size: 2vw;
+    font-size: 1.5vw;
   }
 
   /* Styles for phones and tablets in landscape mode */
   @media screen and (max-width: 1023px) and (orientation: landscape) {
-    font-size: 2.5vw;
+    font-size: 2vw;
   }
 
   /* Styles for phones and tablets in portrait mode */
   @media screen and (max-width: 1023px) and (orientation: portrait) {
-    font-size: 3.5vw;
+    font-size: 3vw;
   }
 
 
