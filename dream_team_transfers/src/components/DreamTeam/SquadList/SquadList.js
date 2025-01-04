@@ -3,6 +3,7 @@ import { getTeamData } from '../../../db/db-utils';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useTable, useSortBy } from 'react-table';
 import Loading from '../../Misc/Loading'
+import { getCurrencyDenominationShort, getCurrencyRounded, CURRENCY_UNIT } from '../../../utils/money-utils';
 
 function SquadList({
     NationsCSVData,
@@ -35,6 +36,10 @@ function SquadList({
             age--;
         }
         return age;
+    }
+
+    function removeAccents(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
     const sellPlayer = (playerId) => () => {
@@ -153,11 +158,20 @@ function SquadList({
                 {
                     Header: 'Name',
                     accessor: 'player_name',
+                    Cell: ({ row }) => <div className='player-name'>{row.original.player_name}</div>,
+                    sortType: (rowA, rowB, columnId) => {
+                        const a = removeAccents(rowA.values[columnId]);
+                        const b = removeAccents(rowB.values[columnId]);
+                        return a.localeCompare(b);
+                    }
                 },
                 {
                     Header: 'Age',
                     accessor: 'player_birth_date',
                     Cell: ({ row }) => <div>{row.original.player_age}</div>,
+                    sortType: (rowA, rowB) => {
+                        return rowB.original.player_birth_date - rowA.original.player_birth_date;
+                    }
                 },
                 {
                     Header: 'Nation',
@@ -165,18 +179,28 @@ function SquadList({
                     Cell: ({ row }) => (
                         <div className='nation-cell'>
                             <img src={relevantNations[row.original.nation_id].nation_pic} alt="Flag" />
-                            <div>{relevantNations[row.original.nation_id].nation_name}</div>
+                            <p>{relevantNations[row.original.nation_id].nation_name}</p>
                         </div>
-                    )
+                    ),
                 },
                 {
                     Header: 'Position',
                     accessor: 'position_id',
-                    Cell: ({ row }) => <div>{relevantPositions[row.original.position_id].position_acronym}</div>
+                    Cell: ({ row }) => <div className='player-position'>{relevantPositions[row.original.position_id].position_acronym}</div>,
                 },
                 {
                     Header: 'Value',
                     accessor: 'player_market_value',
+                    Cell: ({ row }) => (
+                        <div className='player-value'>
+                            <span>
+                                {CURRENCY_UNIT} {getCurrencyRounded(row.original.player_market_value)} {getCurrencyDenominationShort(row.original.player_market_value)}
+                            </span>
+                        </div>
+                    ),
+                    sortType: (rowA, rowB) => {
+                        return rowB.original.player_market_value - rowA.original.player_market_value;
+                    }
                 },
                 {
                     Header: 'Sell',
@@ -200,7 +224,7 @@ function SquadList({
     return columns.length === 0 ?
         <Loading /> : (
         <div className="SquadList">
-            <table {...getTableProps()}>
+            <table {...getTableProps()} className='squad-table'>
                 <thead>
                     {headerGroups.map(headerGroup => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
@@ -210,8 +234,8 @@ function SquadList({
                                     <span>
                                         {column.isSorted
                                             ? column.isSortedDesc
-                                                ? ' 🔽'
-                                                : ' 🔼'
+                                                ? ' 🔼'
+                                                : ' 🔽'
                                             : ''}
                                     </span>
                                 </th>
