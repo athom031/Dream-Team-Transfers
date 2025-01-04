@@ -19,7 +19,6 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid white;
     overflow: hidden;
 }
 
@@ -250,7 +249,7 @@ body, html {
 
 .submit-button {
     flex: 2;
-    border: 1px solid white;
     align-items: center;
     justify-content: center;
+    padding-bottom: 2vh;
 }

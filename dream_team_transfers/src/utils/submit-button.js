@@ -9,7 +9,7 @@ export const getSubmitButton = () => {
   border: 10px solid ${props => props.team !== null ? PREMIER_LEAGUE_TEAM_INFOS[props.team].third_color : '#5A5A5A'};
   padding: 20px 40px;
   border-radius: 20px;
-  font-size: 1.75em;
+  font-size: 2vw;
   font-family: 'Saira Condensed', sans-serif;
   font-weight: 900;
   letter-spacing: 4px;
