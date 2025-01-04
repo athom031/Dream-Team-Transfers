@@ -23,7 +23,7 @@
 .team-restart-slideshow-container {
     position: relative;
     overflow: hidden;
-    height: 100%;
+    /* height: 80%; */
 }
 
 .restart-warning {
@@ -57,12 +57,21 @@
     background-color: var(--restart-beige-color);
 }
 
+.restart-title {
+    padding: 0rem 1rem 0rem 1rem;
+    font-size: 2.5em;
+}
+
+.restart-info-text {
+    font-size: 1.75em;
+    padding: 0rem 1rem 0rem 1rem;
+}
+
 /* Styles for laptops and larger screens */
 @media screen and (min-width: 1024px) {
 
     .team-restart-container {
         flex-direction: row;
-        padding-top: 2rem;
     }
 
     .team-restart-info {
@@ -70,30 +79,20 @@
         padding: 0em 2rem 0em 2rem;
     }
 
-    .restart-title {
-        padding: 0rem 1rem 0rem 1rem;
-        font-size: 5vh;
-    }
-
-    .restart-info-text {
-        font-size: 3vh;
-        padding: 0rem 1rem 0rem 1rem;
-    }
-
     .team-restart-slideshow-container {
-        width: auto;
-        width: 50vw;
+        height: 100%;
+        width: 50%;
     }
 
     .restart-button {
-        margin-top: 2em;
+        margin-top: 1em;
+        margin-bottom: 5em;
     }
 
     .progress-bar {
         width: 50%;
         height: 20px;
         overflow:hidden;
-        margin-top: 1em;
     }
 
 }
@@ -114,16 +113,6 @@
         width: 100vw;
     }
 
-    .restart-title {
-        padding: 0rem 1rem 0rem 1rem;
-        font-size: 3.5vw;
-    }
-
-    .restart-info-text {
-        font-size: 2.5vw;
-        padding: 0rem 1rem 0rem 1rem;
-    }
-
     .team-restart-slideshow-container {
         width: 80vw;
         height: 60vh;
@@ -137,11 +126,12 @@
 
     .progress-bar-fill {
         border-radius: var(--border-radius);
+        border: 2px solid var(--restart-beige-color);
     }
 
     .restart-button {
         margin-top: 1em;
-        margin-bottom: 1em;
+        margin-bottom: 5em;
     }
 
 }
@@ -162,16 +152,6 @@
         width: 100vw;
     }
 
-    .restart-title {
-        padding: 0rem 1rem 0rem 1rem;
-        font-size: 5vw;
-    }
-
-    .restart-info-text {
-        font-size: 3vw;
-        padding: 0rem 1rem 0rem 1rem;
-    }
-
     .team-restart-slideshow-container {
         width: 100vw;
         height: 50vh;
@@ -185,11 +165,12 @@
 
     .progress-bar-fill {
         border-radius: var(--border-radius);
+        border: 2px solid var(--restart-beige-color);
     }
 
     .restart-button {
         margin-top: 1em;
-        margin-bottom: 1em;
+        margin-bottom: 5em;
     }
 
 }
