@@ -7,31 +7,22 @@
     --border-radius: 10px;
 }
 
-body, html {
+body {
     background-color: var(--background-color);
     color: var(--gold-color);
     font-family: var(--main-font);
     letter-spacing: 4px;
-    height: 100vh;
-    width: 100vw;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
 }
 
 .home-page {
-    height: 100vh;
-    width: 100vw;
     border: 15px solid white;
     justify-content: center;
     align-items: center;
-}
-
-.home-page-content {
-    height: 90vh;
 }
 
 /* BASE FLEX SETTINGS */
@@ -252,4 +243,40 @@ body, html {
     align-items: center;
     justify-content: center;
     padding-bottom: 2vh;
+}
+
+/* Styles for laptops and larger screens */
+@media screen and (min-width: 1024px) {
+    body,
+    .home-page {
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+    }
+
+    .home-page-content {
+        height: 90vh;
+    }
+}
+
+/* Styles for phones and tablets in landscape mode */
+@media screen and (max-width: 1023px) and (orientation: landscape) {
+    body {
+        background-color: tan;
+    }
+
+    .home-page-content {
+        flex-direction: column;
+    }
+}
+
+/* Styles for phones and tablets in portrait mode */
+@media screen and (max-width: 1023px) and (orientation: portrait) {
+    body {
+        background-color: skyblue;
+    }
+
+    .home-page-content {
+        flex-direction: column;
+    }
 }
