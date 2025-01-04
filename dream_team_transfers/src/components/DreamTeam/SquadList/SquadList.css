@@ -19,14 +19,13 @@
     width: 100%;
     background-color: #454545;
     padding-bottom: 1em;
-    border-bottom: 1px solid #D3D3D3; /* Add this line */
+    border-bottom: 1px solid #D3D3D3;
 }
 
 .header-description {
     width: 50%;
     justify-content: center;
     margin-left: 2em;
-    /* Add any additional styling you want for the description here */
 }
 
 .nation-cell, .player-profile, .player-position, .player-value, .player-name, .player-kit-number {
@@ -104,7 +103,7 @@
 }
 
 .squad-list-button {
-    background-color: #B98F44; /* for example, green */
+    background-color: #B98F44; /* the color of the progress bar */
     border: none;
     color: white;
     padding: 15px 32px;
@@ -116,7 +115,32 @@
     cursor: pointer;
     transition-duration: 0.4s;
     border-radius: 5%;
+    position: relative;
+    overflow: hidden;
 }
 .squad-list-button:hover {
     background-color: #8B6C42;
+}
+.squad-list-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    background: #B98F44; /* the color of the button */
+    width: 100%;
+    transition: width 2s linear;
+}
+.squad-list-button.active::before {
+    width: 0;
+}
+.squad-list-button .sell-text {
+    position: relative;
+    z-index: 1;
+}
+.squad-list-button.active .sell-text {
+    color: white; /* change this to the color of your button background */
+}
+.squad-list-button:not(.active)::before {
+    transition: none;
 }

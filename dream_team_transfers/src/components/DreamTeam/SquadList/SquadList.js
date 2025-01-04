@@ -1,6 +1,6 @@
 import './SquadList.css';
 import { getTeamData, sellPlayer } from '../../../db/db-utils';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useTable, useSortBy } from 'react-table';
 import { getCurrencyDenomination, getCurrencyDenominationShort, getCurrencyRounded, CURRENCY_UNIT } from '../../../utils/money-utils';
 
@@ -40,43 +40,46 @@ function SquadList({
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
-
     function SellButton({ playerId }) {
-        const [isButtonActive, setIsButtonActive] = useState(false);
-        let timer = null;
-        const handleButtonPress = () => {
-            setIsButtonActive(true);
-            timer = setTimeout(() => {
-                const playerValue =
-                    Number(PlayersCSVData[playerId].player_market_value);
-                const currBudget = Number(teamBudget);
-                const currValue = Number(teamValue);
-                sellPlayer(playerId, playerValue)
-                    .then(() => {
-                        setPlayersSold([...playersSold, playerId]);
-                        setTeamBudget(String(currBudget + playerValue));
-                        setTeamValue(String(currValue - playerValue));
-                    });
-                setIsButtonActive(false);
-            }, 2000);
-        }
-        const handleButtonRelease = () => {
-            clearTimeout(timer);
-            if (isButtonActive) {
-                setIsButtonActive(false);
-            }
-        }
-        return (
-            <button
-              className={`squad-list-button ${isButtonActive ? 'active' : ''}`}
-              onMouseDown={handleButtonPress}
-              onMouseUp={handleButtonRelease}
-            >
-              Sell
-            </button>
-          );
-    }
+      const [isButtonActive, setIsButtonActive] = useState(false);
 
+      const timer = useRef(null); // create a ref for the timer
+
+      const handleButtonPress = () => {
+        setIsButtonActive(true);
+        timer.current = setTimeout(() => {
+          const playerValue =
+            Number(PlayersCSVData[playerId].player_market_value);
+          const currBudget = Number(teamBudget);
+          const currValue = Number(teamValue);
+          sellPlayer(playerId, playerValue)
+            .then(() => {
+              setPlayersSold([...playersSold, playerId]);
+              setTeamBudget(String(currBudget + playerValue));
+              setTeamValue(String(currValue - playerValue));
+            });
+          setIsButtonActive(false);
+        }, 2000);
+      }
+
+      const handleButtonRelease = () => {
+        clearTimeout(timer.current); // clear the timer stored in the ref
+        if (isButtonActive) {
+          setIsButtonActive(false);
+        }
+      }
+
+      return (
+        <button
+          className={`squad-list-button ${isButtonActive ? 'active' : ''}`}
+          onMouseDown={handleButtonPress}
+          onMouseUp={handleButtonRelease}
+        >
+          <span className={`sell-text ${isButtonActive ? 'active' : ''}`}>Sell</span>
+          {isButtonActive && <div className="fill-effect"></div>}
+        </button>
+      );
+    }
 
     // retrieve data from db
     useEffect(() => {
