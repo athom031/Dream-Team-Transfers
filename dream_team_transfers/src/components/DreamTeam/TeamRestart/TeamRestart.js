@@ -43,6 +43,7 @@ function TeamRestart() {
 
     return (
         <div className="team-restart">
+
             <div className='team-restart-container'>
 
                 <h1 className='restart-title'>
@@ -64,6 +65,7 @@ function TeamRestart() {
                     <div className="progress-bar-fill" style={{width: `${progress}%`}}></div>
                 </div>
             </div>
+
         </div>
     );
 }
