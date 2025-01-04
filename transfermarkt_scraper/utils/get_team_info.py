@@ -1,6 +1,13 @@
 # project defined imports
-from transfermarkt_scraper.constants.webpage_tags import WEBPAGE_VALID_TEAM_CONDITIONAL
-
+from transfermarkt_scraper.constants.leagues_to_parse import TEAMS_TO_ADD_ELSEWHERE
+from transfermarkt_scraper.constants.webpage_tags import (
+    TITLE,
+    IMG,
+    SRC,
+    HREF,
+    WEBPAGE_VALID_TEAM_CONDITIONAL,
+    WEBPAGE_INVALID_TEAM_CONDITIONAL
+)
 def get_team_info(team_soup, league_id, league):
     # valid team soup example
     """
@@ -25,21 +32,24 @@ def get_team_info(team_soup, league_id, league):
         team_name,
         team_url,
         team_small_logo,
-    ) = (team_soup.a['title'], team_soup.a['href'], team_soup.find('img')['src'])
+    ) = (team_soup.a[TITLE], team_soup.a[HREF], team_soup.find(IMG)[SRC])
 
     # check if valid field for team
-    if(WEBPAGE_VALID_TEAM_CONDITIONAL in team_url and not(team_name.startswith('<'))):
+    if(
+        WEBPAGE_VALID_TEAM_CONDITIONAL in team_url
+        and not(team_name.startswith(WEBPAGE_INVALID_TEAM_CONDITIONAL))
+    ):
 
         # team to be added in another league
         if(
-            team_name in league['teams_to_add_elsewhere']
-            and league['teams_to_add_elsewhere'][team_name] is not None
+            team_name in league[TEAMS_TO_ADD_ELSEWHERE]
+            and league[TEAMS_TO_ADD_ELSEWHERE][team_name] is not None
         ):
-            next_season_league_id = league['teams_to_add_elsewhere'][team_name]
+            next_season_league_id = league[TEAMS_TO_ADD_ELSEWHERE][team_name]
 
         # team to be added in current league
         elif(
-            team_name not in league['teams_to_add_elsewhere']
+            team_name not in league[TEAMS_TO_ADD_ELSEWHERE]
             # negative league ids given to unsupported leagues
             and league_id >= 0
         ):

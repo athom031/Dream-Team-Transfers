@@ -1,14 +1,26 @@
 import csv
 import os
+import pandas as pd
 from bs4 import BeautifulSoup
 # project defined imports
 from transfermarkt_scraper.constants.csv_names import (
     CSV,
     SUPPORTED_TEAMS,
-    # CSV COL NAMES
+    SUPPORTED_PLAYERS,
+    # CSV LEAGUE COL NAMES
     TEAM_URL,
     TEAM_ID,
-    LEAGUE_ID
+    LEAGUE_ID,
+    # CSV PLAYER COL NAMES
+    PLAYER_ID,
+    PLAYER_NAME,
+    PLAYER_SHORTENED_NAME,
+    PLAYER_KIT_NUMBER,
+    PLAYER_POSITION,
+    PLAYER_NATIONALITY,
+    PLAYER_NAT_FLAG,
+    PLAYER_PHOTO,
+    PLAYER_BIRTH_DATE
 )
 from transfermarkt_scraper.constants.webpage_tags import BASE_WEBPAGE, WEBPAGE_TEAM_TABLE_CLASS
 from transfermarkt_scraper.utils.get_page_soup import get_page_soup
@@ -52,52 +64,32 @@ with open(file_path, 'r') as csv_file:
 
             # add player data to array if valid
             if(player_data is not None):
-                supported_players_data.append(player_data)
+                supported_players_data.append(
+                    # name, shortened_name, kit_number, position, nationality, flag_url, photo_url, birth_date
+                    player_data +
+                    # add team id and league id to connect player to team and league info
+                    [team[team_id_index], team[league_id_index]]
+                )
 
-        # print(supported_players_data)
-        break
+# player_data to data frame
+df = pd.DataFrame(
+    supported_players_data,
+    columns=[
+        PLAYER_NAME,
+        PLAYER_SHORTENED_NAME,
+        PLAYER_KIT_NUMBER,
+        PLAYER_POSITION,
+        PLAYER_NATIONALITY,
+        PLAYER_NAT_FLAG,
+        PLAYER_PHOTO,
+        PLAYER_BIRTH_DATE,
+        TEAM_ID,
+        LEAGUE_ID
+    ]
+)
 
+# format data frame
+df.drop_duplicates(inplace=True)
 
-        # for tr_tag in tbody_tag.find_all('tr'):
-        #      # Check if the class attribute contains "even" or "odd"
-        #     if 'even' in tr_tag.get('class', []) or 'odd' in tr_tag.get('class', []):
-        #         # Append the <tr> tag to the array
-        #         rows.append(tr_tag)
-
-    # team_id = 0
-    # t_name_idx = 1
-    # t_s_logo_idx = 2
-    # t_url_idx = 3
-    # l_id = 4
-    # l_name_idx = 5
-    # l_nation_idx = 6
-    # l_logo_idx = 7
-
-    # # skip the first row which defines the columns of the csv
-    # next(reader)
-
-    # for team in reader:
-    #     page_soup = get_page_soup(BASE_WEBPAGE + team[t_url_idx], 'data-header__profile-container')
-    #     print(page_soup)
-    #     break
-
-
-
-    # Process the CSV file as needed
-    # csv_data = csv_file.read()
-    # print(csv_data)
-# print('Hello World')
-
-# # Open the CSV file
-# with open('/Users/thomaalex/Documents/DreamTeamTransfers/transfermarkt_scraper/supported_teams/supported_teams.csv', 'r') as file:
-#     # Create a CSV reader object
-#     reader = csv.reader(file)
-
-#     # Iterate over each row in the CSV file
-#     for row in reader:
-#         print(row)
-#         break
-
-#         # Access the data in each row
-#         # Example: Print the first column of each row
-#         # print(row[0])
+# write to csv
+df.to_csv(SUPPORTED_PLAYERS + CSV, index_label=PLAYER_ID)
