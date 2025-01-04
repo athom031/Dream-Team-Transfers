@@ -119,7 +119,7 @@ function HomePage() {
         <div className='slideshow'>
           <img
             src={slideshowPhotos[photoIndex]}
-            alt="Premier League Team Photo"
+            alt="Premier League Team"
             className="slideshow-image"
           />
         </div>
@@ -134,6 +134,7 @@ function HomePage() {
             onMouseLeave={() => setIsHoveredLeft(false)}
             onClick={handleLeftClick}
             className='arrow-button'
+            alt="left arrow"
           />
           <div className='logo-container'>
             <img
@@ -153,6 +154,7 @@ function HomePage() {
             onMouseLeave={() => setIsHoveredRight(false)}
             onClick={handleRightClick}
             className='arrow-button'
+            alt='right arrow'
           />
         </div>
 
