@@ -111,11 +111,11 @@ body, html {
 }
 
 .concept-container:first-child {
-    border-right: 1px solid var(--gold-color);
+    border-right: 1px dashed var(--gold-color);
 }
 
 .concept-container:last-child {
-    border-left: 1px solid var(--gold-color);
+    border-left: 1px dashed var(--gold-color);
 }
 
 .concept-icon-container {
@@ -139,46 +139,39 @@ body, html {
 
 /* TEAM SELECTOR */
 
+.team-selector {
+    justify-content: center;
+}
+
 .team-selection-padding {
-    padding: 3em 2em 0 2em;
-    border: 1px solid white;
+    padding: 0em 6em;
 }
 
 .team-selection-background {
     background-color: #899499;
     align-items: center;
     border-radius: var(--border-radius);
-    border: 1px solid white;
 }
 
 .team-picker {
     align-items: center;
-    justify-content: space-between;
-    border: 1px solid white;
+    justify-content: space-evenly;
 }
 
 .arrow-button {
     height: 25%;
     width: auto;
-    border: 1px solid white;
-}
-
-.team-name {
-    border: 1px solid white;
 }
 
 .team-logo, .team-name h1 {
     object-fit: contain;
-    border: 1px solid white;
 }
 
 .logo-container {
-    height: 250px;
-    width: 250px;
+    height: 25vh;
+    width: 25vw;
     justify-content: center;
-    align-items: center;
     max-width: 50%;
-    border: 1px solid white;
 }
 
 @keyframes grow-shrink {
@@ -191,7 +184,6 @@ body, html {
     height: 100%;
     width: auto;
     animation: grow-shrink 4s infinite ease-in-out;
-    border: 1px solid white;
 }
 
 /* SLIDESHOW */
