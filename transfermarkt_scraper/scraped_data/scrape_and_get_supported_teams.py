@@ -41,7 +41,7 @@ def scrape_and_get_supported_teams():
                 team_crest,
                 team_data_url
             ) = get_team_info(team_soup, league_id, league)
-
+        
             # if team is supported for 23/24 season, get 23/24 season league info
             if(next_season_league_id is not None):
                 next_season_league = LEAGUES_TO_PARSE[next_season_league_id]
@@ -57,7 +57,7 @@ def scrape_and_get_supported_teams():
                     # league_info
                     next_season_league_id, league_name, league_nation, league_logo
                 ])
-
+    
     # create data frame for supported teams
     supported_teams = pd.DataFrame(
         supported_teams_data,

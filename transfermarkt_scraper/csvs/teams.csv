@@ -4,7 +4,7 @@ team_id,team_name,team_crest_big_pic,team_crest_small_pic,league_id
 2,Aston Villa,https://tmssl.akamaized.net/images/wappen/head/405.png?lm=1469443765,https://tmssl.akamaized.net/images/wappen/small/405.png?lm=1469443765,0
 3,Brentford FC,https://tmssl.akamaized.net/images/wappen/head/1148.png?lm=1625150543,https://tmssl.akamaized.net/images/wappen/small/1148.png?lm=1625150543,0
 4,Brighton & Hove Albion,https://tmssl.akamaized.net/images/wappen/head/1237.png?lm=1492718902,https://tmssl.akamaized.net/images/wappen/small/1237.png?lm=1492718902,0
-5,Burnley FC,https://tmssl.akamaized.net/images/wappen/head/1132_1686900149.png?lm=1686900149,https://tmssl.akamaized.net/images/wappen/small/1132_1686900149.png?lm=1686900149,0
+5,Burnley FC,https://tmssl.akamaized.net/images/wappen/head/1132.png?lm=1686818840,https://tmssl.akamaized.net/images/wappen/small/1132.png?lm=1686818840,0
 6,Chelsea FC,https://tmssl.akamaized.net/images/wappen/head/631.png?lm=1682435911,https://tmssl.akamaized.net/images/wappen/small/631.png?lm=1682435911,0
 7,Crystal Palace,https://tmssl.akamaized.net/images/wappen/head/873.png?lm=1457723287,https://tmssl.akamaized.net/images/wappen/small/873.png?lm=1457723287,0
 8,Everton FC,https://tmssl.akamaized.net/images/wappen/head/29.png?lm=1445949846,https://tmssl.akamaized.net/images/wappen/small/29.png?lm=1445949846,0
@@ -40,7 +40,7 @@ team_id,team_name,team_crest_big_pic,team_crest_small_pic,league_id
 38,Southampton FC,https://tmssl.akamaized.net/images/wappen/head/180.png?lm=1444560086,https://tmssl.akamaized.net/images/wappen/small/180.png?lm=1444560086,1
 39,Stoke City,https://tmssl.akamaized.net/images/wappen/head/512.png?lm=1472243727,https://tmssl.akamaized.net/images/wappen/small/512.png?lm=1472243727,1
 40,Sunderland AFC,https://tmssl.akamaized.net/images/wappen/head/289.png?lm=1485645633,https://tmssl.akamaized.net/images/wappen/small/289.png?lm=1485645633,1
-41,Swansea City,https://tmssl.akamaized.net/images/wappen/head/2288_1658400314.png?lm=1658400315,https://tmssl.akamaized.net/images/wappen/small/2288_1658400314.png?lm=1658400315,1
+41,Swansea City,https://tmssl.akamaized.net/images/wappen/head/2288.png?lm=1658400285,https://tmssl.akamaized.net/images/wappen/small/2288.png?lm=1658400285,1
 42,Watford FC,https://tmssl.akamaized.net/images/wappen/head/1010.png?lm=1468103673,https://tmssl.akamaized.net/images/wappen/small/1010.png?lm=1468103673,1
 43,West Bromwich Albion,https://tmssl.akamaized.net/images/wappen/head/984.png?lm=1457991758,https://tmssl.akamaized.net/images/wappen/small/984.png?lm=1457991758,1
 44,Athletic Bilbao,https://tmssl.akamaized.net/images/wappen/head/621.png?lm=1565768743,https://tmssl.akamaized.net/images/wappen/small/621.png?lm=1565768743,2
