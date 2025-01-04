@@ -39,6 +39,10 @@ from transfermarkt_scraper.constants.csv_names import (
     POSITION_GROUPING,
     POSITIONS_DICT,
     POSITIONS,
+    PLAYER_PORTRAIT_TAG,
+    PLAYER_PORTRAIT,
+    PLAYER_PORTRAIT_BIG,
+    PLAYER_PORTRAIT_SMALL
 )
 from transfermarkt_scraper.utils.get_df_from_csv import get_df_from_csv
 from transfermarkt_scraper.utils.get_csv_path import get_csv_path
@@ -150,7 +154,7 @@ def write_leagues_csv():
     prompt_successful_csv_write(LEAGUES, CSVS)
 
 # write positions.csv using supported_players.csv
-# ['position_id', 'position_name', 'position_grouping']
+# ['position_id', 'position_name', 'position_acronym', 'position_grouping']
 def write_positions_csv():
     # get supported players as a df from csv
     supported_players_path = get_csv_path([SCRAPED_DATA], SUPPORTED_PLAYERS)
@@ -181,5 +185,36 @@ def write_positions_csv():
 
     prompt_successful_csv_write(POSITIONS, CSVS)
 
+# write players.csv using supported_players.csv, positions_dict, nations.csv
+# ['player_id', 'player_name', 'player_shortened_name', 'player_market_value', 'player_kit_number', 'position_id',
+#  'nation_id', 'player_portrait_big_pic', 'player_portrait_small_pic', 'player_birth_date', 'team_id', 'league_id']
 def write_players_csv():
+    # get supported players as a df from csv
+    supported_players_path = get_csv_path([SCRAPED_DATA], SUPPORTED_PLAYERS)
+    supported_players = get_df_from_csv(supported_players_path)
+
+    (
+        supported_players[PLAYER_PORTRAIT_BIG],
+        supported_players[PLAYER_PORTRAIT_SMALL]
+    ) = get_big_and_small_pics(supported_players[PLAYER_PORTRAIT], PLAYER_PORTRAIT_TAG)
+
+    position_ids = []
+    for position in supported_players[PLAYER_POSITION]:
+        position_ids.append(POSITIONS_DICT[position][POSITION_ID])
+    supported_players[POSITION_ID] = position_ids
+
+    # get nations as a df from csv
+    nations_path = get_csv_path([CSVS], NATIONS)
+    nations = get_df_from_csv(nations_path)
+
+    # get nation id that matches nation player belongs to
+    nation_ids = []
+    for nation_name in supported_players[PLAYER_NATIONALITY]:
+        nation_ids.append(
+            int(nations.loc[nations[NATION_NAME] == nation_name, NATION_ID].iloc[0])
+        )
+    supported_players[NATION_ID] = nation_ids
+
+    print(nation_ids)
+
     return None

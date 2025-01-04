@@ -35,6 +35,7 @@ SMALL_PICTURE_TAG       = '/small/'
 TEAM_CREST_TAG          = '/tiny/'
 NATION_FLAG_TAG         = '/verysmall/'
 LEAGUE_LOGO_TAG         = '/header/'
+PLAYER_PORTRAIT_TAG     = '/small/'
 
 TEAMS                   = 'teams'
 # teams.csv additional column names
@@ -60,10 +61,16 @@ POSITION_NAME           = 'position_name'
 POSITION_ACRONYM        = 'position_acronym'
 POSITION_GROUPING       = 'position_grouping'
 # grouping done semi manually
-GOALKEEPER = 'Goalkeeper'
-DEFENDER = 'Defender'
-MIDFIELDER = 'Midfielder'
-ATTACKER = 'Attacker'
+GOALKEEPER              = 'Goalkeeper'
+DEFENDER                = 'Defender'
+MIDFIELDER              = 'Midfielder'
+ATTACKER                = 'Attacker'
+
+PLAYERS                 = 'players'
+# players.csv additional column names
+PLAYER_PORTRAIT_BIG     = 'player_portrait_big_pic'
+PLAYER_PORTRAIT_SMALL   = 'player_portrait_small_pic'
+
 # position dictionary tm name: [id, name, acronym, grouping]
 POSITIONS_DICT= {
     # GOALKEEPER
@@ -161,6 +168,3 @@ POSITIONS_DICT= {
         POSITION_GROUPING: ATTACKER
     }
 }
-
-PLAYERS                 = 'players'
-# players.csv additional column names
