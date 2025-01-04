@@ -1,9 +1,8 @@
 # project defined imports
-from constants.supported_leagues import SUPPORTED_LEAGUES
 from constants.webpage_tags import TEAM_URL_FORMAT_CONDITIONAL
 
-def get_team_info(soup, league_name, league_id, league_url, league_to_add_elsewhere):
-    # valid soup example
+def get_team_info(team_soup, league_id, league):
+    # valid team soup example
     """
     <td class="zentriert no-border-rechts">
         <a
@@ -19,29 +18,36 @@ def get_team_info(soup, league_name, league_id, league_url, league_to_add_elsewh
         </a>
     </td>,
     """
-    team_info = None
+    # flag that will determine whether team is a supported team for 23/24 season
+    next_season_league_id = None
 
-    (team_name, team_url, team_logo) = (soup.a['title'], soup.a['href'], soup.find('img')['src'])
+    (
+        team_name,
+        team_url,
+        team_small_logo,
+    ) = (team_soup.a['title'], team_soup.a['href'], team_soup.find('img')['src'])
+
     # check if valid field for team
     if(TEAM_URL_FORMAT_CONDITIONAL in team_url and not(team_name.startswith('<'))):
+
         # team to be added in another league
-        if(team_name in league_to_add_elsewhere and league_to_add_elsewhere[team_name] is not None):
-            team_info = [
-                team_logo,
-                team_name,
-                league_to_add_elsewhere[team_name],                    # new league id
-                SUPPORTED_LEAGUES[league_to_add_elsewhere[team_name]], # new league name
-                team_url
-            ]
+        if(
+            team_name in league['teams_to_add_elsewhere']
+            and league['teams_to_add_elsewhere'][team_name] is not None
+        ):
+            next_season_league_id = league['teams_to_add_elsewhere'][team_name]
 
-        # team to be added in current supported league
-        elif(team_name not in league_to_add_elsewhere and league_id is not None):
-            team_info = [
-                team_logo,
-                team_name,
-                league_id,
-                league_name,
-                team_url
-            ]
+        # team to be added in current league
+        elif(
+            team_name not in league['teams_to_add_elsewhere']
+            # negative league ids given to unsupported leagues
+            and league_id >= 0
+        ):
+            next_season_league_id = league_id
 
-    return team_info
+    return (
+        next_season_league_id,
+        team_name,
+        team_small_logo,
+        team_url
+    )

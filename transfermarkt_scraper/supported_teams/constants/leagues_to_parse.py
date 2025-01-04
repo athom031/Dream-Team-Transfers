@@ -1,6 +1,4 @@
 ## DICTIONARY KEYS ##
-
-id = 'id'
 name = 'name'
 url = 'url'
 nation = 'nation'
@@ -33,7 +31,7 @@ teams_to_add_elsewhere = 'teams_to_add_elsewhere'
 }
 """
 
-LEAGUES_TO_PARSE = [
+LEAGUES_TO_PARSE = {
     ## PREMIER LEAGUE ##
     0: {
         name: 'Premier League',
@@ -194,4 +192,4 @@ LEAGUES_TO_PARSE = [
             'Almere City FC': 7
         }
 	}
-]
+}
