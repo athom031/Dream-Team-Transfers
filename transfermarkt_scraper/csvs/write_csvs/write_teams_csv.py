@@ -1,3 +1,4 @@
+import pandas as pd
 # project defined imports
 from transfermarkt_scraper.constants.csv_names import (
     BIG_PICTURE_TAG,
@@ -15,7 +16,10 @@ from transfermarkt_scraper.constants.csv_names import (
     TEAMS
 )
 
-def write_teams_csv(teams):
+def write_teams_csv(team_data):
+    # copy df for solely manipulation in function
+    teams = pd.DataFrame(team_data)
+
     team_logo_small_pics = []
     team_logo_big_pics = []
     for logo in teams[TEAM_LOGO]:

@@ -14,7 +14,10 @@ from transfermarkt_scraper.constants.csv_names import (
     SMALL_PICTURE_TAG
 )
 
-def write_nations_csv(players):
+def write_nations_csv(player_data):
+    # copy players for function manipulation
+    players = pd.DataFrame(player_data)
+
     # add small and big pictures of flag
     nation_flag_small_pics = []
     nation_flag_big_pics = []
