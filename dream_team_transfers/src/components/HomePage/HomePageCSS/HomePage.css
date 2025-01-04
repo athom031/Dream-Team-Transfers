@@ -7,7 +7,7 @@
     --border-radius: 10px;
 }
 
-body {
+body, html {
     background-color: var(--background-color);
     color: var(--gold-color);
     font-family: var(--main-font);
@@ -17,10 +17,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100vw;
+    height: 100vh;
 }
 
 .home-page {
-    border: 15px solid white;
+    width: 100vw;
+    height: 100vh;
     justify-content: center;
     align-items: center;
 }
@@ -74,16 +77,15 @@ body {
 }
 
 /* TITLE */
-
 .title {
     height: 10vh;
     width: 100vw;
-    font-weight: 900;
-    font-size: calc(8vh - 2em);
-    text-align: center;
     margin: 0;
+    font-weight: 900;
+    text-align: center;
     justify-content: center;
     align-items: center;
+    padding-top: 2vh 1vw;
 }
 
 /* CONCEPT STYLES */
@@ -93,8 +95,6 @@ body {
 }
 
 .concept-container {
-    display: flex;
-    flex-direction: column;
     width: 25.32%;
     padding: 1.67%;
     box-sizing: border-box;
@@ -249,34 +249,76 @@ body {
 @media screen and (min-width: 1024px) {
     body,
     .home-page {
-        height: 100vh;
-        width: 100vw;
         overflow: hidden;
     }
 
     .home-page-content {
         height: 90vh;
     }
+
+    /* TITLE */
+    .title {
+        font-size: 4.5vw;
+    }
 }
 
 /* Styles for phones and tablets in landscape mode */
 @media screen and (max-width: 1023px) and (orientation: landscape) {
-    body {
+
+    body, .home-page {
         background-color: tan;
+        overflow-y: scroll;
+        overflow-x: auto;
     }
 
     .home-page-content {
         flex-direction: column;
+    }
+
+    /* TITLE */
+    .title {
+        font-size: 5.5vw;
+    }
+
+    /* CONCEPT */
+    .concept-icon-container {
+        padding: 4% 10%;
+    }
+
+    .concept-text {
+        font-size: 3.5vh;
     }
 }
 
 /* Styles for phones and tablets in portrait mode */
 @media screen and (max-width: 1023px) and (orientation: portrait) {
-    body {
+    body, .home-page {
         background-color: skyblue;
+        overflow-y: scroll;
+        overflow-x: auto;
     }
 
     .home-page-content {
         flex-direction: column;
     }
+
+    /* TITLE */
+    .title {
+        font-size: 6.5vw;
+    }
+
+    /* CONCEPT */
+    .concept {
+        padding: 2vh 2vw;
+    }
+
+    .concept-icon-container {
+        padding: 2vh 0vw;
+    }
+
+    .concept-text {
+        height: 40%;
+        font-size: 1.75vh;
+    }
+
 }
