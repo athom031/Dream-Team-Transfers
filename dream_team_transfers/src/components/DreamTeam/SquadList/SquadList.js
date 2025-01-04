@@ -1,14 +1,12 @@
 import './SquadList.css';
 import { getTeamData } from '../../../db/db-utils';
-import { useEffect, useState } from 'react';
-import { getPlayersCSV } from '../../../utils/parse-csv';
+import React, { useEffect, useState } from 'react';
+import { useTable, sortBy } from 'react-table';
 
 function SquadList({
-    LeagueCSVData,
     NationsCSVData,
     PositionsCSVData,
-    PlayersCSVData,
-    TeamsCSVData
+    PlayersCSVData
 }) {
 
     const [teamBudget, setTeamBudget] = useState(-1);
@@ -27,9 +25,22 @@ function SquadList({
 
     const [teamPlayers, setTeamPlayers] = useState([]);
 
+    const calculateAge = (birthDate) => {
+        const now = new Date();
+        let age = now.getFullYear() - birthDate.getFullYear();
+        const m = now.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && now.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
+    const sellPlayer = (playerId) => () => {
+        console.log("Selling Player", playerId);
+    }
+
     useEffect(() => {
         getTeamData().then((data) => {
-            console.log(data);
             setPlayersSold(data.players_sold);
             setPlayersBought(data.players_bought);
             setTeamBudget(data.team_budget);
@@ -53,121 +64,117 @@ function SquadList({
                     Number(PlayersCSVData[i].team_id) === teamPicked
                 )
             ) {
-                teamPlayersUpdate.push(PlayersCSVData[i]);
+                const {
+                    league_id,
+                    nation_id,
+                    player_birth_date,
+                    player_id,
+                    player_kit_number,
+                    player_market_value,
+                    player_name,
+                    player_portrait_big_pic,
+                    player_portrait_small_pic,
+                    player_shortened_name,
+                    position_id,
+                    team_id,
+                } = PlayersCSVData[i];
+                teamPlayersUpdate.push({
+                    nation_id: Number(nation_id),
+                    player_birth_date: new Date(player_birth_date),
+                    player_kit_number: kitUpdates[Number(player_id)] ?? Number(player_kit_number),
+                    player_market_value: Number(player_market_value),
+                    player_name: player_name,
+                    player_shortened_name: player_shortened_name,
+                    player_portrait: player_portrait_small_pic,
+                    position_id: Number(position_id),
+                    player_id: Number(player_id),
+                });
             }
         }
 
         setTeamPlayers(teamPlayersUpdate);
 
-        console.log(teamPlayersUpdate);
-    }, [playersSold, playersBought, PlayersCSVData, teamPicked]);
+    }, [playersSold, playersBought, PlayersCSVData, teamPicked, kitUpdates]);
 
     useEffect(() => {
         const relevantNationsUpdate = {};
         const relevantPositionsUpdate = {};
 
+        if(NationsCSVData == null || PositionsCSVData == null || NationsCSVData.length <= 0 || PositionsCSVData.length <= 0) return;
+
         for(let i = 0; i < teamPlayers.length; i++) {
-            if(relevantNationsUpdate[Number(teamPlayers[i].nation_id)]) {
-                continue;
+            if(!relevantNationsUpdate[teamPlayers[i].nation_id]) {
+                const {
+                    nation_id,
+                    nation_name,
+                    nation_flag_big_pic,
+                    nation_flag_small_pic,
+                } = NationsCSVData[teamPlayers[i].nation_id];
+                relevantNationsUpdate[teamPlayers[i].nation_id] = {
+                    nation_name: nation_name,
+                    nation_pic: nation_flag_small_pic,
+                };
             }
-            // you got this== undefined) {
+
+            if(!relevantPositionsUpdate[teamPlayers[i].position_id]) {
+                const {
+                    position_acronym,
+                    position_id,
+                    position_name,
+                    position_grouping
+                } = PositionsCSVData[teamPlayers[i].position_id];
+                relevantPositionsUpdate[teamPlayers[i].position_id] = {
+                    position_acronym,
+                    position_name,
+                    position_grouping,
+                }
+            }
         }
 
-    }, [teamPlayers])
+        setRelevantNations(relevantNationsUpdate);
+        setRelevantPositions(relevantPositionsUpdate);
+    }, [teamPlayers]);
 
-    // league_id : "7"
-    // nation_id : "81"
-    // player_birth_date : "2003-08-18"
-    // player_id : "5017"
-    // player_kit_number : "25.0"
-    // player_market_value : "100000.0"
-    // player_name : "Gyan de Regt"
-    // player_portrait_big_pic : "https://img.a.transfermarkt.technology/portrait/header/747243-1658862885.jpg?lm=1"
-    // player_portrait_small_pic : "https://img.a.transfermarkt.technology/portrait/small/747243-1658862885.jpg?lm=1"
-    // player_shortened_name : "G. de Regt"
-    // position_id : "9"
-    // team_id : "155"
+    const columns = [{
+        Header: 'Player Image',
+        accessor: 'player_portrait',
+        sortable: false,
+        Cell: row => <img src={row.value} alt="Player" />
+      }, {
+        Header: 'Name',
+        accessor: 'player_name',
+        sortMethod: (a, b) => a.toLowerCase - b.toLowerCase()
+      }, {
+        Header: 'Kit #',
+        accessor: 'player_kit_number'
+      }, {
+        Header: 'Position',
+        accessor: 'position_id',
+        Cell: row => <span>{relevantPositions[row.value].position_acronym}</span>,
+        sortMethod: (a, b) => a - b
+      }, {
+        Header: 'Age',
+        accessor: 'player_birth_date',
+        Cell: row => <span>{calculateAge(row.value)}</span>,
+        sortMethod: (a, b) => a - b
+      }, {
+        Header: 'Nationality',
+        accessor: 'nation_id',
+        Cell: row => <div><img src={relevantNations[row.value].nation_pic} alt="Nation" /><span>{relevantNations[row.value].nation_name}</span></div>,
+        sortMethod: (a, b) => a - b
+      }, {
+        Header: 'Value',
+        accessor: 'player_market_value'
+      }, {
+        Header: 'Sell',
+        accessor: 'player_id',
+        sortable: false,
+        Cell: row => <button onClick={sellPlayer(row.value)}>Sell</button>
+    }];
 
-    return (<></>);
-    /*
-
-    const updateTeamDataIfNeeded = () => {
-        getTeamData().then((data) => {
-            // console.log(data);
-            setPlayersSold(Object.keys(data.players_sold));
-            setPlayersBought(Object.keys(data.players_bought));
-            setTeamBudget(data.team_budget);
-            setTeamValue(data.team_value);
-            setTeamNickname(data.team_nickname);
-            setTeamPicked(data.team_picked);
-        });
-    }
-
-    // update information from db if needed every 5 seconds
-    useEffect(() => {
-        updateTeamDataIfNeeded();
-        // Delay the first call by 5 seconds
-        const intervalId = setInterval(() => {
-            updateTeamDataIfNeeded();
-            }, 5000); // update every 5 seconds
-            // Clean up function
-            return () => clearInterval(intervalId);
-            },
-    []); // Empty dependency array means the effect runs once on mount and clean up on unmount
-
-    useEffect(() => {
-        getPlayersCSV().then((data) => setAllPlayers(data));
-    }, []);
+    return <ReactTable data={teamPlayers} columns={columns} defaultSorted={[{ id: 'player_name', desc: true }]} />;
 
 
-
-    useEffect(() => {
-        setTeamPlayers(
-            allPlayers.filter(
-                (player) => (
-                    (Number(player.team_id) === Number(teamPicked) && !playersSold[Number(player.player_id)]) ||
-                    playersBought[Number(player.player_id)]
-                )
-            )
-        )
-    }, [allPlayers, playersBought, playersSold]);
-
-
-    console.log('leagues:', LeagueCSVData);
-    console.log('nations:', NationsCSVData);
-    console.log('positions:', PositionsCSVData);
-    console.log('players:', PlayersCSVData);
-    console.log('teams:', TeamsCSVData);
-    return (
-        <div className='squad-list-page'>
-            <div className='team-value-budget-summary'>
-                <div className='team-summary-container'>
-                    <div className='team-value'>
-                        Team Value: {teamValue}
-                    </div>
-                </div>
-                <div className='team-summary-container'>
-                    <div className='team-budget'>
-                        Team Budget: {teamBudget}
-                    </div>
-                </div>
-            </div>
-
-            <div className='squad-list'>
-                {teamPlayers.map((player) => (
-                    <div key={player.player_id}className='squad-list-player'>
-                        <p>Player Name - {player.player_name}</p>
-                        <p>Nation - {player.nation_id}</p>
-                        <p>Position - {player.position_id}</p>
-                        <p>Market Value - {player.player_market_value}</p>
-                        <p>Kit Number - {player.player_kit_number}</p>
-                        <img src={player.player_portrait_small_pic} alt="player_image" />
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-    */
 }
 
 export default SquadList;

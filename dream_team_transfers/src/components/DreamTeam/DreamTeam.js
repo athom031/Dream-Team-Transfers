@@ -44,11 +44,9 @@ function DreamTeam() {
           <Route
             path="/squad-list"
             element={<SquadList
-              LeagueCSVData={LeagueCSVData}
               NationsCSVData={NationsCSVData}
               PlayersCSVData={PlayersCSVData}
               PositionsCSVData={PositionsCSVData}
-              TeamsCSVData={TeamsCSVData}
             />}
           />
           <Route path="/player-market" element={<PlayerMarket />} />
