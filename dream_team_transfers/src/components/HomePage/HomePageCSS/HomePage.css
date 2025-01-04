@@ -192,8 +192,7 @@ body, html {
     position: relative;
     overflow: hidden;
     height: 100%;
-    flex: 3;
-    border: 1px solid white;
+    flex: 5;
 }
 
 .slideshow-image {
@@ -205,13 +204,13 @@ body, html {
     object-fit: cover;
     object-position: center;
     border-radius: var(--border-radius);
-    border: 1px solid white;
 }
 
 /* TEAM SUMMARY */
 
 .team-summary {
     margin: 0;
+    flex: 2;
     justify-content: center;
     border: 1px solid white;
 }
@@ -245,6 +244,7 @@ body, html {
 /* SUBMIT BUTTON */
 
 .submit-button {
+    flex: 2;
     border: 1px solid white;
     align-items: center;
     justify-content: center;
