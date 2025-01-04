@@ -5,11 +5,11 @@
     --main-font: 'Saira Condensed', sans-serif;
 }
 
-/* LOADING SCREEN */
-
 body {
     background-color: black;
 }
+
+/* LOADING SCREEN */
 
 .loading {
     display: flex;
