@@ -1,26 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
-import PlayerList from './components/utils/PlayerList';
+import React, { useState, useEffect } from 'react';
+import Dexie from 'dexie';
+import HomePage from './components/HomePage/HomePage';
+import DreamTeam from './components/DreamTeam/DreamTeam';
+import { DB_NAME, DB_VERSION, DB_ID, DB_SCHEMA } from './constants/db-constants';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+  const [teamPicked, setTeamPicked] = useState(false);
 
-        <PlayerList />
-      </header>
+  useEffect(() => {
+    // if not yet initialized, initialize the database
+    const db = new Dexie(DB_NAME);
+    db.version(DB_VERSION).stores({
+      team: DB_SCHEMA
+    });
+
+    // check if a team has been picked (checking browser db)
+    db.team.get(DB_ID).then((team) => {
+      if (team && team.team_picked) {
+        setTeamPicked(true);
+      }
+    });
+  }, []);
+
+  return (
+    <div>
+      { teamPicked ? <DreamTeam /> : <HomePage /> }
     </div>
   );
 }
