@@ -51,9 +51,9 @@ function SquadList({
         getTeamData().then((data) => {
             setPlayersSold(data.players_sold);
             setPlayersBought(data.players_bought);
-            setTeamBudget(data.team_budget);
-            setTeamValue(data.team_value);
-            setTeamNickname(data.team_nickname);
+            // setTeamBudget(data.team_budget);
+            // setTeamValue(data.team_value);
+            // setTeamNickname(data.team_nickname);
             setTeamPicked(data.team_picked);
             setKitUpdates(data.team_kit_updates);
         });
