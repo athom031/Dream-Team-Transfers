@@ -1,10 +1,12 @@
 import './HomePage.css';
 
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { darken } from 'polished';
 import { PREMIER_LEAGUE_TEAM_INFOS } from '../../constants/pl-team-infos';
 import { CURRENCY_UNIT, getCurrencyDenomination, getCurrencyRounded } from '../../utils/money-utils';
+import { selectTeam } from '../../db/db-utils';
+import { getSubmitButton } from '../../utils/submit-button';
+
+import Loading from './Loading';
 
 function HomePage() {
   const [teamIndex, setTeamIndex] = useState(null);
@@ -13,23 +15,11 @@ function HomePage() {
   const [photoIndex, setPhotoIndex] = useState(0);
   const [isHoveredLeft, setIsHoveredLeft] = useState(false);
   const [isHoveredRight, setIsHoveredRight] = useState(false);
+  const [teamSubmitted, setTeamSubmitted] = useState(null);
 
   const DREAM_TEAM_LOGO = process.env.PUBLIC_URL + '/logo512.png';
 
-  const SubmitButton = styled.button`
-    background-color: ${props => props.backgroundColor};
-    color: ${props => props.color};
-    border: 2px solid ${props => props.borderColor};
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: ${props => darken(0.1, props.backgroundColor)};
-      color: ${props => darken(0.1, props.color)};
-      border-color: ${props => darken(0.1, props.borderColor)};
-    }
-  `;
+  const SubmitButton = getSubmitButton();
 
   useEffect(() => {
     // set a new timeout to track how long user stays on team selected
@@ -76,6 +66,18 @@ function HomePage() {
     return () => clearInterval(intervalId);
   }, [photoIndex, slideshowPhotos]);
 
+  useEffect(() => {
+    if (teamSubmitted !== null) {
+      const timer = setTimeout(() => {
+        selectTeam(teamSubmitted).then(() => {
+          window.location.reload();
+        });
+      }, 4000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [teamSubmitted]);
+
   const handleLeftClick = () => {
     if (teamIndex === null) {
       setTeamIndex(19);
@@ -92,7 +94,12 @@ function HomePage() {
     }
   }
 
+  const handleSubmit = () => {
+    setTeamSubmitted(selectedTeam);
+  }
+
   return (
+    (teamSubmitted !== null) ? (<Loading/>) : (
     <div className='home-page'>
 
       <h1 className='title'>
@@ -215,7 +222,7 @@ function HomePage() {
             <div className='team-value'>
 
               <div className='category'>
-                Value:
+                Value
               </div>
 
               <div className='money'>
@@ -231,7 +238,7 @@ function HomePage() {
             <div className='team-budget'>
 
               <div className='category'>
-                Budget:
+                Budget
               </div>
 
               <div className='money'>
@@ -248,11 +255,11 @@ function HomePage() {
 
           <div className='submit-button'>
             <SubmitButton
-              backgroundColor={selectedTeam !== null ? PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].primary_color : '#808080'}
-              color={selectedTeam !== null ? PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].secondary_color : '#FFFFFF'}
-              borderColor={selectedTeam !== null ? PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].third_color : '#5A5A5A'}
+              team={selectedTeam}
+              disabled={selectedTeam === null}
+              onClick={handleSubmit}
             >
-              Submit
+              {selectedTeam !== null ? `Dream the Perfect ${PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].alias}!` : 'Please Pick a Team'}
             </SubmitButton>
           </div>
 
@@ -261,6 +268,7 @@ function HomePage() {
       </div>
 
     </div>
+  )
   );
 }
 

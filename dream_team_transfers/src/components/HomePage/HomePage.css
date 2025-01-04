@@ -85,7 +85,7 @@ body {
   border: 1px solid white;
 }
 
-.team-selector, .selection-summary-and-submit {
+.team-selector {
   flex: 1;
   border: 1px solid white;
 }
@@ -146,4 +146,54 @@ body {
   justify-content: center;
   align-items: center;
   max-width: 50%;
+}
+
+.selection-summary-and-submit {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  border: 1px solid white;
+}
+
+.team-summary, .submit-button {
+  flex: 1;
+  border: 1px solid white;
+}
+
+.team-summary {
+  display: flex;
+  justify-content: space-between;
+  padding: 2em 15em 0em 15em;
+}
+
+.team-value, .team-budget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 45%;
+}
+
+.category, .money, .unit {
+  width: 100%;
+  text-align: center;
+}
+
+.money {
+  font-size: 3.5em;
+  font-weight: bold;
+}
+
+.category, .unit {
+  font-size: 1.5em; /* Make the category and unit text smaller */
+}
+
+.category {
+  border-bottom: 1px solid currentColor;
+}
+
+.submit-button {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
 }
