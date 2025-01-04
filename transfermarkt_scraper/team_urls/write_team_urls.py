@@ -32,7 +32,7 @@ for league in LEAGUES_TO_PARSE:
 # team_data to data frame
 df = pd.DataFrame(
     team_data,
-    columns=['team_name', 'league_id', 'league_name', 'team_url']
+    columns=['team_logo', 'team_name', 'league_id', 'league_name', 'team_url']
 )
 
 # format data frame
