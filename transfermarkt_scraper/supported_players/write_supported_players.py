@@ -6,7 +6,9 @@ from transfermarkt_scraper.constants.csv_names import (
     CSV,
     SUPPORTED_TEAMS,
     # CSV COL NAMES
-    TEAM_URL
+    TEAM_URL,
+    TEAM_ID,
+    LEAGUE_ID
 )
 from transfermarkt_scraper.constants.webpage_tags import BASE_WEBPAGE, WEBPAGE_TEAM_TABLE_CLASS
 from transfermarkt_scraper.utils.get_page_soup import get_page_soup
@@ -34,6 +36,8 @@ with open(file_path, 'r') as csv_file:
 
     # based on header find where team_url is
     team_url_index = csv_header.index(TEAM_URL)
+    team_id_index = csv_header.index(TEAM_ID)
+    league_id_index = csv_header.index(LEAGUE_ID)
 
     # create array for player_data
     supported_players_data = []
@@ -46,11 +50,11 @@ with open(file_path, 'r') as csv_file:
             # parse player_tag to get player data
             player_data = get_player_data(player_tag)
 
-            # add player data to array
-            supported_players_data.append(player_data)
+            # add player data to array if valid
+            if(player_data is not None):
+                supported_players_data.append(player_data)
 
-
-        print(supported_players_data)
+        # print(supported_players_data)
         break
 
 
