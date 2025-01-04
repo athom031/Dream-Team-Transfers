@@ -34,10 +34,9 @@ body {
 .concept-container {
   width: 30%;
   padding: 1.67%;
-  /* height: 500px; adjust as needed */
   display: flex;
   flex-direction: column;
-  border: 1px solid white; /* for visualization */
+  border: 1px solid white;
 }
 
 .concept-icon-container {
@@ -55,7 +54,7 @@ body {
 
 
 .concept-text {
-  height: 30%; /* adjust as needed */
+  height: 30%;
   text-align: center;
 }
 
@@ -106,9 +105,8 @@ body {
 .team-picker {
   display: flex;
   flex-direction: row;
-  align-items: center; /* This will center the children vertically */
-  justify-content: space-between; /* Optional: This will place space between the children */
-
+  align-items: center;
+  justify-content: space-between;
 }
 
 .arrow-button {
@@ -144,71 +142,8 @@ body {
 .logo-container {
   height: 250px;
   width: 250px;
-  /* flex-grow: 1; This will allow the logo container to take up the remaining space */
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 50%; /* This will limit the width of the logo container */
+  max-width: 50%;
 }
-
-
-/* .team-selection {
-  display: flex;
-}
-
-.team-picker, .selection-summary-and-submit {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 50%;
-}
-
-.selection-summary-and-submit {
-  justify-content: center;
-}
-
-.team-picker {
-  justify-content: space-between;
-  flex-direction: row;
-  background-color: #899499;
-  border-radius: 10px;
-  margin: 40px;
-}
-
-
-.team-summary {
-  display: flex;
-  justify-content: space-between;
-}
-
-.team-logo, .team-name h1 {
-  object-fit: contain;
-}
-
-@keyframes grow-shrink {
-  0% { transform: scale(.85); }
-  50% { transform: scale(1); }
-  100% { transform: scale(.85); }
-}
-
-.team-logo {
-  height: 250px;
-  width: auto;
-  animation: grow-shrink 4s infinite ease-in-out;
-}
-
-.team-name h1 {
-  font-family: 'Saira Condensed', sans-serif;
-  font-weight: 900;
-  letter-spacing: 4px;
-  font-size: 3vw;
-  text-align: center;
-  padding-top: 30px;
-}
-
-.logo-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-} */
