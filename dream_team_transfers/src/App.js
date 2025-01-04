@@ -1,5 +1,7 @@
+import './App.css';
 import React, { useState, useEffect } from 'react';
-import { initializeDB, getTeamPicked } from './db/db-utils';
+import { initializeDB, getTeamData, getTeamPicked } from './db/db-utils';
+import Loading from './components/Utils/Loading';
 
 function App() {
   const [teamData, setTeamData] = useState(null);
@@ -10,10 +12,11 @@ function App() {
     });
   }, []);
 
+
   if (teamData === null) {
-    return <div>Retrieving info from database...</div>;
+    return (<Loading/>);
   } else if (teamData === -1) {
-    return <div>No team picked</div>;
+    return (<Loading/>);
   } else {
     return <div>Team picked: {teamData}</div>;
   }
