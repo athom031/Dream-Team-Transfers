@@ -3,3 +3,6 @@
 
 # ignore all __init__.pyc files
 **/__init__.pyc
+
+# ignore all .DS_Store
+**/DS_Store
