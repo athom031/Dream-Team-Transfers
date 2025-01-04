@@ -11,9 +11,9 @@ function SquadList({
     PlayersCSVData
 }) {
     // not used right now
-    const [teamBudget, setTeamBudget] = useState(-1);
-    const [teamValue, setTeamValue] = useState(-1);
-    const [teamNickname, setTeamNickname] = useState('');
+    // const [teamBudget, setTeamBudget] = useState(-1);
+    // const [teamValue, setTeamValue] = useState(-1);
+    // const [teamNickname, setTeamNickname] = useState('');
 
     // used but full integration not set up yet
     const [playersSold, setPlayersSold] = useState([]);
@@ -73,18 +73,15 @@ function SquadList({
                 )
             ) {
                 const {
-                    league_id,
                     nation_id,
                     player_birth_date,
                     player_id,
                     player_kit_number,
                     player_market_value,
                     player_name,
-                    player_portrait_big_pic,
                     player_portrait_small_pic,
                     player_shortened_name,
                     position_id,
-                    team_id,
                 } = PlayersCSVData[i];
                 teamPlayersUpdate.push({
                     nation_id: Number(nation_id),
@@ -115,9 +112,7 @@ function SquadList({
         for(let i = 0; i < teamPlayers.length; i++) {
             if(!relevantNationsUpdate[teamPlayers[i].nation_id]) {
                 const {
-                    nation_id,
                     nation_name,
-                    nation_flag_big_pic,
                     nation_flag_small_pic,
                 } = NationsCSVData[teamPlayers[i].nation_id];
                 relevantNationsUpdate[teamPlayers[i].nation_id] = {
@@ -129,7 +124,6 @@ function SquadList({
             if(!relevantPositionsUpdate[teamPlayers[i].position_id]) {
                 const {
                     position_acronym,
-                    position_id,
                     position_name,
                     position_grouping
                 } = PositionsCSVData[teamPlayers[i].position_id];
@@ -211,7 +205,7 @@ function SquadList({
                 },
             ]
         }
-    }, [teamPlayers, relevantNations, relevantPositions]);
+    }, [teamPlayers, relevantNations, relevantPositions, NationsCSVData, PositionsCSVData]);
 
     const {
         getTableProps,
