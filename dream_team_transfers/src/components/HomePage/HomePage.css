@@ -172,17 +172,6 @@ body, html {
     flex: 5;
 }
 
-.slideshow-image {
-    position: absolute;
-    top: 5%;
-    left: 5%;
-    width: 90%;
-    height: 90%;
-    object-fit: cover;
-    object-position: center;
-    border-radius: var(--border-radius);
-}
-
 /* TEAM SUMMARY */
 
 .team-summary {
