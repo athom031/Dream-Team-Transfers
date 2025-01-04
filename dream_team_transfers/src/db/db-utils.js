@@ -78,3 +78,25 @@ export function restartTeam() {
       }
     );
 }
+
+export function sellPlayer(playerId, playerPrice) {
+
+  console.log('sellPlayer', playerId, playerPrice);
+  return initializeDB()
+    .then(
+      () => {
+        return db.get('dtt_data').then(doc => {
+          doc.team_picked = doc.team_picked;
+          doc.team_nickname = doc.team_nickname;
+          doc.team_budget = String(Number(doc.team_budget) + Number(playerPrice));
+          doc.team_value = String(Number(doc.team_value) - Number(playerPrice));
+          doc.team_positions = doc.team_positions;
+          doc.team_kit_updates = doc.team_kit_updates;
+          doc.players_bought = doc.players_bought;
+          doc.players_sold = [...doc.players_sold, playerId];
+
+          return db.put(doc);
+        });
+      }
+    );
+}
