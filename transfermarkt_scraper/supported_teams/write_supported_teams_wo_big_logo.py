@@ -1,7 +1,21 @@
 import pandas as pd
 # project defined imports
 from transfermarkt_scraper.constants.leagues_to_parse import LEAGUES_TO_PARSE
-from transfermarkt_scraper.utils.get_league_soup import get_league_soup
+from transfermarkt_scraper.constants.webpage_tags import BASE_WEBPAGE, WEBPAGE_TEAM_IN_LEAGUE_CLASS
+from transfermarkt_scraper.constants.csv_names import (
+    CSV,
+    SUPPORTED_TEAMS_WITHOUT_BIG_LOGO,
+    # CSV COLUMN NAMES
+    TEAM_ID,
+    TEAM_NAME,
+    TEAM_SMALL_LOGO,
+    TEAM_URL,
+    LEAGUE_ID,
+    LEAGUE_NAME,
+    LEAGUE_NATION,
+    LEAGUE_LOGO
+)
+from transfermarkt_scraper.utils.get_page_soup import get_page_soup
 from transfermarkt_scraper.utils.get_team_info import get_team_info
 
 # create team data list which will be converted into data frame
@@ -12,7 +26,7 @@ for league_id, league in LEAGUES_TO_PARSE.items():
     supported_league_team_data = []
 
     # get league team info with Beautiful Soup from league page
-    league_team_soup = get_league_soup(league['url'])
+    league_team_soup = get_page_soup(league['url'], WEBPAGE_TEAM_IN_LEAGUE_CLASS)
 
     # extract team info from league team soup
     for team_soup in league_team_soup:
@@ -36,7 +50,7 @@ for league_id, league in LEAGUES_TO_PARSE.items():
 
             supported_league_team_data.append([
                 # team info
-                team_name, team_small_logo, team_url,
+                team_name, team_small_logo, BASE_WEBPAGE + team_url,
                 # league info
                 next_season_league_id, league_name, league_nation, league_logo
             ])
@@ -48,20 +62,20 @@ for league_id, league in LEAGUES_TO_PARSE.items():
 df = pd.DataFrame(
     team_data,
     columns=[
-        'team_name',
-        'team_small_logo',
-        'team_url',
-        'league_id',
-        'league_name',
-        'league_nation',
-        'league_logo'
+        TEAM_NAME,
+        TEAM_SMALL_LOGO,
+        TEAM_URL,
+        LEAGUE_ID,
+        LEAGUE_NAME,
+        LEAGUE_NATION,
+        LEAGUE_LOGO
     ]
 )
 
 # format data frame
 df.drop_duplicates(inplace=True)
-df.sort_values(['league_id', 'team_name'], inplace=True)
+df.sort_values([LEAGUE_ID, TEAM_NAME], inplace=True)
 df = df.reset_index(drop=True)
 
 # write to csv
-df.to_csv('supported_teams.csv', index_label='team_id')
+df.to_csv(SUPPORTED_TEAMS_WITHOUT_BIG_LOGO + CSV, index_label=TEAM_ID)
