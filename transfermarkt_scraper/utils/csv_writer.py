@@ -29,7 +29,6 @@ from constants.csv_names import (
     PLAYER_PORTRAIT_BIG,
     PLAYER_PORTRAIT_SMALL,
     PLAYER_POSITION,
-    PLAYER_SHORTENED_NAME,
     PLAYERS,
     POSITION_ACRONYM,
     POSITION_GROUPING,
@@ -197,7 +196,7 @@ def write_positions_csv():
     prompt_successful_csv_write(POSITIONS, CSVS)
 
 # write players.csv using supported_players.csv, positions_dict, nations.csv
-# ['player_id', 'player_name', 'player_shortened_name', 'player_market_value', 'player_kit_number', 'position_id',
+# ['player_id', 'player_name', 'player_market_value', 'player_kit_number', 'position_id',
 #  'nation_id', 'player_portrait_big_pic', 'player_portrait_small_pic', 'player_birth_date', 'team_id', 'league_id']
 def write_players_csv():
     # get supported players as a df from csv
@@ -229,7 +228,6 @@ def write_players_csv():
     # create data frame for players.csv
     players = pd.DataFrame(supported_players[[
         PLAYER_NAME,
-        PLAYER_SHORTENED_NAME,
         PLAYER_MARKET_VALUE,
         PLAYER_KIT_NUMBER,
         PLAYER_PORTRAIT_BIG,

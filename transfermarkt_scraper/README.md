@@ -1,8 +1,27 @@
 # TransferMarkt Scraper
 
+## Steps to Run the Transfermarkt Scraper
+
+1. **Install all required imports**:
+    Ensure that you have all the necessary dependencies installed. You can do this by running:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+2. **Define user agent**:
+    Set up a user agent string to mimic a real browser request. This is necessary to avoid being blocked by the website. Instructions can be found in `headers.py`
+
+3. **Run the script**:
+    Execute the main script to start the scraping process:
+    ```bash
+    python main.py
+    ```
+    
+![Demo](Demo.png)
+
 ## Introduction
 
-This repository is dedicated to scraping data from [Transfermarkt](https://www.transfermarkt.com) to provide a comprehensive database of player, team, and league information. This data will be used to create a virtual marketplace for the European Transfer Market, ensuring the accuracy and realism of player transfers in the 23/24 season.
+This repository is dedicated to scraping data from [Transfermarkt](https://www.transfermarkt.com) to provide a comprehensive database of player, team, and league information. This data will be used to create a virtual marketplace for the European Transfer Market, ensuring the accuracy and realism of player transfers in the 24/25 season.
 
 ## Purpose
 
@@ -22,17 +41,17 @@ To maintain a realistic scope for the website while providing a wide range of pl
 
 ## Supported Teams: Integrating Relegation
 
-European football includes the practice of relegation and promotion, which means that top-tier leagues are part of a broader system of multiple leagues. To account for this, we have manually collected information on teams that are getting relegated from and promoted into the supported leagues. This information is crucial for the upcoming 23/24 season.
+European football includes the practice of relegation and promotion, which means that top-tier leagues are part of a broader system of multiple leagues. To account for this, we have manually collected information on teams that are getting relegated from and promoted into the supported leagues. This information is crucial for the upcoming 24/25 season.
 
 [League Parsing Script](https://github.com/athom031/Dream-Team-Transfers/blob/main/transfermarkt_scraper/constants/leagues_to_parse.py)
 
-Now, with this data, we can scrape the website to find the relevant team data for the 23/24 season.
+Now, with this data, we can scrape the website to find the relevant team data for the 24/25 season.
 
 [Supported Team Script](https://github.com/athom031/Dream-Team-Transfers/blob/main/transfermarkt_scraper/scraped_data/scrape_and_get_supported_teams.py)
 
 ## Supported Players: Scraping Transfermarkt
 
-With a map of league information that connects to supported teams, we can now scrape Transfermarkt to gather data on all supported players, totaling 5023 individuals.
+With a map of league information that connects to supported teams, we can now scrape Transfermarkt to gather data on all supported players, totaling 6044 individuals.
 
 [Supported Player Script](https://github.com/athom031/Dream-Team-Transfers/blob/main/transfermarkt_scraper/scraped_data/scrape_and_get_supported_players.py)
 
@@ -47,4 +66,6 @@ To simplify database management, we have categorized the collected information a
 - Positions
 - Teams
 
-By scraping and organizing data from Transfermarkt, we are one step closer to creating an authentic European Transfer Market experience on our website. This database will serve as a foundation for the virtual marketplace, enhancing user engagement and realism in the 23/24 season.
+## Conclusion
+
+By scraping and organizing data from Transfermarkt, we are one step closer to creating an authentic European Transfer Market experience on our website. This database will serve as a foundation for the virtual marketplace, enhancing user engagement and realism in the 24/25 season.

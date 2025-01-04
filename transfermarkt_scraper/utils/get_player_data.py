@@ -1,16 +1,13 @@
 from datetime import datetime
 # project defined imports
-from transfermarkt_scraper.constants.webpage_tags import (
+from constants.webpage_tags import (
     A,
     DATA_SRC,
     DIV,
-    HIDE_FOR_SMALL,
     IMG,
     PLAYER_INFO_TABLE,
-    PLAYER_IS_LOAN_IMG,
     PLAYER_KIT_NUMBER,
-    PLAYER_NULL_KIT,
-    SHOW_FOR_SMALL,
+    PLAYER_NULL_VALUE,
     SPAN,
     SRC,
     TABLE,
@@ -19,111 +16,112 @@ from transfermarkt_scraper.constants.webpage_tags import (
     TR
 )
 
-# td_player_tags[0] - #
+# FULL PLAYER TAG EXAMPLE 
 """
+<td class="zentriert rueckennummer bg_Torwart" title="Goalkeeper"><div class="rn_nummer">42</div></td>
+
+
+<td class="posrela">
+<table class="inline-table">
+<tr>
+<td rowspan="2">
+<img alt="Mark Travers" class="bilderrahmen-fixed lazy lazy" data-src="https://img.a.transfermarkt.technology/portrait/medium/357658-1702296610.jpg?lm=1" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" title="Mark Travers"> </img></td>
+<td class="hauptlink">
+<a href="/mark-travers/profil/spieler/357658">
+                Mark Travers            </a>
+</td>
+</tr>
+<tr>
+<td>
+            Goalkeeper        </td>
+</tr>
+</table>
+</td>
+
+
+<td class="zentriert">May 18, 1999 (25)</td>
+
+
+<td class="zentriert"><img alt="Ireland" class="flaggenrahmen" src="https://tmssl.akamaized.net//images/flagge/verysmall/72.png?lm=1520611569" title="Ireland"/></td>
+
+
+<td class="zentriert"><a href="/afc-bournemouth/startseite/verein/989" title="AFC Bournemouth"><img alt="AFC Bournemouth" class="" src="https://tmssl.akamaized.net//images/wappen/verysmall/989.png?lm=1457991811" title="AFC Bournemouth"/></a></td>
+
+
+<td class="rechts hauptlink"><a href="/mark-travers/marktwertverlauf/spieler/357658">€3.50m</a></td>
+
+]
+"""
+
+
+# GET_PLAYER_KIT_NUMBER
+"""
+Parse TD_TAG[0] for Player Kit Number
+
 <td class="zentriert rueckennummer bg_Torwart" title="Goalkeeper">
-    <div class="tm-shirt-number">
-        12
+    <div class="rn_nummer">
+        42
     </div>
 </td>
 """
 def get_player_kit_number(col_tag):
-    # find the div with class tm-shirt-number
+    # find the div with class 'rn_nummer'
     div = col_tag.find(DIV, class_=PLAYER_KIT_NUMBER)
 
     # Extract the number
     kit_number_text = div.text.strip()
 
     # treat '-' as None
-    kit_number = None if kit_number_text == PLAYER_NULL_KIT else int(kit_number_text)
+    kit_number = None if kit_number_text == PLAYER_NULL_VALUE else int(kit_number_text)
 
     return kit_number
 
-# td_player_tags[1] - Player
+
+# GET_PLAYER_NAME_POS_AND_PHOTO
 """
-<td class="posrela" title="">
-    <span class="wechsel-kader-wappen hide-for-small">
-        <a href="/west-ham-united/startseite/verein/379/saison_id/2022" title="Joined as a winter arrival from: West Ham United; date: Jan 26, 2023; fee: free transfer">
-            <img alt="West Ham United" class="" src="https://tmssl.akamaized.net/images/wappen/kaderquad/379.png?lm=1464675260" title="West Ham United"/>
-        </a>
-    </span>
-
-    <a class="hide-for-small" href="/west-ham-united/startseite/verein/379/saison_id/2022" title="Joined as a winter arrival from: West Ham United; date: Jan 26, 2023; fee: free transfer">
-        <img class="wechsel-symbol" height="19px" src="/images/icons/winterzugang_beta_kader.png" width="19px"/>
-    </a>
-
-    <table class="inline-table" title="">
+<td class="posrela">
+    <table class="inline-table">
         <tr>
-            <td class="" rowspan="2">
-                <a href="#">
-                    <img alt="Darren Randolph" class="bilderrahmen-fixed lazy lazy" data-src="https://img.a.transfermarkt.technology/portrait/small/51321-1667549274.jpg?lm=1" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" title="Darren Randolph"/>
+            <td rowspan="2">
+                <img alt="Mark Travers" class="bilderrahmen-fixed lazy lazy" data-src="https://img.a.transfermarkt.technology/portrait/medium/357658-1702296610.jpg?lm=1" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" title="Mark Travers"> 
+                </img>
+            </td>
+            <td class="hauptlink">
+                <a href="/mark-travers/profil/spieler/357658">
+                    Mark Travers
                 </a>
             </td>
-
-            <td class="hauptlink">
-                <div class="di nowrap">
-                    <span class="hide-for-small">
-                        <a
-                            href="/darren-randolph/profil/spieler/51321" title="Darren Randolph">Darren Randolph
-                        </a>
-                    </span>
-                </div>
-
-                <div class="di nowrap">
-                    <span class="show-for-small">
-                        <a
-                            href="/darren-randolph/profil/spieler/51321" title="Darren Randolph">D. Randolph
-                        </a>
-                    </span>
-                </div>
-            </td>
         </tr>
-
         <tr>
             <td>
                 Goalkeeper
             </td>
         </tr>
-
     </table>
-
 </td>
 """
-def check_if_loan_player(col_tag):
-    loan_info = col_tag.find(A, class_=HIDE_FOR_SMALL)
-
-    if loan_info is not None:
-        # check img tag for src link matches loan link
-        img_tag = loan_info.find(IMG)
-        return (img_tag and img_tag.get(SRC) == PLAYER_IS_LOAN_IMG)
-    else:
-        return False
-
 def get_player_name_pos_and_photo(col_tag):
     # get player table info
     player_table_tag = col_tag.find(TABLE, class_=PLAYER_INFO_TABLE)
 
     # extract player name from table info tag
-    name = player_table_tag.find(SPAN, class_=HIDE_FOR_SMALL).text.strip()
-
-    # extract player shortened name from table info tag
-    shortened_name = player_table_tag.find(SPAN, class_=SHOW_FOR_SMALL).text.strip()
-
+    name = player_table_tag.find(A).text.strip()
     # extract player position from table info tag
     position = player_table_tag.find_all(TR)[-1].find(TD).text.strip()
 
     # extract player photo url from table info tag
     portrait = player_table_tag.find(IMG)[DATA_SRC]
 
-    return (name, shortened_name, position, portrait)
+    return (name, position, portrait)
 
-# td_player_tags[2] - Date of birth / Age
+
+# GET_PLAYER_BIRTH_DATE
 """
-<td
-    class="zentriert">May 12, 1987 (35)
+<td class="zentriert">
+    May 18, 1999 (25)
 </td>
 """
-def get_birth_date(col_tag):
+def get_player_birth_date(col_tag, player_col):
     # get just string stored in td field
     td_text = col_tag.text.strip()
 
@@ -131,21 +129,18 @@ def get_birth_date(col_tag):
     birthday, age = td_text.split(' (')
 
     # convert birthday string to a datetime object
-    birth_date = datetime.strptime(birthday, '%b %d, %Y')
+        # academy players may not have birthdays yet in the system so default their age to 17  
+    birth_date = datetime.strptime('Jun 14, 2006' if birthday == '-' else birthday, '%b %d, %Y')
 
     return birth_date
 
-# td_player_tags[3] - Nationality
+# GET_PLAYER_NATIONALITY
 """
 <td class="zentriert">
-    <img alt="Ireland" class="flaggenrahmen" src="https://tmssl.akamaized.net/images/flagge/verysmall/72.png?lm=1520611569" title="Ireland"/>
-
-    <br/>
-
-    <img alt="United States" class="flaggenrahmen" src="https://tmssl.akamaized.net/images/flagge/verysmall/184.png?lm=1520611569" title="United States"/>
+    <img alt="Ireland" class="flaggenrahmen" src="https://tmssl.akamaized.net//images/flagge/verysmall/72.png?lm=1520611569" title="Ireland"/>
 </td>
 """
-def get_nationality(col_tag):
+def get_player_nationality(col_tag):
     # get first img that shows in this column
     img_tag = col_tag.find(IMG)
 
@@ -154,33 +149,24 @@ def get_nationality(col_tag):
 
     return (nationality, nat_flag)
 
-# td_player_tags[4] - Current Club (TO BE IGNORED)
-"""
-<td class="zentriert">
-    <a href="/afc-bournemouth/startseite/verein/989" title="AFC Bournemouth">
-        <img alt="AFC Bournemouth" class="" src="https://tmssl.akamaized.net/images/wappen/verysmall/989.png?lm=1457991811" title="AFC Bournemouth"/>
-    </a>
-</td>
-"""
 
-# td_player_tags[5] - Market Value
+# GET_PLAYER_MARKET_VALUE
 """
 <td class="rechts hauptlink">
-    <a
-        href="/darren-randolph/marktwertverlauf/spieler/51321">€400k
+    <a href="/mark-travers/marktwertverlauf/spieler/357658">
+        €3.50m
     </a>
-
-    <span
-        class="icons_sprite red-arrow-ten" title="Previous market value: €500k">
-    </span>
 </td>
 """
 def get_player_market_value(col_tag):
     # get the a tag which holds market value
     a_tag = col_tag.find(A)
 
-    if(a_tag is None):
-        return 0
+    if(a_tag is None or a_tag.text.strip() == PLAYER_NULL_VALUE):
+        # assume this player has no current market value
+        # most of the time means its an academy player
+        # lets default this market value to 50K 
+        return 50 * 1_000
 
     # get the text within <a> tag
     market_value_text = a_tag.text.strip()
@@ -197,37 +183,36 @@ def get_player_market_value(col_tag):
     return market_value
 
 
-def get_player_data(player_tag):
+def get_player_data(player_tag): 
+
     td_player_tags = player_tag.find_all(TD, recursive=False)
-    # conditions on which player is not valid: either 0 market value or a loan player to be returned back to original club for 23/24
+
+    # parse table for player data 
     tag_number_col = td_player_tags[0]
     tag_player_col = td_player_tags[1]
     tag_dob_age_col = td_player_tags[2]
     tag_nationality_col = td_player_tags[3]
     # ignore current club column (td_player_tags[4])
     tag_market_value_col = td_player_tags[5]
-
+        
+    # 0 - tag_number_col: kit_number
+    kit_number = get_player_kit_number(tag_number_col)
+    # 1 - tag_player_col: name, position, portrait
+    (name, position, portrait) = get_player_name_pos_and_photo(tag_player_col)
+    # 2 - tag_dob_age_col: birthdate
+    birth_date = get_player_birth_date(tag_dob_age_col, tag_player_col)
+    # 3 - tag_nationality_col: nationality, nat_flag
+    (nationality, nat_flag) = get_player_nationality(tag_nationality_col)
+    # 5 - tag_market_value_col: market_value
     market_value = get_player_market_value(tag_market_value_col)
-    is_loan_player = check_if_loan_player(tag_player_col)
-
-    # only get player_data if valid supported player for this team
-    if(market_value <= 0 or is_loan_player):
-        return None
-    else:
-        # get player kit number if available
-        kit_number = get_player_kit_number(tag_number_col)
-        birth_date = get_birth_date(tag_dob_age_col)
-        (nationality, nat_flag) = get_nationality(tag_nationality_col)
-        (name, shortened_name, position, portrait) = get_player_name_pos_and_photo(tag_player_col)
-
-        return [
-            name,
-            shortened_name,
-            market_value,
-            kit_number,
-            position,
-            nationality,
-            nat_flag,
-            portrait,
-            birth_date
-        ]
+    
+    return [
+        name,
+        market_value,
+        kit_number,
+        position,
+        nationality,
+        nat_flag,
+        portrait,
+        birth_date
+    ]

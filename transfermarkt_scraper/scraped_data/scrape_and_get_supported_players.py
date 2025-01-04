@@ -1,7 +1,7 @@
 import csv
 import pandas as pd
 # project defined imports
-from transfermarkt_scraper.constants.csv_names import (
+from constants.csv_names import (
     LEAGUE_ID,
     PLAYER_BIRTH_DATE,
     PLAYER_ID,
@@ -12,25 +12,24 @@ from transfermarkt_scraper.constants.csv_names import (
     PLAYER_NATIONALITY,
     PLAYER_PORTRAIT,
     PLAYER_POSITION,
-    PLAYER_SHORTENED_NAME,
     SCRAPED_DATA,
     SUPPORTED_PLAYERS,
     SUPPORTED_TEAMS,
     TEAM_DATA_URL,
     TEAM_ID
 )
-from transfermarkt_scraper.constants.webpage_tags import (
+from constants.webpage_tags import (
     CLASS,
     PLAYER_IN_TEAM,
     TBODY,
     TEAM_TABLE_CLASS,
     TR
 )
-from transfermarkt_scraper.utils.csv_writer import prompt_successful_csv_write
-from transfermarkt_scraper.utils.get_csv_path import get_csv_path
-from transfermarkt_scraper.utils.get_df_from_csv import get_df_from_csv
-from transfermarkt_scraper.utils.get_page_soup import get_page_soup
-from transfermarkt_scraper.utils.get_player_data import get_player_data
+from utils.csv_writer import prompt_successful_csv_write
+from utils.get_csv_path import get_csv_path
+from utils.get_df_from_csv import get_df_from_csv
+from utils.get_page_soup import get_page_soup
+from utils.get_player_data import get_player_data
 
 def scrape_and_get_supported_players():
     # get file path for supported_teams.csv
@@ -52,21 +51,17 @@ def scrape_and_get_supported_players():
             if any(class_name in player_tag.get(CLASS, []) for class_name in PLAYER_IN_TEAM):
                 # get player data from valid player tag
                 player_data = get_player_data(player_tag)
-
-                # add player data if valid
-                if(player_data is not None):
-                    supported_players_data.append(
-                        # player: name, shortened_name, kit_number, position, nationality, nat_flag_pic, portrait_pic, birth_date
-                        player_data +
-                        # add team id and league id to connect player to team and league info
-                        [team[TEAM_ID], team[LEAGUE_ID]]
-                    )
+                supported_players_data.append(
+                    # player: name, shortened_name, kit_number, position, nationality, nat_flag_pic, portrait_pic, birth_date
+                    player_data +
+                    # add team id and league id to connect player to team and league info
+                    [team[TEAM_ID], team[LEAGUE_ID]]
+                )
 
     supported_players = pd.DataFrame(
         supported_players_data,
         columns = [
             PLAYER_NAME,
-            PLAYER_SHORTENED_NAME,
             PLAYER_MARKET_VALUE,
             PLAYER_KIT_NUMBER,
             PLAYER_POSITION,

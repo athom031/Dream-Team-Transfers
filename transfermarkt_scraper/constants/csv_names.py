@@ -20,7 +20,6 @@ SUPPORTED_PLAYERS         = 'supported_players'
 # column names for scraped supported player data
 PLAYER_ID               = 'player_id'
 PLAYER_NAME             = 'player_name'
-PLAYER_SHORTENED_NAME   = 'player_shortened_name'
 PLAYER_MARKET_VALUE     = 'player_market_value'
 PLAYER_KIT_NUMBER       = 'player_kit_number'
 PLAYER_POSITION         = 'player_position'
@@ -73,6 +72,12 @@ POSITIONS_DICT= {
         POSITION_GROUPING: GOALKEEPER
     },
     # DEFENSE
+    'Defender': {
+        POSITION_ID: 1,
+        POSITION_NAME: 'Centre-Back',
+        POSITION_ACRONYM: 'CB',
+        POSITION_GROUPING: DEFENDER,
+    },
     'Centre-Back': {
         POSITION_ID: 1,
         POSITION_NAME: 'Centre-Back',
@@ -92,7 +97,7 @@ POSITIONS_DICT= {
         POSITION_GROUPING: DEFENDER
     },
     # MIDFIELD
-    'midfield': {
+    'Midfielder': {
         POSITION_ID: 4,
         POSITION_NAME: 'Central Midfielder',
         POSITION_ACRONYM: 'CM',
@@ -154,6 +159,12 @@ POSITIONS_DICT= {
         POSITION_GROUPING: ATTACKER
     },
     'Attack': {
+        POSITION_ID: 13,
+        POSITION_NAME: 'Striker',
+        POSITION_ACRONYM: 'ST',
+        POSITION_GROUPING: ATTACKER
+    },
+    'Striker': {
         POSITION_ID: 13,
         POSITION_NAME: 'Striker',
         POSITION_ACRONYM: 'ST',
