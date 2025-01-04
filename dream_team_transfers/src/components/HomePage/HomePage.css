@@ -3,27 +3,23 @@ body {
   color: #B98F44;
   font-family: 'Saira Condensed', sans-serif;
   letter-spacing: 4px;
-  border: 1px solid white;
 }
 
 .title {
   font-weight: 900;
   font-size: 4em;
   text-align: center;
-  border: 1px solid white;
   margin: 0;
   padding: 0;
 }
 
 .intro {
   width: 100%;
-  border: 1px solid white;
   display: flex;
 }
 
 .concept, .slideshow {
   flex: 1;
-  border: 1px solid white;
 }
 
 .concept {
@@ -36,7 +32,6 @@ body {
   padding: 1.67%;
   display: flex;
   flex-direction: column;
-  border: 1px solid white;
 }
 
 .concept-icon-container {
@@ -52,7 +47,6 @@ body {
   object-fit: contain;
 }
 
-
 .concept-text {
   height: 30%;
   text-align: center;
@@ -64,7 +58,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid white;
   overflow: hidden;
 }
 
@@ -77,17 +70,14 @@ body {
   object-fit: cover;
   object-position: center;
   border-radius: 10px;
-  border: 1px solid white;
 }
 
 .team-selection {
   display: flex;
-  border: 1px solid white;
 }
 
 .team-selector {
   flex: 1;
-  border: 1px solid white;
 }
 
 .team-selection-padding {
@@ -152,12 +142,10 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  border: 1px solid white;
 }
 
 .team-summary, .submit-button {
   flex: 1;
-  border: 1px solid white;
 }
 
 .team-summary {
