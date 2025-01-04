@@ -104,7 +104,32 @@ function HomePage() {
       <div className='intro'>
 
         <div className='concept'>
-          Concept Introduction goes here!
+
+          <div className='concept-icons'>
+            <img
+                src={process.env.PUBLIC_URL + '/assets/concept-intro-icons/sell-players.png'}
+                alt='sell players'
+                className='concept-icon'
+            />
+            <img
+                src={process.env.PUBLIC_URL + '/assets/concept-intro-icons/european-soccer.png'}
+                alt='buy players'
+                className='concept-icon'
+            />
+            <img
+                src={process.env.PUBLIC_URL + '/assets/concept-intro-icons/team-build.png'}
+                alt='build team'
+                className='concept-icon'
+            />
+          </div>
+
+
+          <div className='concept-text'>
+            <h2>1. Sell Your Unwanted Players!</h2>
+            <h2>2. Buy Hidden Gems Across Europe!</h2>
+            <h2>3.Build your Dream Team!</h2>
+          </div>
+
         </div>
 
         <div className='slideshow'>
