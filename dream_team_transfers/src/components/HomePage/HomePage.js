@@ -157,77 +157,109 @@ function HomePage() {
       </div>
 
       <div className='team-selection'>
-        <div className='team-picker'>
-          <img
-            src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/left${isHoveredLeft ? '-hover' : ''}.png`}
-            onMouseEnter={() => setIsHoveredLeft(true)}
-            onMouseLeave={() => setIsHoveredLeft(false)}
-            onClick={handleLeftClick}
-            className='arrow-button'
-            alt="left arrow"
-          />
-          <div className='logo-container'>
-            <img
-              src={teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].logo : DREAM_TEAM_LOGO}
-              className="team-logo"
-              alt={teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].alias + ' logo' : 'Dream Team Transfers Logo'}
-            />
-            <div className='team-name'>
-              <h1 style={{ color: teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].primary_color : '#000000' }}>
-                {teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].alias : 'Select a Team'}
-              </h1>
+
+        <div className = 'team-selector'>
+
+          <div className='team-selection-padding'>
+
+            <div className='team-selection-background'>
+
+              <div className='team-picker'>
+
+                <img
+                  src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/left${isHoveredLeft ? '-hover' : ''}.png`}
+                  onMouseEnter={() => setIsHoveredLeft(true)}
+                  onMouseLeave={() => setIsHoveredLeft(false)}
+                  onClick={handleLeftClick}
+                  className='arrow-button'
+                  alt="left arrow"
+                />
+
+                <div className='logo-container'>
+                  <img
+                    src={teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].logo : DREAM_TEAM_LOGO}
+                    className="team-logo"
+                    alt={teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].alias + ' logo' : 'Dream Team Transfers Logo'}
+                  />
+                </div>
+
+                <img
+                  src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/right${isHoveredRight ? '-hover' : ''}.png`}
+                  onMouseEnter={() => setIsHoveredRight(true)}
+                  onMouseLeave={() => setIsHoveredRight(false)}
+                  onClick={handleRightClick}
+                  className='arrow-button'
+                  alt='right arrow'
+                />
+
+              </div>
+
+              <div className='team-name'>
+
+                <h1 style={{ color: teamIndex !== null ? '#FFFFFF' : '#000000' }}>
+                  {teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].alias : 'Select a Team'}
+                </h1>
+
+              </div>
+
             </div>
+
           </div>
-          <img
-            src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/right${isHoveredRight ? '-hover' : ''}.png`}
-            onMouseEnter={() => setIsHoveredRight(true)}
-            onMouseLeave={() => setIsHoveredRight(false)}
-            onClick={handleRightClick}
-            className='arrow-button'
-            alt='right arrow'
-          />
+
         </div>
 
         <div className='selection-summary-and-submit'>
 
           <div className='team-summary'>
+
             <div className='team-value'>
+
               <div className='category'>
                 Value:
               </div>
+
               <div className='money'>
                 {CURRENCY_UNIT} {selectedTeam !== null ? getCurrencyRounded(PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_value) : '?'}
               </div>
+
               <div className='unit'>
                 {selectedTeam !== null ? getCurrencyDenomination(PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_value) : ''}
               </div>
+
             </div>
+
             <div className='team-budget'>
+
               <div className='category'>
                 Budget:
               </div>
+
               <div className='money'>
                 {CURRENCY_UNIT} {selectedTeam !== null ? getCurrencyRounded(PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_budget) : '?'}
               </div>
+
               <div className='unit'>
                 {selectedTeam !== null ? getCurrencyDenomination(PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_budget) : ''}
               </div>
+
             </div>
+
           </div>
 
           <div className='submit-button'>
-          <SubmitButton
-            backgroundColor={selectedTeam !== null ? PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].primary_color : '#808080'}
-            color={selectedTeam !== null ? PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].secondary_color : '#FFFFFF'}
-            borderColor={selectedTeam !== null ? PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].third_color : '#5A5A5A'}
-          >
-            Submit
-          </SubmitButton>
+            <SubmitButton
+              backgroundColor={selectedTeam !== null ? PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].primary_color : '#808080'}
+              color={selectedTeam !== null ? PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].secondary_color : '#FFFFFF'}
+              borderColor={selectedTeam !== null ? PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].third_color : '#5A5A5A'}
+            >
+              Submit
+            </SubmitButton>
           </div>
 
         </div>
 
       </div>
+
     </div>
   );
 }

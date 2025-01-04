@@ -70,7 +70,7 @@ export const PREMIER_LEAGUE_TEAM_INFOS = {
         team_photos: [
             'https://static.standard.co.uk/2022/06/16/08/newFile-1.jpg?width=1200',
             'https://res.cloudinary.com/brentford-fc/image/upload/f_auto,q_auto:best,f_auto,q_100,c_fill,ar_16:9/Production/GettyImages-1420487300_t6ctef.jpg',
-            'https://i.guim.co.uk/img/media/7dc23717affa2221ecf4669c445ba3f3fc649f38/0_200_3500_2101/master/3500.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=4c2d03bbf281682f839d7531f27f8ee7',
+            'https://static.independent.co.uk/2021/08/13/21/GettyImages-1334002642.jpg?width=1200',
             'https://chiswickcalendar.co.uk/wp-content/uploads/2021/05/Brentford-FC.jpg',
             'https://res.cloudinary.com/brentford-fc/image/upload/v1665492464/Production/20220507-165740-0100_aqpjmt.jpg?f=&fit=thumb&q=80&fl=progressive&w=1200&h=800',
         ],
