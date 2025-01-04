@@ -1,9 +1,8 @@
 import pandas as pd
 # project defined imports
-from constants.leagues_to_parse import LEAGUES_TO_PARSE
-# from utils.get_league_info import get_league_info
-from utils.get_league_soup import get_league_soup
-from utils.get_team_info import get_team_info
+from transfermarkt_scraper.constants.leagues_to_parse import LEAGUES_TO_PARSE
+from transfermarkt_scraper.utils.get_league_soup import get_league_soup
+from transfermarkt_scraper.utils.get_team_info import get_team_info
 
 # create team data list which will be converted into data frame
 team_data = []
