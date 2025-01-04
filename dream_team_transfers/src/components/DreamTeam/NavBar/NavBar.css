@@ -1,0 +1,77 @@
+/* NavBar.css */
+
+:root {
+    --grey-color: #454545;
+    --gold-color: #B98F44;
+    --black-color: black;
+    --main-font: 'Saira Condensed', sans-serif;
+    --letter-spacing: 4px;
+}
+
+.nav-bar {
+    height: 8vh;
+    width: 100vw;
+    background-color: var(--gold-color);
+    color: var(--grey-color);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--main-font);
+    letter-spacing: var(--letter-spacing);
+}
+
+.nav-bar a {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    color: var(--grey-color);
+    font-weight: bold;
+    font-size: 1.75em;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-bar a:hover {
+    color: var(--black-color);
+    transform: scale(1.1);
+}
+
+/* Styles for phones and tablets in portrait mode */
+@media screen and (max-width: 1023px) and (orientation: portrait) {
+    .navbar-icon {
+      width: 100%;
+      height: auto;
+      transform: scale(1);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .navbar a {
+      font-size: 1.25em;
+    }
+}
+
+/* Styles for phones and tablets in landscape mode */
+@media screen and (max-width: 1023px) and (orientation: landscape) {
+    .navbar-icon {
+        width: 169px;
+        height: 90px;
+        object-fit: cover;
+        align-items: center;
+    }
+}
+
+/* Styles for laptops and larger screens */
+@media screen and (min-width: 1024px) {
+    .navbar-icon {
+        height: 7vh;
+        width: auto;
+        object-fit: cover;
+        align-items: center;
+    }
+
+    .instagram {
+        width: 50px;
+        height: auto;
+    }
+}

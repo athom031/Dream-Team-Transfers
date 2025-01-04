@@ -5,13 +5,14 @@
     --gold-color: #B98F44;
     --main-font: 'Saira Condensed', sans-serif;
     --border-radius: 10px;
+    --letter-spacing: 4px;
 }
 
 body, html {
     background-color: var(--background-color);
     color: var(--gold-color);
     font-family: var(--main-font);
-    letter-spacing: 4px;
+    letter-spacing: var(--letter-spacing);
     margin: 0;
     padding: 0;
     display: flex;

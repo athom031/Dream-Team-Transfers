@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import './NavBar.css';
 
 function NavBar() {
@@ -15,22 +16,22 @@ function NavBar() {
     };
 
     return (
-        <div>
+        <div className='nav-bar'>
             <nav>
                 <Link to="/home">
                     {isLogoHovered ? (
                         <img
-                            src={process.env.PUBLIC_URL + '/assets/navbar-icons/logo-hover-icon.svg'}
+                            src={process.env.PUBLIC_URL + '/assets/navbar-icons/logo-hover.png'}
                             alt="Dream Team Logo"
-                            className="logo"
+                            className="navbar-icon"
                             onMouseEnter={handleLogoMouseEnter}
                             onMouseLeave={handleLogoMouseLeave}
                         />
                     ) : (
                         <img
-                            src={process.env.PUBLIC_URL + '/assets/navbar-icons/logo-icon.svg'}
+                            src={process.env.PUBLIC_URL + '/assets/navbar-icons/logo.png'}
                             alt="Dream Team Logo"
-                            className="logo"
+                            className="navbar-icon"
                             onMouseEnter={handleLogoMouseEnter}
                             onMouseLeave={handleLogoMouseLeave}
                         />
