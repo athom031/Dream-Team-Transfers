@@ -7,6 +7,8 @@
 
 body {
     background-color: black;
+    height: 100vh;
+    width: 100vw;
 }
 
 /* LOADING SCREEN */
@@ -14,9 +16,10 @@ body {
 .loading {
     display: flex;
     justify-content: center;
+    background-color: black;
     align-items: center;
     height: 100vh;
-    background-color: black;
+    width: 100vw;
     flex-direction: column;
 }
 
@@ -30,6 +33,8 @@ body {
 
 .logo {
     animation: grow-shrink 4s infinite ease-in-out;
+    width: 30vw;
+    height: 30vw;
 }
 
 /* LOADING SCREEN HEADING */
@@ -47,6 +52,7 @@ h3 {
     font-family: var(--main-font);
     font-weight: 900;
     letter-spacing: 4px;
+    font-size: 3vw;
 }
 
 h3::after {
