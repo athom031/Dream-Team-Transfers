@@ -7,6 +7,7 @@ import PlayerMarket from './PlayerMarket/PlayerMarket';
 import TransferSummary from './TransferSummary/TransferSummary';
 import TeamRestart from './TeamRestart/TeamRestart';
 import PageNotFound from './PageNotFound/PageNotFound';
+import Dev from '../Dev/Dev';
 
 import './DreamTeam.css';
 
@@ -23,6 +24,7 @@ function DreamTeam() {
           <Route path="/" element={<StartingEleven />} />
           <Route path="/home" element={<StartingEleven />} />
           <Route path="/starting-eleven" element={<StartingEleven />} />
+          <Route path="/dev" element={<Dev />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </div>

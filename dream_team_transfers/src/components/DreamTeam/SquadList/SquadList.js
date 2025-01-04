@@ -18,6 +18,7 @@ function SquadList() {
     /* getting data from db */
     const updateTeamDataIfNeeded = () => {
         getTeamData().then((data) => {
+            console.log(data);
             setPlayersSold(Object.keys(data.players_sold));
             setPlayersBought(Object.keys(data.players_bought));
             setTeamBudget(data.team_budget);
