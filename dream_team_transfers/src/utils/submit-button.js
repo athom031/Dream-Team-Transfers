@@ -14,7 +14,7 @@ export const getSubmitButton = () => {
   font-weight: 900;
   letter-spacing: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Add transition for smoother color change */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 
   &:hover {
     background-color: ${props => darken(0.1, props.team !== null ? PREMIER_LEAGUE_TEAM_INFOS[props.team].primary_color : '#808080')};
@@ -23,8 +23,8 @@ export const getSubmitButton = () => {
   }
 
   &:disabled {
-    opacity: 0.5; /* Make the button semi-transparent when disabled */
-    cursor: not-allowed; /* Change the cursor when disabled */
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 `;
 
