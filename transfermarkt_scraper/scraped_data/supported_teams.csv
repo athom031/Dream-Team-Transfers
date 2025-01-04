@@ -1,4 +1,4 @@
-team_id,team_name,team_logo,team_url,league_id,league_name,league_nation,league_logo
+team_id,team_name,team_crest_pic,team_data_url,league_id,league_name,league_nation,league_logo_pic
 0,AFC Bournemouth,https://tmssl.akamaized.net/images/wappen/tiny/989.png?lm=1457991811,https://www.transfermarkt.com/afc-bournemouth/startseite/verein/989/saison_id/2022,0,Premier League,England,https://tmssl.akamaized.net/images/logo/header/gb1.png?lm=1521104656
 1,Arsenal FC,https://tmssl.akamaized.net/images/wappen/tiny/11.png?lm=1489787850,https://www.transfermarkt.com/fc-arsenal/startseite/verein/11/saison_id/2022,0,Premier League,England,https://tmssl.akamaized.net/images/logo/header/gb1.png?lm=1521104656
 2,Aston Villa,https://tmssl.akamaized.net/images/wappen/tiny/405.png?lm=1469443765,https://www.transfermarkt.com/aston-villa/startseite/verein/405/saison_id/2022,0,Premier League,England,https://tmssl.akamaized.net/images/logo/header/gb1.png?lm=1521104656

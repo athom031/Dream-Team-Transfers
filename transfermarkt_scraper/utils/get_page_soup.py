@@ -10,9 +10,5 @@ def get_page_soup(url, element_class):
     # create BeautifulSoup object from webpage
     league_soup = BeautifulSoup(league_webpage.content, 'html.parser')
 
-    if(element_class is not None):
-        # from soup object return filtered for class elements
-        return league_soup.find_all(class_ = element_class)
-    else:
-        # return unfiltered soup
-        return league_soup
+    # from soup object return filtered for class elements
+    return league_soup.find_all(class_ = element_class)
