@@ -29,6 +29,11 @@
     align-items: center;
 }
 
+
+.nav-logo-padding-container {
+    padding: 0em 5em 0em 5em;
+}
+
 .nav-logo-container {
     height: 8vh;
     width: auto;
@@ -41,15 +46,50 @@
     align-self: center;
 }
 
-.nav-logo-padding-container {
-    flex: 3;
-    padding: 0em 5em 0em 5em;
-}
+
 
 .other-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex: 7;
-    padding: 0 1rem; /* Add this */
+    padding: 0 1rem;
+}
+
+/* Styles for laptops and larger screens */
+@media screen and (min-width: 1024px) {
+
+    .nav-logo-padding-container {
+        flex: 2;
+    }
+
+    .nav-bar a {
+        font-size: 1em;
+    }
+
+}
+
+/* Styles for phones and tablets in landscape mode */
+@media screen and (max-width: 1023px) and (orientation: landscape) {
+
+    .nav-logo-padding-container {
+        flex: 1.5;
+    }
+
+    .nav-bar a {
+        font-size: 1em;
+    }
+
+}
+
+/* Styles for phones and tablets in portrait mode */
+@media screen and (max-width: 1023px) and (orientation: portrait) {
+
+    .nav-logo-padding-container {
+        flex: 1;
+    }
+
+    .nav-bar a {
+        font-size: .5em;
+    }
 }
