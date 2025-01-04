@@ -1,48 +1,55 @@
 import pandas as pd
 # project defined imports
 from transfermarkt_scraper.constants.csv_names import (
-    SCRAPED_DATA,
-    SUPPORTED_TEAMS,
-    SUPPORTED_PLAYERS,
-    TEAM_CREST,
-    TEAM_CREST_TAG,
-    SMALL_PICTURE_TAG,
     BIG_PICTURE_TAG,
-    TEAM_CREST_BIG,
-    TEAM_CREST_SMALL,
     CSV,
     CSVS,
-    TEAMS,
-    TEAM_ID,
-    TEAM_NAME,
     LEAGUE_ID,
-    LEAGUE_NAME,
-    PLAYER_NAT_FLAG,
-    NATION_FLAG_TAG,
-    NATION_NAME,
-    NATION_FLAG_BIG,
-    NATION_FLAG_SMALL,
-    PLAYER_NATIONALITY,
-    NATIONS,
-    NATION_ID,
-    SUCCESS,
     LEAGUE_LOGO,
-    LEAGUE_LOGO_TAG,
     LEAGUE_LOGO_BIG,
     LEAGUE_LOGO_SMALL,
+    LEAGUE_LOGO_TAG,
+    LEAGUE_NAME,
     LEAGUE_NATION,
     LEAGUES,
-    PLAYER_POSITION,
-    POSITION_ID,
-    POSITION_NAME,
-    POSITION_ACRONYM,
-    POSITION_GROUPING,
-    POSITIONS_DICT,
-    POSITIONS,
-    PLAYER_PORTRAIT_TAG,
+    NATION_FLAG_BIG,
+    NATION_FLAG_SMALL,
+    NATION_FLAG_TAG,
+    NATION_ID,
+    NATION_NAME,
+    NATIONS,
+    PLAYER_BIRTH_DATE,
+    PLAYER_ID,
+    PLAYER_KIT_NUMBER,
+    PLAYER_MARKET_VALUE,
+    PLAYER_NAME,
+    PLAYER_NAT_FLAG,
+    PLAYER_NATIONALITY,
     PLAYER_PORTRAIT,
     PLAYER_PORTRAIT_BIG,
-    PLAYER_PORTRAIT_SMALL
+    PLAYER_PORTRAIT_SMALL,
+    PLAYER_PORTRAIT_TAG,
+    PLAYER_POSITION,
+    PLAYER_SHORTENED_NAME,
+    PLAYERS,
+    POSITION_ACRONYM,
+    POSITION_GROUPING,
+    POSITION_ID,
+    POSITION_NAME,
+    POSITIONS,
+    POSITIONS_DICT,
+    SCRAPED_DATA,
+    SMALL_PICTURE_TAG,
+    SUCCESS,
+    SUPPORTED_PLAYERS,
+    SUPPORTED_TEAMS,
+    TEAM_CREST,
+    TEAM_CREST_BIG,
+    TEAM_CREST_SMALL,
+    TEAM_CREST_TAG,
+    TEAM_ID,
+    TEAM_NAME,
+    TEAMS
 )
 from transfermarkt_scraper.utils.get_df_from_csv import get_df_from_csv
 from transfermarkt_scraper.utils.get_csv_path import get_csv_path
@@ -215,6 +222,23 @@ def write_players_csv():
         )
     supported_players[NATION_ID] = nation_ids
 
-    print(nation_ids)
+    # create data frame for players.csv
+    players = pd.DataFrame(supported_players[[
+        PLAYER_NAME,
+        PLAYER_SHORTENED_NAME,
+        PLAYER_MARKET_VALUE,
+        PLAYER_KIT_NUMBER,
+        PLAYER_PORTRAIT_BIG,
+        PLAYER_PORTRAIT_SMALL,
+        PLAYER_BIRTH_DATE,
+        TEAM_ID,
+        LEAGUE_ID,
+        POSITION_ID,
+        NATION_ID
+    ]])
 
-    return None
+    # write to csv
+    players_path = get_csv_path([CSVS], PLAYERS)
+    players.to_csv(players_path, index_label=PLAYER_ID)
+
+    prompt_successful_csv_write(PLAYERS, CSVS)
