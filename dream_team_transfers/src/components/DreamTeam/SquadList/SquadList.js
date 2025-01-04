@@ -43,7 +43,17 @@ function SquadList({
     }
 
     const sellPlayerHelper = (playerId) => () => {
-        sellPlayer(playerId, PlayersCSVData[playerId].player_market_value).then(() => setPlayersSold([...playersSold, playerId]));
+        const playerValue =
+            Number(PlayersCSVData[playerId].player_market_value);
+        console.log(playerValue);
+        const currBudget = Number(teamBudget);
+        const currValue = Number(teamValue);
+        sellPlayer(playerId, playerValue)
+            .then(() => {
+                setPlayersSold([...playersSold, playerId]);
+                setTeamBudget(String(currBudget + playerValue));
+                setTeamValue(String(currValue - playerValue));
+            });
     }
 
     // retrieve data from db
