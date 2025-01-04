@@ -1,0 +1,17 @@
+/*
+    Loading-laptop.css
+        Styles for phones and tablets in landscape mode
+*/
+
+@media screen and (max-width: 1023px) and (orientation: landscape) {
+    /* LOADING SCREEN ICON */
+    .loading .logo {
+        width: 250px;
+        height: 250px;
+    }
+
+    /* LOADING SCREEN HEADING */
+    .loading h3 {
+        font-size: 1.5em;
+    }
+}
