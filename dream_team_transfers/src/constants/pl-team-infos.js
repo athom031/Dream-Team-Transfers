@@ -129,7 +129,7 @@ export const PREMIER_LEAGUE_TEAM_INFOS = {
             'https://cdn1.thechelseachronicle.com/uploads/17/2023/11/GettyImages-1779054060-1-scaled.jpg',
             'https://img.chelseafc.com/image/upload/f_auto,w_1440,c_fill,g_faces,q_90/The%205th%20Stand%20app%20editorial/GettyImages-1789642959.jpg',
             'https://img.chelseafc.com/image/upload/f_auto,w_1440,c_fill,g_faces,q_90/editorial/match-reports/2023-24/Luton%20home/Sterling_celeb_Luton_H_GettyImages-1638598584.jpg',
-            'https://scontent-sjc3-1.xx.fbcdn.net/v/t39.30808-6/410191074_938259907661257_6059991723847287616_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=3635dc&_nc_ohc=InBaOPgNTkYAX8ffV2a&_nc_ht=scontent-sjc3-1.xx&cb_e2o_trans=t&oh=00_AfCLBMRySQduOuFNmZGouxp-Jfr_uSBvpNAIP6In63k0Ug&oe=65A5055C',
+            'https://images2.minutemediacdn.com/image/upload/c_crop,w_3741,h_2104,x_0,y_322/c_fill,w_720,ar_16:9,f_auto,q_auto,g_auto/images/GettyImages/mmsport/90min_en_international_web/01hjpknqgzrq1ntpkz1n.jpg',
         ],
     },
     7: {
