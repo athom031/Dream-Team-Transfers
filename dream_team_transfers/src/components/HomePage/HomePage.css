@@ -6,3 +6,11 @@
     object-fit: cover;
     object-position: center;
 }
+
+.title {
+    color: #B98F44;
+    font-family: 'Saira Condensed', sans-serif;
+    font-weight: 900;
+    letter-spacing: 4px;
+    font-size: 2em;
+}
