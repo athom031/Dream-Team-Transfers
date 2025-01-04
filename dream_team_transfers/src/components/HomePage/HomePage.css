@@ -15,6 +15,73 @@ body {
   padding: 0;
 }
 
+.intro {
+  width: 100%;
+  border: 1px solid white;
+  display: flex;
+}
+
+.concept, .slideshow {
+  flex: 1;
+  border: 1px solid white;
+}
+
+.concept {
+  display: flex;
+  justify-content: space-between;
+}
+
+.concept-container {
+  width: 30%;
+  padding: 1.67%;
+  /* height: 500px; adjust as needed */
+  display: flex;
+  flex-direction: column;
+  border: 1px solid white; /* for visualization */
+}
+
+.concept-icon-container {
+  padding: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.concept-icon {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+
+.concept-text {
+  height: 30%; /* adjust as needed */
+  text-align: center;
+}
+
+.slideshow {
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white;
+  /* padding: 10% 20%; */
+  overflow: hidden;
+}
+
+.slideshow-image {
+  position: absolute;
+  top: 5%; /* new */
+  left: 5%; /* new */
+  width: 90%; /* new */
+  height: 90%; /* new */
+  object-fit: cover;
+  object-position: center;
+  border-radius: 10px;
+}
+
+
 
 /* .title h1 {
   border: 1px solid white;
