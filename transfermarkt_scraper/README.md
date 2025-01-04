@@ -9,7 +9,8 @@
     ```
 
 2. **Define user agent**:
-    Set up a user agent string to mimic a real browser request. This is necessary to avoid being blocked by the website. Instructions can be found in `headers.py`
+    Set up a user agent string to mimic a real browser request. This is necessary to avoid being blocked by the website. Instructions can be found in [`headers.py`](https://github.com/athom031/Dream-Team-Transfers/blob/main/transfermarkt_scraper/constants/headers.py)
+
 
 3. **Run the script**:
     Execute the main script to start the scraping process:
