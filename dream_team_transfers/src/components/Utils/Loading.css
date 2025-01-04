@@ -27,7 +27,6 @@ h3 {
     color: #B98F44;
     font-family: 'Saira Condensed', sans-serif;
     font-weight: 900;
-    font-size: 3em;
     letter-spacing: 4px;
 }
 
@@ -42,4 +41,41 @@ body {
 
 .logo {
     animation: grow-shrink 4s infinite ease-in-out;
+}
+
+/* Styles for laptops and larger screens */
+@media screen and (min-width: 1024px) {
+    .loading h3 {
+      font-size: 3em;
+    }
+
+    .loading .logo {
+      width: 400px;
+      height: 400px;
+    }
+}
+
+
+/* Styles for phones and tablets in landscape mode */
+@media screen and (max-width: 1023px) and (orientation: landscape) {
+    .loading h3 {
+        font-size: 1.5em;
+    }
+
+    .loading .logo {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+/* Styles for phones and tablets in portrait mode */
+@media screen and (max-width: 1023px) and (orientation: portrait) {
+    .loading h3 {
+        font-size: 2em;
+    }
+
+    .loading .logo {
+        width: 200px;
+        height: 200px;
+    }
 }

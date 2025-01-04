@@ -1,10 +1,6 @@
 import './HomePage.css';
 
-import React, { useEffect, useState, useRef } from 'react';
-
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React, { useEffect, useState } from 'react';
 
 import { PREMIER_LEAGUE_TEAM_INFOS } from '../../constants/pl-team-infos';
 
@@ -13,29 +9,9 @@ function HomePage() {
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [hoverTimeout, setHoverTimeout] = useState(null);
   const [slideshowPhotos, setSlideshowPhotos] = useState([]);
+  const [photoIndex, setPhotoIndex] = useState(0);
 
   const DREAM_TEAM_LOGO = process.env.PUBLIC_URL + '/logo512.png';
-
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 4000,
-  };
-
-  const sliderRef = useRef(null);
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (sliderRef.current) {
-        sliderRef.current.slickNext();
-      }
-    }, 4000); // 1 second delay
-    return () => clearTimeout(timeoutId);
-  }, []);
-
 
   useEffect(() => {
     // this code activates when teamIndex changes
@@ -80,11 +56,20 @@ function HomePage() {
       }
     }
 
+    setPhotoIndex(0);
     setSlideshowPhotos(newPhotos);
   }, [selectedTeam]);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setPhotoIndex((photoIndex + 1) % slideshowPhotos.length);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [photoIndex, slideshowPhotos]);
+
   const handleLeftClick = () => {
-    if(teamIndex === null) {
+    if (teamIndex === null) {
       setTeamIndex(19);
     } else {
       setTeamIndex((teamIndex + 19 /* -1 + 20 */) % 20);
@@ -92,7 +77,7 @@ function HomePage() {
   }
 
   const handleRightClick = () => {
-    if(teamIndex === null) {
+    if (teamIndex === null) {
       setTeamIndex(0);
     } else {
       setTeamIndex((teamIndex + 1) % 20);
@@ -115,13 +100,11 @@ function HomePage() {
         </div>
 
         <div className='slideshow'>
-          <Slider ref={sliderRef} {...settings} autoplay autoplaySpeed={4000}>
-            {slideshowPhotos.map((photo, index) => (
-              <div key={index}>
-                <img src={photo} alt="Premier League Team Photo" />
-              </div>
-            ))}
-          </Slider>
+          <img
+            src={slideshowPhotos[photoIndex]}
+            alt="Premier League Team Photo"
+            className="slideshow-image"
+          />
         </div>
 
       </div>
