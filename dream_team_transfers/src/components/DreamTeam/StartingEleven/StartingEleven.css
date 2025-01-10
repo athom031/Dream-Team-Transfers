@@ -1,1 +1,78 @@
 /* #F2D9B6 */
+/* General layout */
+.starting-eleven {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #38a169; /* Green background */
+  font-family: 'Roboto', sans-serif;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.formation-selector {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+/* Lineup grid */
+.lineup-grid {
+  width: 100%;
+  max-width: 48rem;
+  aspect-ratio: 2 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.lineup-row {
+  display: flex;
+  justify-content: space-around;
+}
+
+.player-slot {
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: move;
+}
+
+.player {
+  margin-top: 0.5rem;
+}
+
+/* Subs bench */
+.subs-title {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+}
+
+.subs-bench {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.sub {
+  padding: 0.5rem;
+  background-color: #4299e1; /* Blue background */
+  color: white;
+  border-radius: 0.25rem;
+  cursor: move;
+}

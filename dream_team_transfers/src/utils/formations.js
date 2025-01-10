@@ -1,0 +1,56 @@
+export const FORMATIONS = {
+  '4-3-3': [
+    ['LW', 'ST', 'RW'],
+    ['CM', 'CM', 'CM'],
+    ['LB', 'CB', 'CB', 'RB'],
+    ['GK'],
+  ],
+  '4-3-3 (ATT)': [
+    ['LW', 'ST', 'RW'],
+    ['CAM'],
+    ['CM', 'CM'],
+    ['LB', 'CB', 'CB', 'RB'],
+    ['GK'],
+  ],
+  '4-3-3 (DEF)': [
+    ['LW', 'ST', 'RW'],
+    ['CM', 'CM'],
+    ['CDM'],
+    ['LB', 'CB', 'CB', 'RB'],
+    ['GK'],
+  ],
+  '4-4-2': [
+    ['ST', 'ST'],
+    ['LM', 'CM', 'CM', 'RM'],
+    ['LB', 'CB', 'CB', 'RB'],
+    ['GK'],
+  ],
+  '4-4-2 (DIAMOND)': [
+    ['ST', 'ST'],
+    ['CAM'],
+    ['LM', 'RM'],
+    ['CDM'],
+    ['LB', 'CB', 'CB', 'RB'],
+    ['GK'],
+  ],
+  '4-2-3-1': [
+    ['ST'],
+    ['AM', 'AM', 'AM'],
+    ['CDM', 'CDM'],
+    ['LB', 'CB', 'CB', 'RB'],
+    ['GK'],
+  ],
+  '5-2-2-1': [
+    ['ST'],
+    ['AM', 'AM'],
+    ['CDM', 'CDM'],
+    ['LWB', 'CB', 'CB', 'CB', 'RWB'],
+    ['GK'],
+  ],
+  '5-3-2': [
+    ['ST', 'ST'],
+    ['CM', 'CM', 'CM'],
+    ['LWB', 'CB', 'CB', 'CB', 'RWB'],
+    ['GK'],
+  ],
+};
