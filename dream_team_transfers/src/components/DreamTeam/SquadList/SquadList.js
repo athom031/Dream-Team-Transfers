@@ -179,7 +179,7 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
     }
 
     setTeamPlayers(teamPlayersUpdate);
-  }, [playersSold, playersBought, PlayersCSVData, teamPicked]);
+  }, [playersSold, playersBought, PlayersCSVData, teamPicked, kitUpdates]);
 
   useEffect(() => {
     const relevantNationsUpdate = {};
@@ -338,7 +338,7 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
         },
       ];
     }
-  }, [teamPlayers, relevantNations, relevantPositions, kitUpdates]);
+  }, [teamPlayers, relevantNations, relevantPositions, kitUpdates, getPositionCircleAndAcronym]);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data: teamPlayers }, useSortBy);
