@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { PREMIER_LEAGUE_TEAM_INFOS } from '../../constants/pl-team-infos';
 
 function Slideshow({ selectedTeam }) {
-
   const [slideshowPhotos, setSlideshowPhotos] = useState([]);
 
   const [photoIndex, setPhotoIndex] = useState(0);
@@ -16,7 +15,7 @@ function Slideshow({ selectedTeam }) {
     objectFit: 'cover',
     objectPosition: 'center',
     borderRadius: '10px',
-  }
+  };
 
   // changes photos shown in slideshow based on team selected
   useEffect(() => {
@@ -52,11 +51,11 @@ function Slideshow({ selectedTeam }) {
   }, [photoIndex, slideshowPhotos]);
 
   return (
-    <div className='slideshow'>
+    <div className="slideshow">
       <img
         src={slideshowPhotos[photoIndex]}
         alt="Slideshow"
-        className='slideshow-img'
+        className="slideshow-img"
         style={slideshowImageStyle}
       />
     </div>

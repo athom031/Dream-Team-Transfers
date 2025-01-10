@@ -1,146 +1,153 @@
 /* #708090 */
 .SquadList {
-    background-color:#708090;
-    color: white;
-    scroll-behavior: smooth;
+  background-color: #708090;
+  color: white;
+  scroll-behavior: smooth;
 }
 
 .squad-w_o-players {
-    margin-left: 2em;
+  margin-left: 2em;
 }
 
 .squad-w_o-players a {
-    color: #D3D3D3;
+  color: #d3d3d3;
 }
 
 .squad-list-header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    background-color: #454545;
-    padding-bottom: 1em;
-    border-bottom: 1px solid #D3D3D3;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #454545;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #d3d3d3;
 }
 
 .header-description {
-    width: 50%;
-    justify-content: center;
-    margin-left: 2em;
+  width: 50%;
+  justify-content: center;
+  margin-left: 2em;
 }
 
-.nation-cell, .player-profile, .player-position, .player-value, .player-name, .player-kit-number {
-    display: flex;
-    align-items: center;
-    padding: 10px;
+.nation-cell,
+.player-profile,
+.player-position,
+.player-value,
+.player-name,
+.player-kit-number {
+  display: flex;
+  align-items: center;
+  padding: 10px;
 }
 
 .nation-cell {
-    gap: 10px;
+  gap: 10px;
 }
-.player-position, .player-value, .player-name, .player-kit-number {
-    justify-content: center;
+.player-position,
+.player-value,
+.player-name,
+.player-kit-number {
+  justify-content: center;
 }
 
 .squad-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: Arial, sans-serif;
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
 }
 
 .squad-table-header {
-    background-color: #454545;
-    color: white;
+  background-color: #454545;
+  color: white;
 }
 
 .squad-table-header-cell {
-    padding: 10px;
-    color: white;
-    text-align: left;
+  padding: 10px;
+  color: white;
+  text-align: left;
 }
 
 .squad-table-sort-icon {
-    margin-left: 5px;
+  margin-left: 5px;
 }
 
 .squad-table-row {
-    border-bottom: 1px solid white;
+  border-bottom: 1px solid white;
 }
 
 .squad-table-row:nth-child(odd) {
-    background-color: #D3D3D3;
-    color: #454545;
+  background-color: #d3d3d3;
+  color: #454545;
 }
 
 .squad-table-row:nth_child(even) {
-    background-color: #FFFFFF;
-    color: #454545;
+  background-color: #ffffff;
+  color: #454545;
 }
 
 .squad-table-cell {
-    padding: 10px;
-    text-align: left;
+  padding: 10px;
+  text-align: left;
 }
 
 .squad-table-row:hover {
-    background-color: #8C8C8C;
-    color: white;
+  background-color: #8c8c8c;
+  color: white;
 }
 
 .table-container {
-    width: 100vw;
-    overflow-x:auto;
-    display: flex;
+  width: 100vw;
+  overflow-x: auto;
+  display: flex;
 }
 
 .squad-table {
-    width: 100%;
+  width: 100%;
 }
 
-
 .player-profile {
-    border-radius: 15px;
-    width: 50px;
+  border-radius: 15px;
+  width: 50px;
 }
 
 .squad-list-button {
-    background-color: #B98F44; /* the color of the progress bar */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    transition-duration: 0.4s;
-    border-radius: 5%;
-    position: relative;
-    overflow: hidden;
+  background-color: #b98f44; /* the color of the progress bar */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+  border-radius: 5%;
+  position: relative;
+  overflow: hidden;
 }
 .squad-list-button:hover {
-    background-color: #8B6C42;
+  background-color: #8b6c42;
 }
 .squad-list-button::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    background: #B98F44; /* the color of the button */
-    width: 100%;
-    transition: width 2s linear;
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  background: #b98f44; /* the color of the button */
+  width: 100%;
+  transition: width 2s linear;
 }
 .squad-list-button.active::before {
-    width: 0;
+  width: 0;
 }
 .squad-list-button .sell-text {
-    position: relative;
-    z-index: 1;
+  position: relative;
+  z-index: 1;
 }
 .squad-list-button.active .sell-text {
-    color: white; /* change this to the color of your button background */
+  color: white; /* change this to the color of your button background */
 }
 .squad-list-button:not(.active)::before {
-    transition: none;
+  transition: none;
 }

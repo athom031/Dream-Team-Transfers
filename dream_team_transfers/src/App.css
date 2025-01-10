@@ -1,13 +1,12 @@
-
 :root {
-    --dark-grey-color: #454545;
-    --light-grey-color: #899499;
-    --logo-gold-color: #B98F44;
-    --logo-white-color: white;
-    --logo-black-color: black;
-    --restart-beige-color: #FDF5E6;
-    --restart-brown-color: #8B6C42;
-    --main-font: 'Saira Condensed', sans-serif;
-    --letter-spacing: 4px;
-    --border-radius: 10px;
+  --dark-grey-color: #454545;
+  --light-grey-color: #899499;
+  --logo-gold-color: #b98f44;
+  --logo-white-color: white;
+  --logo-black-color: black;
+  --restart-beige-color: #fdf5e6;
+  --restart-brown-color: #8b6c42;
+  --main-font: 'Saira Condensed', sans-serif;
+  --letter-spacing: 4px;
+  --border-radius: 10px;
 }

@@ -16,7 +16,7 @@ import {
   getPlayersCSV,
   getPositionsCSV,
   // getTeamsCSV
-} from '../../utils/parse-csv'
+} from '../../utils/parse-csv';
 
 import './DreamTeam.css';
 
@@ -30,24 +30,26 @@ function DreamTeam() {
   // load in csv files when app loads once and pass it into dream team
   useEffect(() => {
     // getLeaguesCSV().then(data => setLeagueCSVData(data));
-    getNationsCSV().then(data => setNationsCSVData(data));
-    getPlayersCSV().then(data => setPlayersCSVData(data));
-    getPositionsCSV().then(data => setPositionsCSVData(data));
+    getNationsCSV().then((data) => setNationsCSVData(data));
+    getPlayersCSV().then((data) => setPlayersCSVData(data));
+    getPositionsCSV().then((data) => setPositionsCSVData(data));
     // getTeamsCSV().then(data => setTeamsCSVData(data));
   }, []);
 
   return (
     <BrowserRouter>
-      <div className='dream-team'>
-        <NavBar/>
+      <div className="dream-team">
+        <NavBar />
         <Routes>
           <Route
             path="/squad-list"
-            element={<SquadList
-              NationsCSVData={NationsCSVData}
-              PlayersCSVData={PlayersCSVData}
-              PositionsCSVData={PositionsCSVData}
-            />}
+            element={
+              <SquadList
+                NationsCSVData={NationsCSVData}
+                PlayersCSVData={PlayersCSVData}
+                PositionsCSVData={PositionsCSVData}
+              />
+            }
           />
           <Route path="/player-market" element={<PlayerMarket />} />
           <Route path="/transfer-summary" element={<TransferSummary />} />
@@ -60,7 +62,7 @@ function DreamTeam() {
         </Routes>
       </div>
     </BrowserRouter>
-  )
+  );
 }
 
 export default DreamTeam;

@@ -1,55 +1,71 @@
 /* Loading.css */
 
 body {
-    height: 100vh;
-    width: 100vw;
+  height: 100vh;
+  width: 100vw;
 }
 
 /* LOADING SCREEN */
 
 .loading {
-    display: flex;
-    justify-content: center;
-    background-color: var(--logo-black-color);
-    align-items: center;
-    height: 100vh;
-    width: 100vw;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  background-color: var(--logo-black-color);
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  flex-direction: column;
 }
 
 /* LOADING SCREEN ICON */
 
 @keyframes grow-shrink {
-    0% { transform: scale(.75); }
-    50% { transform: scale(.85); }
-    100% { transform: scale(.75); }
+  0% {
+    transform: scale(0.75);
+  }
+  50% {
+    transform: scale(0.85);
+  }
+  100% {
+    transform: scale(0.75);
+  }
 }
 
 .logo {
-    animation: grow-shrink 4s infinite ease-in-out;
-    width: 30vw;
-    height: 30vw;
+  animation: grow-shrink 4s infinite ease-in-out;
+  width: 30vw;
+  height: 30vw;
 }
 
 /* LOADING SCREEN HEADING */
 
 @keyframes loading {
-    0% { content: "Loading"; }
-    25% { content: "Loading."; }
-    50% { content: "Loading.."; }
-    75% { content: "Loading..."; }
-    100% { content: "Loading"; }
+  0% {
+    content: 'Loading';
+  }
+  25% {
+    content: 'Loading.';
+  }
+  50% {
+    content: 'Loading..';
+  }
+  75% {
+    content: 'Loading...';
+  }
+  100% {
+    content: 'Loading';
+  }
 }
 
 h3 {
-    color: var(--gold-color);
-    font-family: var(--main-font);
-    font-weight: 900;
-    letter-spacing: (--letter-spacing);
-    font-size: 3vw;
+  color: var(--gold-color);
+  font-family: var(--main-font);
+  font-weight: 900;
+  letter-spacing: (--letter-spacing);
+  font-size: 3vw;
 }
 
 h3::after {
-    content: "";
-    animation: loading 4s infinite;
+  content: '';
+  animation: loading 4s infinite;
 }

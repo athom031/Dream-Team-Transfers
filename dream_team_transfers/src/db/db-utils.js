@@ -23,86 +23,66 @@ export function initializeDB() {
 }
 
 export function getTeamData() {
-  return initializeDB()
-    .then(
-      () => db.get('dtt_data')
-    );
+  return initializeDB().then(() => db.get('dtt_data'));
 }
 
 export function getTeamPicked() {
   return initializeDB()
-    .then(
-      () => db.get('dtt_data')
-    )
-    .then(
-      (data) => data.team_picked
-    );
+    .then(() => db.get('dtt_data'))
+    .then((data) => data.team_picked);
 }
 
 export function selectTeam(selectedTeam) {
-  return initializeDB()
-    .then(
-      () => {
-        return db.get('dtt_data').then(doc => {
-          doc.team_picked = PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_id;
-          doc.team_nickname = '';
-          doc.team_budget = PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_budget;
-          doc.team_value = PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_value;
-          doc.team_positions = {};
-          doc.team_kit_updates = {};
-          doc.players_bought = [];
-          doc.players_sold = [];
+  return initializeDB().then(() => {
+    return db.get('dtt_data').then((doc) => {
+      doc.team_picked = PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_id;
+      doc.team_nickname = '';
+      doc.team_budget = PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_budget;
+      doc.team_value = PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_value;
+      doc.team_positions = {};
+      doc.team_kit_updates = {};
+      doc.players_bought = [];
+      doc.players_sold = [];
 
-          return db.put(doc);
-        });
-      }
-    );
+      return db.put(doc);
+    });
+  });
 }
 
 export function restartTeam() {
-  return initializeDB()
-    .then(
-      () => {
-        return db.get('dtt_data').then(doc => {
-          doc.team_picked = -1;
-          doc.team_nickname = '';
-          doc.team_budget = 0.0;
-          doc.team_value = 0.0;
-          doc.team_positions = {};
-          doc.team_kit_updates = {};
-          doc.players_bought = [];
-          doc.players_sold = [];
+  return initializeDB().then(() => {
+    return db.get('dtt_data').then((doc) => {
+      doc.team_picked = -1;
+      doc.team_nickname = '';
+      doc.team_budget = 0.0;
+      doc.team_value = 0.0;
+      doc.team_positions = {};
+      doc.team_kit_updates = {};
+      doc.players_bought = [];
+      doc.players_sold = [];
 
-          return db.put(doc);
-        });
-      }
-    );
+      return db.put(doc);
+    });
+  });
 }
 
 export function sellPlayer(playerId, playerValue) {
-  return initializeDB()
-    .then(
-      () => {
-        return db.get('dtt_data').then(doc => {
-          doc.team_budget = String(Number(doc.team_budget) + playerValue);
-          doc.team_value = String(Number(doc.team_value) - playerValue);
-          doc.players_sold = [...doc.players_sold, playerId];
+  return initializeDB().then(() => {
+    return db.get('dtt_data').then((doc) => {
+      doc.team_budget = String(Number(doc.team_budget) + playerValue);
+      doc.team_value = String(Number(doc.team_value) - playerValue);
+      doc.players_sold = [...doc.players_sold, playerId];
 
-          return db.put(doc);
-        });
-      }
-    );
+      return db.put(doc);
+    });
+  });
 }
 
 export function updateKitNumber(playerId, playerKitNumber) {
-  return initializeDB()
-  .then(
-    () => {
-      return db.get('dtt_data').then(doc => {
-
-        doc.team_kit_updates[playerId] = playerKitNumber;
-        return db.put(doc);
-      });
-    }
-  );
+  return initializeDB().then(() => {
+    return db.get('dtt_data').then((doc) => {
+      doc.team_kit_updates[playerId] = playerKitNumber;
+      return db.put(doc);
+    });
+  });
 }

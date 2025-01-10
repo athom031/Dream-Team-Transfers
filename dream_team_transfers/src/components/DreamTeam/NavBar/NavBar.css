@@ -1,111 +1,107 @@
 .nav-bar {
-    height: 8vh;
-    width: 100vw;
-    background-color: var(--logo-gold-color);
-    font-family: var(--main-font);
-    letter-spacing: var(--letter-spacing);
-    display: flex;
-    border-radius: var(--border-radius);
+  height: 8vh;
+  width: 100vw;
+  background-color: var(--logo-gold-color);
+  font-family: var(--main-font);
+  letter-spacing: var(--letter-spacing);
+  display: flex;
+  border-radius: var(--border-radius);
 }
 
 .nav-bar a {
-    text-decoration: none;
-    color: var(--dark-grey-color);
-    font-weight: bold;
-    transition: color 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
+  color: var(--dark-grey-color);
+  font-weight: bold;
+  transition:
+    color 0.3s ease,
+    transform 0.2s ease;
 }
 
-.nav-bar a:hover{
-    color: var(--logo-black-color);
-    transform: scale(1.1);
+.nav-bar a:hover {
+  color: var(--logo-black-color);
+  transform: scale(1.1);
 }
 
 .nav-bar .active-link {
-    color: var(--logo-black-color);
-    transform: scale(1.1);
+  color: var(--logo-black-color);
+  transform: scale(1.1);
 }
 
 .navbar-icon {
-    height: 7vh;
-    width: auto;
-    object-fit: cover;
-    display: flex;
-    align-items: center;
+  height: 7vh;
+  width: auto;
+  object-fit: cover;
+  display: flex;
+  align-items: center;
 }
 
-
 .nav-logo-padding-container {
-    padding: 0em 5em 0em 5em;
+  padding: 0em 5em 0em 5em;
 }
 
 .nav-logo-container {
-    height: 8vh;
-    width: auto;
-    display: flex;
-    align-items: center;
-    flex: 0;
+  height: 8vh;
+  width: auto;
+  display: flex;
+  align-items: center;
+  flex: 0;
 }
 
 .nav-logo-container span {
-    align-self: center;
+  align-self: center;
 }
 
 .other-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex: 7;
-    padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 7;
+  padding: 0 1rem;
 }
 
 /* Styles for laptops and larger screens */
 @media screen and (min-width: 1024px) {
+  .nav-logo-padding-container {
+    padding: 0em 5em 0em 5em;
+  }
 
-    .nav-logo-padding-container {
-        padding: 0em 5em 0em 5em;
-    }
+  .nav-logo-padding-container {
+    flex: 2;
+  }
 
-    .nav-logo-padding-container {
-        flex: 2;
-    }
-
-    .nav-bar a {
-        font-size: 1.5vw;
-    }
-
+  .nav-bar a {
+    font-size: 1.5vw;
+  }
 }
 
 /* Styles for phones and tablets in landscape mode */
 @media screen and (max-width: 1023px) and (orientation: landscape) {
+  .nav-logo-padding-container {
+    padding: 0em 2rem 0em 2rem;
+  }
 
-    .nav-logo-padding-container {
-        padding: 0em 2rem 0em 2rem;
-    }
+  .nav-logo-padding-container {
+    flex: 1.5;
+  }
 
-    .nav-logo-padding-container {
-        flex: 1.5;
-    }
-
-    .nav-bar a {
-        font-size: 1.5vw;
-        padding: 0rem 1rem 0rem 1rem;
-    }
-
+  .nav-bar a {
+    font-size: 1.5vw;
+    padding: 0rem 1rem 0rem 1rem;
+  }
 }
 
 /* Styles for phones and tablets in portrait mode */
 @media screen and (max-width: 1023px) and (orientation: portrait) {
+  .nav-logo-padding-container {
+    padding: 0em 1rem 0em 1rem;
+  }
 
-    .nav-logo-padding-container {
-        padding: 0em 1rem 0em 1rem;
-    }
+  .nav-logo-padding-container {
+    flex: 1;
+  }
 
-    .nav-logo-padding-container {
-        flex: 1;
-    }
-
-    .nav-bar a {
-        font-size: 2vw;
-        padding: 0rem .5rem 0rem .5rem;
-    }
+  .nav-bar a {
+    font-size: 2vw;
+    padding: 0rem 0.5rem 0rem 0.5rem;
+  }
 }
