@@ -67,59 +67,64 @@ function StartingEleven() {
 
   return (
     <div className="starting-eleven">
-      <h1 className="title">Soccer Lineup</h1>
-      <select
-        onChange={(e) => setSelectedFormation(e.target.value)}
-        className="formation-selector"
-      >
-        {Object.keys(FORMATIONS).map((formation) => (
-          <option key={formation} value={formation}>
-            {formation}
-          </option>
-        ))}
-      </select>
-      <div className="lineup-grid">
-        {positions.map((row, rowIndex) => (
-          <div key={rowIndex} className="lineup-row">
-            {row.map((pos, colIndex) => {
-              const flatIndex =
-                positions.slice(0, rowIndex).flat().length + colIndex;
-              return (
-                <div
-                  key={colIndex}
-                  onDragOver={handleDragOver}
-                  onDrop={(e) => handleDrop(e, flatIndex, false)}
-                  className="player-slot"
-                >
-                  <div>{pos}</div>
-                  <div
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, lineup[flatIndex])}
-                    className="player"
-                  >
-                    {lineup[flatIndex]}
-                  </div>
-                </div>
-              );
-            })}
+      <div className="starting-eleven-container">
+        <div className="soccer-field-container">
+          <div className="lineup-grid">
+            {positions.map((row, rowIndex) => (
+              <div key={rowIndex} className="lineup-row">
+                {row.map((pos, colIndex) => {
+                  const flatIndex =
+                    positions.slice(0, rowIndex).flat().length + colIndex;
+                  return (
+                    <div
+                      key={colIndex}
+                      onDragOver={handleDragOver}
+                      onDrop={(e) => handleDrop(e, flatIndex, false)}
+                      className="player-slot"
+                    >
+                      <div>{pos}</div>
+                      <div
+                        draggable
+                        onDragStart={(e) =>
+                          handleDragStart(e, lineup[flatIndex])
+                        }
+                        className="player"
+                      >
+                        {lineup[flatIndex]}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <h2 className="subs-title">Subs Bench</h2>
-      <ul className="subs-bench">
-        {subs.map((sub, index) => (
-          <li
-            key={index}
-            draggable
-            onDragStart={(e) => handleDragStart(e, sub)}
-            onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, index, true)}
-            className="sub"
+          <select
+            onChange={(e) => setSelectedFormation(e.target.value)}
+            className="formation-selector"
           >
-            {sub}
-          </li>
-        ))}
-      </ul>
+            {Object.keys(FORMATIONS).map((formation) => (
+              <option key={formation} value={formation}>
+                {formation}
+              </option>
+            ))}
+          </select>
+        </div>
+        <h2 className="subs-title">Subs Bench</h2>
+        <ul className="subs-bench">
+          {subs.map((sub, index) => (
+            <li
+              key={index}
+              draggable
+              onDragStart={(e) => handleDragStart(e, sub)}
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, index, true)}
+              className="sub"
+            >
+              {sub}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
