@@ -179,7 +179,7 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
     }
 
     setTeamPlayers(teamPlayersUpdate);
-  }, [playersSold, playersBought, PlayersCSVData, teamPicked, kitUpdates]);
+  }, [playersSold, playersBought, PlayersCSVData, teamPicked]);
 
   useEffect(() => {
     const relevantNationsUpdate = {};

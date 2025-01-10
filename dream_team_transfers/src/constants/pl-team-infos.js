@@ -328,7 +328,6 @@ export const PREMIER_LEAGUE_TEAM_INFOS = {
     logo: 'https://upload.wikimedia.org/wikipedia/en/b/b4/Tottenham_Hotspur.svg',
     team_value: 838600000.0,
     team_budget: 167720000.0,
-    team_budget: 115000000,
     primary_color: '#FFFFFF',
     secondary_color: '#132257',
     third_color: '#132257',
