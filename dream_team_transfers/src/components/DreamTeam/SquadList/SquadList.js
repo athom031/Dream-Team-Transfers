@@ -338,7 +338,7 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
         },
       ];
     }
-  }, [teamPlayers, relevantNations, relevantPositions, kitUpdates, getPositionCircleAndAcronym]);
+  }, [teamPlayers, relevantNations, relevantPositions, getPositionCircleAndAcronym]);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data: teamPlayers }, useSortBy);
