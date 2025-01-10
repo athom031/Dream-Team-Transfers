@@ -8,7 +8,7 @@ import {
   getCurrencyRounded,
   CURRENCY_UNIT,
 } from '../../../utils/money-utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { POSITION_CIRCLES } from '../../../utils/positions';
 
@@ -218,27 +218,6 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
     setRelevantPositions(relevantPositionsUpdate);
   }, [teamPlayers, NationsCSVData, PositionsCSVData]);
 
-  const getPositionCircleAndAcronym = (positionId) => {
-    const acronym = relevantPositions[positionId].position_acronym;
-    const grouping = relevantPositions[positionId].position_grouping;
-
-    return (
-      <>
-        <FontAwesomeIcon
-          icon={faCircle}
-          className={`position-circle ${grouping}`}
-          style={{
-            border: '2px solid white', 
-            borderRadius: '50%',
-            color: POSITION_CIRCLES[grouping],
-          }}
-        />
-        &nbsp;
-        <div>{acronym}</div>
-      </>
-    );
-  };
-
   const columns = useMemo(() => {
     if (
       teamPlayers.length <= 0 ||
@@ -275,7 +254,23 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
           accessor: 'position_id',
           Cell: ({ row }) => (
             <div className="player-position">
-              {getPositionCircleAndAcronym(row.original.position_id)}
+              <FontAwesomeIcon
+                icon={faCircle}
+                className={`position-circle ${relevantPositions[row.original.position_id].position_grouping}`}
+                style={{
+                  border: '2px solid white',
+                  borderRadius: '50%',
+                  color:
+                    POSITION_CIRCLES[
+                      relevantPositions[row.original.position_id]
+                        .position_grouping
+                    ],
+                }}
+              />
+              &nbsp;
+              <div>
+                {relevantPositions[row.original.position_id].position_acronym}
+              </div>
             </div>
           ),
         },
@@ -338,7 +333,7 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
         },
       ];
     }
-  }, [teamPlayers, relevantNations, relevantPositions, getPositionCircleAndAcronym]);
+  }, [teamPlayers, relevantNations, relevantPositions]);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data: teamPlayers }, useSortBy);
