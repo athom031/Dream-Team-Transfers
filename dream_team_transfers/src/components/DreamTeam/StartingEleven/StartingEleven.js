@@ -1,8 +1,107 @@
 import './StartingEleven.css';
-import React from 'react';
 import { FORMATIONS } from '../../../utils/formations';
+import { getTeamData } from '../../../db/db-utils';
+import React, { useEffect, useState } from 'react';
+import calculateAge from '../../../utils/calculate-age';
 
-function StartingEleven() {
+function StartingEleven({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
+  // reading from db
+  const [teamPicked, setTeamPicked] = useState(-1);
+  const [relevantNations, setRelevantNations] = useState({});
+  const [relevantPositions, setRelevantPositions] = useState({});
+  const [teamPlayers, setTeamPlayers] = useState([]);
+  // writing to db
+  const [playersSold, setPlayersSold] = useState([]);
+  const [playersBought, setPlayersBought] = useState([]);
+
+  // would define the player positions one here
+
+  // read from db
+  useEffect(() => {
+    getTeamData().then((data) => {
+      setPlayersSold(data.players_sold);
+      setPlayersBought(data.players_bought);
+      setTeamPicked(data.team_pickd);
+    });
+  }, []);
+
+  useEffect(() => {
+    const teamPlayersUpdate = [];
+
+    if (PlayersCSVData === null) return;
+
+    for (let i = 0; i < PlayersCSVData.length; i++) {
+      if (
+        playersBought.includes(Number(PlayersCSVData[i].player_id)) ||
+        (!playersSold.includes(Number(PlayersCSVData[i].player_id)) &&
+          Number(PlayersCSVData[i].team_id) === teamPicked)
+      ) {
+        const {
+          nation_id,
+          player_birth_date,
+          player_id,
+          player_kit_number,
+          player_market_value,
+          player_name,
+          player_portrait_big_pic,
+          player_shortened_name,
+          position_id,
+        } = PlayersCSVData[i];
+        teamPlayersUpdate.push({
+          nation_id: Number(nation_id),
+          player_birth_date: new Date(player_birth_date),
+          player_age: calculateAge(new Date(player_birth_date)),
+          player_kit_number: Number(player_kit_number),
+          player_market_value: Number(player_market_value),
+          player_name: player_name,
+          player_shortened_name: player_shortened_name,
+          player_portrait: player_portrait_big_pic,
+          position_id: Number(position_id),
+          player_id: Number(player_id),
+        });
+      }
+    }
+
+    setTeamPlayers(teamPlayersUpdate);
+  }, [playersSold, playersBought, PlayersCSVData, teamPicked]);
+
+  useEffect(() => {
+    const relevantNationsUpdate = {};
+    const relevantPositionsUpdate = {};
+
+    if (
+      NationsCSVData == null ||
+      PositionsCSVData == null ||
+      NationsCSVData.length <= 0 ||
+      PositionsCSVData.length <= 0
+    )
+      return;
+
+    for (let i = 0; i < teamPlayers.length; i++) {
+      if (!relevantNationsUpdate[teamPlayers[i].nation_id]) {
+        const { nation_name, nation_flag_small_pic } =
+          NationsCSVData[teamPlayers[i].nation_id];
+        relevantNationsUpdate[teamPlayers[i].nation_id] = {
+          nation_name: nation_name,
+          nation_pic: nation_flag_small_pic,
+        };
+      }
+
+      if (!relevantPositionsUpdate[teamPlayers[i].position_id]) {
+        const { position_acronym, position_name, position_grouping } =
+          PositionsCSVData[teamPlayers[i].position_id];
+        relevantPositionsUpdate[teamPlayers[i].position_id] = {
+          position_acronym,
+          position_name,
+          position_grouping,
+        };
+      }
+    }
+
+    setRelevantNations(relevantNationsUpdate);
+    setRelevantPositions(relevantPositionsUpdate);
+  }, [teamPlayers, NationsCSVData, PositionsCSVData]);
+
   const [lineup, setLineup] = React.useState([
     'John Doe',
     'Jane Smith',
@@ -109,21 +208,23 @@ function StartingEleven() {
             ))}
           </select>
         </div>
-        <h2 className="subs-title">Subs Bench</h2>
-        <ul className="subs-bench">
-          {subs.map((sub, index) => (
-            <li
-              key={index}
-              draggable
-              onDragStart={(e) => handleDragStart(e, sub)}
-              onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e, index, true)}
-              className="sub"
-            >
-              {sub}
-            </li>
-          ))}
-        </ul>
+        <div className="subs-bench-container">
+          <h2 className="subs-title">Subs Bench</h2>
+          <ul className="subs-bench">
+            {subs.map((sub, index) => (
+              <li
+                key={index}
+                draggable
+                onDragStart={(e) => handleDragStart(e, sub)}
+                onDragOver={handleDragOver}
+                onDrop={(e) => handleDrop(e, index, true)}
+                className="sub"
+              >
+                {sub}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

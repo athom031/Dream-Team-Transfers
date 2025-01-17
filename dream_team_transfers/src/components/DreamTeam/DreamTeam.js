@@ -56,7 +56,16 @@ function DreamTeam() {
           <Route path="/team-restart" element={<TeamRestart />} />
           <Route path="/" element={<StartingEleven />} />
           <Route path="/home" element={<StartingEleven />} />
-          <Route path="/starting-eleven" element={<StartingEleven />} />
+          <Route
+            path="/starting-eleven"
+            element={
+              <StartingEleven
+                NationsCSVData={NationsCSVData}
+                PlayersCSVData={PlayersCSVData}
+                PositionsCSVData={PositionsCSVData}
+              />
+            }
+          />
           <Route path="/dev" element={<Dev />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>

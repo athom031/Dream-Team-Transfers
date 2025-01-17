@@ -11,6 +11,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { POSITION_CIRCLES } from '../../../utils/positions';
+import calculateAge from '../../../utils/calculate-age';
 
 function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
   // reading from db
@@ -24,21 +25,6 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
   const [playersSold, setPlayersSold] = useState([]);
   const [playersBought, setPlayersBought] = useState([]);
   const [kitUpdates, setKitUpdates] = useState({});
-
-  const calculateAge = (birthDate) => {
-    // Treat "TRANSFER_WINDOW_START" as the
-    // date Summer Transfer Window Opened (2023/2024 Season)
-    const TRANSFER_WINDOW_START = new Date('2023-06-14');
-    let age = TRANSFER_WINDOW_START.getFullYear() - birthDate.getFullYear();
-    const m = TRANSFER_WINDOW_START.getMonth() - birthDate.getMonth();
-    if (
-      m < 0 ||
-      (m === 0 && TRANSFER_WINDOW_START.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
-    return age;
-  };
 
   function removeAccents(str) {
     return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
