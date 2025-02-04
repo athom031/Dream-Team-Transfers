@@ -3,6 +3,7 @@ import { FORMATIONS } from '../../../utils/formations';
 import { getTeamData } from '../../../db/db-utils';
 import React, { useEffect, useState } from 'react';
 import calculateAge from '../../../utils/calculate-age';
+import { POSITION_CIRCLES } from '../../../utils/positions';
 
 function StartingEleven({
   NationsCSVData,
@@ -19,6 +20,7 @@ function StartingEleven({
   const [playersSold, setPlayersSold] = useState([]);
   const [playersBought, setPlayersBought] = useState([]);
   const [positionsPicked, setPositionsPicked] = useState([]);
+  const [kitUpdates, setKitUpdates] = useState({});
 
   // would define the player positions one here
   const [lineup, setLineup] = React.useState([]);
@@ -29,7 +31,7 @@ function StartingEleven({
     getTeamData().then((data) => {
       setPlayersSold(data.players_sold);
       setPlayersBought(data.players_bought);
-      setTeamPicked(data.team_pickd);
+      setTeamPicked(data.team_picked);
       setPositionsPicked(data.positions_picked);
     });
   }, []);
@@ -55,26 +57,24 @@ function StartingEleven({
           player_portrait_big_pic,
           position_id,
         } = PlayersCSVData[i];
-        teamPlayersUpdate.push({
+        const player = {
           nation_id: Number(nation_id),
           player_birth_date: new Date(player_birth_date),
           player_age: calculateAge(new Date(player_birth_date)),
-          player_kit_number: Number(player_kit_number),
+          player_kit_number:
+            kitUpdates[Number(player_id)] ?? Number(player_kit_number),
           player_market_value: Number(player_market_value),
           player_name: player_name,
           player_portrait: player_portrait_big_pic,
           position_id: Number(position_id),
           player_id: Number(player_id),
-        });
+        };
+        teamPlayersUpdate.push(player);
       }
     }
 
     setTeamPlayers(teamPlayersUpdate);
-    console.log(teamPlayersUpdate);
-    setSubs(teamPlayersUpdate.map((player) => {
-      console.loge(player);
-      return player.player_name;
-    }));
+    setSubs([...teamPlayersUpdate.map((player) => player.player_id)]);
   }, [playersSold, playersBought, PlayersCSVData, teamPicked]);
 
   useEffect(() => {
@@ -114,7 +114,6 @@ function StartingEleven({
     setRelevantPositions(relevantPositionsUpdate);
   }, [teamPlayers, NationsCSVData, PositionsCSVData]);
 
-
   const [selectedFormation, setSelectedFormation] = React.useState('4-3-3');
   const positions = FORMATIONS[selectedFormation];
 
@@ -153,6 +152,33 @@ function StartingEleven({
 
     setLineup(newLineup);
     setSubs(newSubs);
+  };
+
+  const getPlayerCard = (playerId) => {
+    if (teamPlayers.length === 0) return null;
+  
+    const player = teamPlayers.find((player) => player.player_id === Number(playerId));
+    if (!player || !relevantPositions[player.position_id] || !relevantNations[player.nation_id]) return null;
+  
+    const positionColor = POSITION_CIRCLES[relevantPositions[player.position_id].position_grouping];
+  
+    return (
+      <div className="player-card" draggable>
+        <div className="player-card-header">
+          <span className="kit-number">{player.player_kit_number}</span>
+          <div className="player-info">
+            <span className="position-badge" style={{ backgroundColor: positionColor }}></span>
+            <img src={relevantNations[player.nation_id]?.nation_pic} alt="nation" className="nation-flag" />
+          </div>
+        </div>
+        <div className="player-image-container">
+          <img src={player.player_portrait} alt={player.player_name} className="player-card-portrait" draggable={false} />
+        </div>
+        <div className="player-card-footer">
+          <span className="player-name">{player.player_name}</span>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -202,16 +228,16 @@ function StartingEleven({
         <div className="subs-bench-container">
           <h2 className="subs-title">Subs Bench</h2>
           <ul className="subs-bench">
-            {subs.map((sub, index) => (
+            {subs.map((subId, index) => (
               <li
                 key={index}
                 draggable
-                onDragStart={(e) => handleDragStart(e, sub)}
+                onDragStart={(e) => handleDragStart(e, subId)}
                 onDragOver={handleDragOver}
                 onDrop={(e) => handleDrop(e, index, true)}
                 className="sub"
               >
-                {sub}
+                {getPlayerCard(subId)}
               </li>
             ))}
           </ul>

@@ -95,8 +95,85 @@
 
 .sub {
   padding: 0.5rem;
-  background-color: #4299e1; /* Blue background */
-  color: white;
+  background-color: #F4E996;
+  color: black;
   border-radius: 0.25rem;
   cursor: move;
+}
+
+.player-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 6.5rem;
+  height: 9rem;
+  border-radius: 12px;
+  border: 3px solid #DBCC82;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem;
+  position: relative;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease-in-out;
+  user-select: none;
+}
+
+.player-card:hover {
+  transform: scale(1.08);
+}
+
+.player-card-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.kit-number {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nation-flag {
+  width: 22px;
+  height: auto;
+}
+
+.position-badge {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid black;
+}
+
+.player-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: auto;
+}
+
+.player-card-portrait {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  pointer-events: none; /* Prevents drag issues */
+}
+
+.player-card-footer {
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 4px;
 }
