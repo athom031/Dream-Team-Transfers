@@ -4,7 +4,12 @@ import { getTeamData } from '../../../db/db-utils';
 import React, { useEffect, useState } from 'react';
 import calculateAge from '../../../utils/calculate-age';
 
-function StartingEleven({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
+function StartingEleven({
+  NationsCSVData,
+  PositionsCSVData,
+  PlayersCSVData,
+  TeamsCSVData,
+}) {
   // reading from db
   const [teamPicked, setTeamPicked] = useState(-1);
   const [relevantNations, setRelevantNations] = useState({});
@@ -13,8 +18,11 @@ function StartingEleven({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
   // writing to db
   const [playersSold, setPlayersSold] = useState([]);
   const [playersBought, setPlayersBought] = useState([]);
+  const [positionsPicked, setPositionsPicked] = useState([]);
 
   // would define the player positions one here
+  const [lineup, setLineup] = React.useState([]);
+  const [subs, setSubs] = React.useState([]);
 
   // read from db
   useEffect(() => {
@@ -22,6 +30,7 @@ function StartingEleven({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
       setPlayersSold(data.players_sold);
       setPlayersBought(data.players_bought);
       setTeamPicked(data.team_pickd);
+      setPositionsPicked(data.positions_picked);
     });
   }, []);
 
@@ -44,7 +53,6 @@ function StartingEleven({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
           player_market_value,
           player_name,
           player_portrait_big_pic,
-          player_shortened_name,
           position_id,
         } = PlayersCSVData[i];
         teamPlayersUpdate.push({
@@ -54,7 +62,6 @@ function StartingEleven({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
           player_kit_number: Number(player_kit_number),
           player_market_value: Number(player_market_value),
           player_name: player_name,
-          player_shortened_name: player_shortened_name,
           player_portrait: player_portrait_big_pic,
           position_id: Number(position_id),
           player_id: Number(player_id),
@@ -63,6 +70,11 @@ function StartingEleven({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
     }
 
     setTeamPlayers(teamPlayersUpdate);
+    console.log(teamPlayersUpdate);
+    setSubs(teamPlayersUpdate.map((player) => {
+      console.loge(player);
+      return player.player_name;
+    }));
   }, [playersSold, playersBought, PlayersCSVData, teamPicked]);
 
   useEffect(() => {
@@ -102,27 +114,6 @@ function StartingEleven({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
     setRelevantPositions(relevantPositionsUpdate);
   }, [teamPlayers, NationsCSVData, PositionsCSVData]);
 
-  const [lineup, setLineup] = React.useState([
-    'John Doe',
-    'Jane Smith',
-    'Mike Johnson',
-    'Emily Brown',
-    'David Lee',
-    'Sarah Wilson',
-    'Tom Davis',
-    'Lisa Moore',
-    'Chris Taylor',
-    'Emma White',
-    'Alex Martin',
-  ]);
-
-  const [subs, setSubs] = React.useState([
-    'Ryan Clark',
-    'Olivia Hall',
-    'Daniel King',
-    'Sophia Adams',
-    'James Wright',
-  ]);
 
   const [selectedFormation, setSelectedFormation] = React.useState('4-3-3');
   const positions = FORMATIONS[selectedFormation];

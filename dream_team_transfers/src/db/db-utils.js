@@ -3,6 +3,10 @@ import { PREMIER_LEAGUE_TEAM_INFOS } from '../constants/pl-team-infos';
 
 const db = new PouchDB('dtt_database');
 
+function getEmptyTeam() {
+  return new Array(11).fill(null);
+}
+
 export function initializeDB() {
   return db.info().then(function (info) {
     if (info.doc_count === 0) {
@@ -12,7 +16,7 @@ export function initializeDB() {
         team_nickname: '',
         team_budget: 0.0,
         team_value: 0.0,
-        team_positions: {},
+        team_positions: getEmptyTeam(),
         team_kit_updates: {},
         players_bought: [],
         players_sold: [],
@@ -39,7 +43,7 @@ export function selectTeam(selectedTeam) {
       doc.team_nickname = '';
       doc.team_budget = PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_budget;
       doc.team_value = PREMIER_LEAGUE_TEAM_INFOS[selectedTeam].team_value;
-      doc.team_positions = {};
+      doc.team_positions = getEmptyTeam();
       doc.team_kit_updates = {};
       doc.players_bought = [];
       doc.players_sold = [];
@@ -56,7 +60,7 @@ export function restartTeam() {
       doc.team_nickname = '';
       doc.team_budget = 0.0;
       doc.team_value = 0.0;
-      doc.team_positions = {};
+      doc.team_positions = getEmptyTeam();
       doc.team_kit_updates = {};
       doc.players_bought = [];
       doc.players_sold = [];

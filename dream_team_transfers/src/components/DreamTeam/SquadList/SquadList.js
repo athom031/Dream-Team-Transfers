@@ -30,6 +30,16 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
     return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 
+  useEffect(() => {
+    getTeamData().then((data) => {
+      console.log(data);
+    });
+
+    if (NationsCSVData || PositionsCSVData || PlayersCSVData) {
+      console.log(NationsCSVData, PositionsCSVData, PlayersCSVData);
+    }
+  }, [NationsCSVData, PositionsCSVData, PlayersCSVData]);
+
   function SellButton({ playerId }) {
     const [isButtonActive, setIsButtonActive] = useState(false);
     const timer = useRef(null);
@@ -145,7 +155,6 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
           player_market_value,
           player_name,
           player_portrait_big_pic,
-          player_shortened_name,
           position_id,
         } = PlayersCSVData[i];
         teamPlayersUpdate.push({
@@ -156,7 +165,6 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
             kitUpdates[Number(player_id)] ?? Number(player_kit_number),
           player_market_value: Number(player_market_value),
           player_name: player_name,
-          player_shortened_name: player_shortened_name,
           player_portrait: player_portrait_big_pic,
           position_id: Number(position_id),
           player_id: Number(player_id),

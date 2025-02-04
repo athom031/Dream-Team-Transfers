@@ -15,7 +15,7 @@ import {
   getNationsCSV,
   getPlayersCSV,
   getPositionsCSV,
-  // getTeamsCSV
+  getTeamsCSV,
 } from '../../utils/parse-csv';
 
 import './DreamTeam.css';
@@ -25,7 +25,7 @@ function DreamTeam() {
   const [NationsCSVData, setNationsCSVData] = useState(null);
   const [PlayersCSVData, setPlayersCSVData] = useState(null);
   const [PositionsCSVData, setPositionsCSVData] = useState(null);
-  // const [TeamsCSVData, setTeamsCSVData] = useState(null);
+  const [TeamsCSVData, setTeamsCSVData] = useState(null);
 
   // load in csv files when app loads once and pass it into dream team
   useEffect(() => {
@@ -33,7 +33,7 @@ function DreamTeam() {
     getNationsCSV().then((data) => setNationsCSVData(data));
     getPlayersCSV().then((data) => setPlayersCSVData(data));
     getPositionsCSV().then((data) => setPositionsCSVData(data));
-    // getTeamsCSV().then(data => setTeamsCSVData(data));
+    getTeamsCSV().then((data) => setTeamsCSVData(data));
   }, []);
 
   return (
@@ -54,8 +54,28 @@ function DreamTeam() {
           <Route path="/player-market" element={<PlayerMarket />} />
           <Route path="/transfer-summary" element={<TransferSummary />} />
           <Route path="/team-restart" element={<TeamRestart />} />
-          <Route path="/" element={<StartingEleven />} />
-          <Route path="/home" element={<StartingEleven />} />
+          <Route
+            path="/"
+            element={
+              <StartingEleven
+                NationsCSVData={NationsCSVData}
+                PlayersCSVData={PlayersCSVData}
+                PositionsCSVData={PositionsCSVData}
+                TeamsCSVData={TeamsCSVData}
+              />
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              <StartingEleven
+                NationsCSVData={NationsCSVData}
+                PlayersCSVData={PlayersCSVData}
+                PositionsCSVData={PositionsCSVData}
+                TeamsCSVData={TeamsCSVData}
+              />
+            }
+          />
           <Route
             path="/starting-eleven"
             element={
@@ -63,6 +83,7 @@ function DreamTeam() {
                 NationsCSVData={NationsCSVData}
                 PlayersCSVData={PlayersCSVData}
                 PositionsCSVData={PositionsCSVData}
+                TeamsCSVData={TeamsCSVData}
               />
             }
           />
