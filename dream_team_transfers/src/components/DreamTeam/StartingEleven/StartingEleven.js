@@ -156,23 +156,43 @@ function StartingEleven({
 
   const getPlayerCard = (playerId) => {
     if (teamPlayers.length === 0) return null;
-  
-    const player = teamPlayers.find((player) => player.player_id === Number(playerId));
-    if (!player || !relevantPositions[player.position_id] || !relevantNations[player.nation_id]) return null;
-  
-    const positionColor = POSITION_CIRCLES[relevantPositions[player.position_id].position_grouping];
-  
+
+    const player = teamPlayers.find(
+      (player) => player.player_id === Number(playerId)
+    );
+    if (
+      !player ||
+      !relevantPositions[player.position_id] ||
+      !relevantNations[player.nation_id]
+    )
+      return null;
+
+    const positionColor =
+      POSITION_CIRCLES[relevantPositions[player.position_id].position_grouping];
+
     return (
       <div className="player-card" draggable>
         <div className="player-card-header">
           <span className="kit-number">{player.player_kit_number}</span>
           <div className="player-info">
-            <span className="position-badge" style={{ backgroundColor: positionColor }}></span>
-            <img src={relevantNations[player.nation_id]?.nation_pic} alt="nation" className="nation-flag" />
+            <span
+              className="position-badge"
+              style={{ backgroundColor: positionColor }}
+            ></span>
+            <img
+              src={relevantNations[player.nation_id]?.nation_pic}
+              alt="nation"
+              className="nation-flag"
+            />
           </div>
         </div>
         <div className="player-image-container">
-          <img src={player.player_portrait} alt={player.player_name} className="player-card-portrait" draggable={false} />
+          <img
+            src={player.player_portrait}
+            alt={player.player_name}
+            className="player-card-portrait"
+            draggable={false}
+          />
         </div>
         <div className="player-card-footer">
           <span className="player-name">{player.player_name}</span>

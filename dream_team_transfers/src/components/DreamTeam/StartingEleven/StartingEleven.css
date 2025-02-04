@@ -95,7 +95,7 @@
 
 .sub {
   padding: 0.5rem;
-  background-color: #F4E996;
+  background-color: #f4e996;
   color: black;
   border-radius: 0.25rem;
   cursor: move;
@@ -109,7 +109,7 @@
   width: 6.5rem;
   height: 9rem;
   border-radius: 12px;
-  border: 3px solid #DBCC82;
+  border: 3px solid #dbcc82;
   background: rgba(255, 255, 255, 0.1);
   padding: 0.5rem;
   position: relative;
