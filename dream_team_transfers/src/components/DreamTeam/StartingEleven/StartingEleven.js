@@ -32,7 +32,8 @@ function StartingEleven({
       setPlayersSold(data.players_sold);
       setPlayersBought(data.players_bought);
       setTeamPicked(data.team_picked);
-      setPositionsPicked(data.positions_picked);
+      setPositionsPicked(data.team_positions);
+      setKitUpdates(data.team_kit_updates);
     });
   }, []);
 
@@ -61,8 +62,7 @@ function StartingEleven({
           nation_id: Number(nation_id),
           player_birth_date: new Date(player_birth_date),
           player_age: calculateAge(new Date(player_birth_date)),
-          player_kit_number:
-            kitUpdates[Number(player_id)] ?? Number(player_kit_number),
+          player_kit_number: kitUpdates[Number(player_id)] ? Number(kitUpdates[Number(player_id)]) : Number(player_kit_number),
           player_market_value: Number(player_market_value),
           player_name: player_name,
           player_portrait: player_portrait_big_pic,
