@@ -133,35 +133,48 @@ function StartingEleven({
     setRelevantPositions(relevantPositionsUpdate);
   }, [teamPlayers, NationsCSVData, PositionsCSVData]);
 
-  const handleDragStart = (e, playerId) => {
+  const handleDragStart = (e, playerId, fromLineup = false) => {
     e.dataTransfer.setData('playerId', playerId);
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
+    e.dataTransfer.setData('fromLineup', fromLineup);
   };
 
   const handleDrop = (e, targetIndex) => {
     e.preventDefault();
     const playerId = Number(e.dataTransfer.getData('playerId'));
+    const fromLineup = e.dataTransfer.getData('fromLineup') === 'true'; // Check if dragged from lineup
 
-    if (!playerId || lineup.includes(playerId)) return;
+    if (!playerId) return;
 
     const replacedPlayer = lineup[targetIndex];
 
-    // Ensure lineup is properly updated
-    const newLineup = [...lineup];
-    newLineup[targetIndex] = playerId;
-
-    // Update the subs bench
-    const newSubs = subs.filter((sub) => sub !== playerId);
-    if (replacedPlayer) {
-      newSubs.push(replacedPlayer);
+    // If dragging within lineup, swap positions
+    if (fromLineup) {
+      const sourceIndex = lineup.indexOf(playerId);
+      if (sourceIndex !== -1) {
+        const newLineup = [...lineup];
+        [newLineup[sourceIndex], newLineup[targetIndex]] = [
+          newLineup[targetIndex],
+          newLineup[sourceIndex],
+        ];
+        setLineup(newLineup);
+      }
+      return;
     }
 
-    // Update states
-    setLineup(newLineup); // New array forces React to re-render
-    setSubs(newSubs);
+    // If dragging from subs, move player to lineup
+    if (!lineup.includes(playerId)) {
+      const newLineup = [...lineup];
+      newLineup[targetIndex] = playerId;
+
+      // Update the subs bench
+      const newSubs = subs.filter((sub) => sub !== playerId);
+      if (replacedPlayer) {
+        newSubs.push(replacedPlayer);
+      }
+
+      setLineup(newLineup);
+      setSubs(newSubs);
+    }
   };
 
   const getPlayerCard = (playerId) => {
@@ -242,6 +255,8 @@ function StartingEleven({
                 {row.map((pos, colIndex) => {
                   const flatIndex =
                     positions.slice(0, rowIndex).flat().length + colIndex;
+                  const playerId = lineup[flatIndex];
+
                   return (
                     <div
                       key={colIndex}
@@ -249,15 +264,26 @@ function StartingEleven({
                       onDrop={(e) => handleDrop(e, flatIndex)}
                       className="player-slot"
                     >
-                      {lineup[flatIndex]
-                        ? getPlayerCard(lineup[flatIndex])
-                        : pos}
+                      {playerId ? (
+                        <div
+                          draggable
+                          onDragStart={(e) =>
+                            handleDragStart(e, playerId, true)
+                          }
+                          className="draggable-player"
+                        >
+                          {getPlayerCard(playerId)}
+                        </div>
+                      ) : (
+                        pos
+                      )}
                     </div>
                   );
                 })}
               </div>
             ))}
           </div>
+
           <select
             onChange={(e) => setSelectedFormation(e.target.value)}
             className="formation-selector"
