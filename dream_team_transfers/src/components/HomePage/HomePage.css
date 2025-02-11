@@ -422,3 +422,9 @@ html {
     padding: 5em 0em 5em 0em;
   }
 }
+
+.arrow-button {
+  height: 25%;
+  width: auto;
+  padding: 1em;
+}

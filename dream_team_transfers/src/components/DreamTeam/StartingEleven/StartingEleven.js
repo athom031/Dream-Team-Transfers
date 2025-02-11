@@ -16,15 +16,22 @@ function StartingEleven({
   const [relevantNations, setRelevantNations] = useState({});
   const [relevantPositions, setRelevantPositions] = useState({});
   const [teamPlayers, setTeamPlayers] = useState([]);
-  // writing to db
   const [playersSold, setPlayersSold] = useState([]);
   const [playersBought, setPlayersBought] = useState([]);
-  const [positionsPicked, setPositionsPicked] = useState([]);
   const [kitUpdates, setKitUpdates] = useState({});
+  // writing to db
+  const [positionsPicked, setPositionsPicked] = useState([]);
 
-  // would define the player positions one here
   const [lineup, setLineup] = React.useState([]);
   const [subs, setSubs] = React.useState([]);
+  const [teamBadge, setTeamBadge] = React.useState('');
+  const [currentPage, setCurrentPage] = useState(0);
+  const [selectedFormation, setSelectedFormation] = React.useState('4-3-3');
+  const [isHoveredLeft, setIsHoveredLeft] = useState(false);
+  const [isHoveredRight, setIsHoveredRight] = useState(false);
+
+  const positions = FORMATIONS[selectedFormation];
+  const subsPerPage = 9;
 
   // read from db
   useEffect(() => {
@@ -36,6 +43,12 @@ function StartingEleven({
       setKitUpdates(data.team_kit_updates);
     });
   }, []);
+
+  useEffect(() => {
+    if (Number(teamPicked) === -1) return;
+    if (TeamsCSVData === null) return;
+    setTeamBadge(TeamsCSVData[Number(teamPicked)].team_crest_big_pic);
+  }, [teamPicked, TeamsCSVData]);
 
   useEffect(() => {
     const teamPlayersUpdate = [];
@@ -62,7 +75,9 @@ function StartingEleven({
           nation_id: Number(nation_id),
           player_birth_date: new Date(player_birth_date),
           player_age: calculateAge(new Date(player_birth_date)),
-          player_kit_number: kitUpdates[Number(player_id)] ? Number(kitUpdates[Number(player_id)]) : Number(player_kit_number),
+          player_kit_number: kitUpdates[Number(player_id)]
+            ? Number(kitUpdates[Number(player_id)])
+            : Number(player_kit_number),
           player_market_value: Number(player_market_value),
           player_name: player_name,
           player_portrait: player_portrait_big_pic,
@@ -113,9 +128,6 @@ function StartingEleven({
     setRelevantNations(relevantNationsUpdate);
     setRelevantPositions(relevantPositionsUpdate);
   }, [teamPlayers, NationsCSVData, PositionsCSVData]);
-
-  const [selectedFormation, setSelectedFormation] = React.useState('4-3-3');
-  const positions = FORMATIONS[selectedFormation];
 
   const handleDragStart = (e, player) => {
     e.dataTransfer.setData('player', player);
@@ -201,6 +213,27 @@ function StartingEleven({
     );
   };
 
+  const paginatedSubs = subs.slice(
+    currentPage * subsPerPage,
+    (currentPage + 1) * subsPerPage
+  );
+
+  const handleRightClick = () => {
+    if ((currentPage + 1) * subsPerPage < subs.length) {
+      setCurrentPage(currentPage + 1);
+    } else {
+      setCurrentPage(0);
+    }
+  };
+
+  const handleLeftClick = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    } else {
+      setCurrentPage(Math.ceil(subs.length / subsPerPage));
+    }
+  };
+
   return (
     <div className="starting-eleven">
       <div className="starting-eleven-container">
@@ -244,23 +277,46 @@ function StartingEleven({
               </option>
             ))}
           </select>
+          <img src={teamBadge} alt="Team Badge" className="team-badge" />
         </div>
         <div className="subs-bench-container">
-          <h2 className="subs-title">Subs Bench</h2>
-          <ul className="subs-bench">
-            {subs.map((subId, index) => (
-              <li
-                key={index}
-                draggable
-                onDragStart={(e) => handleDragStart(e, subId)}
-                onDragOver={handleDragOver}
-                onDrop={(e) => handleDrop(e, index, true)}
-                className="sub"
-              >
-                {getPlayerCard(subId)}
-              </li>
-            ))}
-          </ul>
+          <div className="subs-pagination-controls">
+            {/* LEFT ARROW */}
+            <img
+              src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/left${isHoveredLeft ? '-hover' : ''}.png`}
+              onMouseEnter={() => setIsHoveredLeft(true)}
+              onMouseLeave={() => setIsHoveredLeft(false)}
+              onClick={handleLeftClick}
+              className="arrow-button"
+              alt="left arrow"
+            />
+
+            {/* Subs 3x3 Grid */}
+            <div className="subs-bench-grid">
+              {paginatedSubs.map((subId, index) => (
+                <div
+                  key={index}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, subId)}
+                  onDragOver={handleDragOver}
+                  onDrop={(e) => handleDrop(e, index, true)}
+                  className="sub"
+                >
+                  {getPlayerCard(subId)}
+                </div>
+              ))}
+            </div>
+
+            {/* RIGHT ARROW */}
+            <img
+              src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/right${isHoveredRight ? '-hover' : ''}.png`}
+              onMouseEnter={() => setIsHoveredRight(true)}
+              onMouseLeave={() => setIsHoveredRight(false)}
+              onClick={handleRightClick}
+              className="arrow-button"
+              alt="right arrow"
+            />
+          </div>
         </div>
       </div>
     </div>
