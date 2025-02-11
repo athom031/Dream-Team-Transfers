@@ -43,9 +43,34 @@
 }
 
 .formation-selector {
-  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #f4e996, #dbcc82);
+  color: #333;
+  font-weight: bold;
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+  border: 2px solid #b89e5b;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.formation-selector:hover {
+  background: linear-gradient(135deg, #dbcc82, #b89e5b);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+  transform: scale(1.05);
+}
+
+.formation-selector:focus {
+  outline: none;
+  border: 2px solid #b89e5b;
+}
+
+.formation-selector option {
+  background: #fff;
+  color: #333;
+  font-size: 1rem;
   padding: 0.5rem;
-  border-radius: 0.25rem;
 }
 
 /* Lineup grid */
