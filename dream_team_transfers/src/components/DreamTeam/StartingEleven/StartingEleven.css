@@ -159,6 +159,7 @@
   align-items: center;
 }
 
+/* Player card */
 .player-card {
   display: flex;
   flex-direction: column;

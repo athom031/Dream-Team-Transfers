@@ -193,7 +193,7 @@ function StartingEleven({
     updateLineup(newLineup);
   };
 
-  const getPlayerCard = (playerId) => {
+  const getPlayerCard = (playerId, isSub = true) => {
     if (teamPlayers.length === 0) return null;
 
     const player = teamPlayers.find(
@@ -209,7 +209,35 @@ function StartingEleven({
     const positionColor =
       POSITION_CIRCLES[relevantPositions[player.position_id].position_grouping];
 
-    return (
+    return isSub ? (
+      <div className="player-card" draggable>
+        <div className="player-card-header">
+          <span className="kit-number">{player.player_kit_number}</span>
+          <div className="player-info">
+            <span
+              className="position-badge"
+              style={{ backgroundColor: positionColor }}
+            ></span>
+            <img
+              src={relevantNations[player.nation_id]?.nation_pic}
+              alt="nation"
+              className="nation-flag"
+            />
+          </div>
+        </div>
+        <div className="player-image-container">
+          <img
+            src={player.player_portrait}
+            alt={player.player_name}
+            className="player-card-portrait"
+            draggable={false}
+          />
+        </div>
+        <div className="player-card-footer">
+          <span className="player-name">{player.player_name}</span>
+        </div>
+      </div>
+    ) : (
       <div className="player-card" draggable>
         <div className="player-card-header">
           <span className="kit-number">{player.player_kit_number}</span>
@@ -288,7 +316,7 @@ function StartingEleven({
                           }
                           className="draggable-player"
                         >
-                          {getPlayerCard(playerId)}
+                          {getPlayerCard(playerId, false)}
                         </div>
                       ) : (
                         pos
