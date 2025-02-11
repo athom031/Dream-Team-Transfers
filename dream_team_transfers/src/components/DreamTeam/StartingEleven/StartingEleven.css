@@ -84,9 +84,9 @@
 /* Subs bench */
 .subs-bench-container {
   display: flex;
-  flex-direction: column; /* Keep it a column */
-  align-items: center; /* Center everything horizontally */
-  justify-content: center; /* Center vertically */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: var(--light-grey-color);
   border-radius: 2em;
   margin-top: 0.5em;
@@ -105,7 +105,7 @@
 
 .subs-pagination-controls {
   display: flex;
-  flex-direction: row; /* Stack elements in a column */
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 1rem;
@@ -201,7 +201,7 @@
   width: 100%;
   height: auto;
   border-radius: 6px;
-  pointer-events: none; /* Prevents drag issues */
+  pointer-events: none;
 }
 
 .player-card-footer {

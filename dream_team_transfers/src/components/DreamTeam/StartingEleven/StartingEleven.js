@@ -51,6 +51,10 @@ function StartingEleven({
   }, [teamPicked, TeamsCSVData]);
 
   useEffect(() => {
+    setLineup(new Array(positions.flat().length).fill(null));
+  }, [selectedFormation]);
+
+  useEffect(() => {
     const teamPlayersUpdate = [];
 
     if (PlayersCSVData === null) return;
@@ -129,41 +133,48 @@ function StartingEleven({
     setRelevantPositions(relevantPositionsUpdate);
   }, [teamPlayers, NationsCSVData, PositionsCSVData]);
 
-  const handleDragStart = (e, player) => {
-    e.dataTransfer.setData('player', player);
+  const handleDragStart = (e, playerId, fromLineup = false) => {
+    e.dataTransfer.setData('playerId', playerId);
+    e.dataTransfer.setData('fromLineup', fromLineup);
   };
 
-  const handleDragOver = (e) => {
+  const handleDrop = (e, targetIndex) => {
     e.preventDefault();
-  };
+    const playerId = Number(e.dataTransfer.getData('playerId'));
+    const fromLineup = e.dataTransfer.getData('fromLineup') === 'true'; // Check if dragged from lineup
 
-  const handleDrop = (e, targetIndex, isSub) => {
-    e.preventDefault();
-    const player = e.dataTransfer.getData('player');
-    const sourceIndex = lineup.indexOf(player);
-    const newLineup = [...lineup];
-    const newSubs = [...subs];
+    if (!playerId) return;
 
-    if (sourceIndex !== -1) {
-      newLineup[sourceIndex] = newLineup[targetIndex];
-      newLineup[targetIndex] = player;
-    } else {
-      const subIndex = subs.indexOf(player);
-      if (subIndex !== -1) {
-        if (isSub) {
-          [newSubs[subIndex], newSubs[targetIndex]] = [
-            newSubs[targetIndex],
-            newSubs[subIndex],
-          ];
-        } else {
-          newSubs[subIndex] = newLineup[targetIndex];
-          newLineup[targetIndex] = player;
-        }
+    const replacedPlayer = lineup[targetIndex];
+
+    // If dragging within lineup, swap positions
+    if (fromLineup) {
+      const sourceIndex = lineup.indexOf(playerId);
+      if (sourceIndex !== -1) {
+        const newLineup = [...lineup];
+        [newLineup[sourceIndex], newLineup[targetIndex]] = [
+          newLineup[targetIndex],
+          newLineup[sourceIndex],
+        ];
+        setLineup(newLineup);
       }
+      return;
     }
 
-    setLineup(newLineup);
-    setSubs(newSubs);
+    // If dragging from subs, move player to lineup
+    if (!lineup.includes(playerId)) {
+      const newLineup = [...lineup];
+      newLineup[targetIndex] = playerId;
+
+      // Update the subs bench
+      const newSubs = subs.filter((sub) => sub !== playerId);
+      if (replacedPlayer) {
+        newSubs.push(replacedPlayer);
+      }
+
+      setLineup(newLineup);
+      setSubs(newSubs);
+    }
   };
 
   const getPlayerCard = (playerId) => {
@@ -244,29 +255,35 @@ function StartingEleven({
                 {row.map((pos, colIndex) => {
                   const flatIndex =
                     positions.slice(0, rowIndex).flat().length + colIndex;
+                  const playerId = lineup[flatIndex];
+
                   return (
                     <div
                       key={colIndex}
-                      onDragOver={handleDragOver}
-                      onDrop={(e) => handleDrop(e, flatIndex, false)}
+                      onDragOver={(e) => e.preventDefault()} // Allow drop
+                      onDrop={(e) => handleDrop(e, flatIndex)}
                       className="player-slot"
                     >
-                      <div>{pos}</div>
-                      <div
-                        draggable
-                        onDragStart={(e) =>
-                          handleDragStart(e, lineup[flatIndex])
-                        }
-                        className="player"
-                      >
-                        {lineup[flatIndex]}
-                      </div>
+                      {playerId ? (
+                        <div
+                          draggable
+                          onDragStart={(e) =>
+                            handleDragStart(e, playerId, true)
+                          }
+                          className="draggable-player"
+                        >
+                          {getPlayerCard(playerId)}
+                        </div>
+                      ) : (
+                        pos
+                      )}
                     </div>
                   );
                 })}
               </div>
             ))}
           </div>
+
           <select
             onChange={(e) => setSelectedFormation(e.target.value)}
             className="formation-selector"
@@ -298,8 +315,6 @@ function StartingEleven({
                   key={index}
                   draggable
                   onDragStart={(e) => handleDragStart(e, subId)}
-                  onDragOver={handleDragOver}
-                  onDrop={(e) => handleDrop(e, index, true)}
                   className="sub"
                 >
                   {getPlayerCard(subId)}
