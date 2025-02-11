@@ -51,7 +51,22 @@ function StartingEleven({
   }, [teamPicked, TeamsCSVData]);
 
   useEffect(() => {
-    setLineup(new Array(positions.flat().length).fill(null));
+    setLineup((prevLineup) => {
+      const newSize = positions.flat().length;
+      const newLineup = [...prevLineup];
+
+      // If new formation has fewer slots, trim the lineup
+      if (newLineup.length > newSize) {
+        return newLineup.slice(0, newSize);
+      }
+
+      // If new formation has more slots, add nulls for the new slots
+      while (newLineup.length < newSize) {
+        newLineup.push(null);
+      }
+
+      return newLineup;
+    });
   }, [selectedFormation]);
 
   useEffect(() => {
