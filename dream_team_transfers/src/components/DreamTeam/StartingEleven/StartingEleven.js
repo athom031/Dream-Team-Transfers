@@ -230,7 +230,7 @@ function StartingEleven({
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
     } else {
-      setCurrentPage(Math.ceil(subs.length / subsPerPage));
+      setCurrentPage(Math.ceil(subs.length / subsPerPage) - 1);
     }
   };
 
