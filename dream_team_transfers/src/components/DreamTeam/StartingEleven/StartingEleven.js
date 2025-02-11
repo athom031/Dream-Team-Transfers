@@ -4,6 +4,7 @@ import { getTeamData } from '../../../db/db-utils';
 import React, { useEffect, useState } from 'react';
 import calculateAge from '../../../utils/calculate-age';
 import { POSITION_CIRCLES } from '../../../utils/positions';
+import { updateLineup } from '../../../db/db-utils';
 
 function StartingEleven({
   NationsCSVData,
@@ -39,8 +40,9 @@ function StartingEleven({
       setPlayersSold(data.players_sold);
       setPlayersBought(data.players_bought);
       setTeamPicked(data.team_picked);
-      setPositionsPicked(data.team_positions);
+      setPositionsPicked(data.team_positions || new Array(11).fill(null));
       setKitUpdates(data.team_kit_updates);
+      setLineup(data.team_positions || new Array(11).fill(null)); // Load saved lineup
     });
   }, []);
 
@@ -157,33 +159,32 @@ function StartingEleven({
     const replacedPlayer = lineup[targetIndex];
 
     // If dragging within lineup, swap positions
+    let newLineup = [...lineup];
     if (fromLineup) {
       const sourceIndex = lineup.indexOf(playerId);
       if (sourceIndex !== -1) {
-        const newLineup = [...lineup];
         [newLineup[sourceIndex], newLineup[targetIndex]] = [
           newLineup[targetIndex],
           newLineup[sourceIndex],
         ];
-        setLineup(newLineup);
       }
-      return;
+    } else {
+      // If dragging from subs, move player to lineup
+      if (!lineup.includes(playerId)) {
+        newLineup[targetIndex] = playerId;
+        const newSubs = subs.filter((sub) => sub !== playerId);
+        if (replacedPlayer) {
+          newSubs.push(replacedPlayer);
+        }
+        setSubs(newSubs);
+      }
     }
 
-    // If dragging from subs, move player to lineup
-    if (!lineup.includes(playerId)) {
-      const newLineup = [...lineup];
-      newLineup[targetIndex] = playerId;
+    // Update lineup state
+    setLineup(newLineup);
 
-      // Update the subs bench
-      const newSubs = subs.filter((sub) => sub !== playerId);
-      if (replacedPlayer) {
-        newSubs.push(replacedPlayer);
-      }
-
-      setLineup(newLineup);
-      setSubs(newSubs);
-    }
+    // Write changes to the database
+    updateLineup(newLineup);
   };
 
   const getPlayerCard = (playerId) => {

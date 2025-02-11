@@ -82,6 +82,15 @@ export function sellPlayer(playerId, playerValue) {
   });
 }
 
+export function updateLineup(newLineup) {
+  return initializeDB().then(() => {
+    return db.get('dtt_data').then((doc) => {
+      doc.team_positions = newLineup;
+      return db.put(doc);
+    });
+  });
+}
+
 export function updateKitNumber(playerId, playerKitNumber) {
   return initializeDB().then(() => {
     return db.get('dtt_data').then((doc) => {
