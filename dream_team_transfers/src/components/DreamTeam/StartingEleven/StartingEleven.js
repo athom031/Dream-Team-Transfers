@@ -52,20 +52,14 @@ function StartingEleven({
 
   useEffect(() => {
     setLineup((prevLineup) => {
-      const newSize = positions.flat().length;
       const newLineup = [...prevLineup];
 
-      // If new formation has fewer slots, trim the lineup
-      if (newLineup.length > newSize) {
-        return newLineup.slice(0, newSize);
-      }
-
-      // If new formation has more slots, add nulls for the new slots
-      while (newLineup.length < newSize) {
+      // Ensure lineup always has 11 slots
+      while (newLineup.length < 11) {
         newLineup.push(null);
       }
 
-      return newLineup;
+      return newLineup.slice(0, 11); // Trim excess (if any) and keep 11 slots
     });
   }, [selectedFormation]);
 
