@@ -104,8 +104,14 @@ function StartingEleven({
     }
 
     setTeamPlayers(teamPlayersUpdate);
-    setSubs([...teamPlayersUpdate.map((player) => player.player_id)]);
-  }, [playersSold, playersBought, PlayersCSVData, teamPicked]);
+
+    // Filter out players already in the starting lineup (lineup should not include any subs)
+    const availableSubs = teamPlayersUpdate
+      .map((player) => player.player_id)
+      .filter((playerId) => !lineup.includes(playerId));
+
+    setSubs(availableSubs);
+  }, [playersSold, playersBought, PlayersCSVData, teamPicked, lineup]); // Make sure to include lineup in the dependency array
 
   useEffect(() => {
     const relevantNationsUpdate = {};
