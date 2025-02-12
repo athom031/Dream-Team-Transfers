@@ -210,59 +210,59 @@ function StartingEleven({
       POSITION_CIRCLES[relevantPositions[player.position_id].position_grouping];
 
     return isSub ? (
-      <div className="player-card" draggable>
-        <div className="player-card-header">
-          <span className="kit-number">{player.player_kit_number}</span>
-          <div className="player-info">
+      <div className="sub-card" draggable>
+        <div className="sub-card-header">
+          <span className="sub-kit-number">{player.player_kit_number}</span>
+          <div className="sub-player-info">
             <span
-              className="position-badge"
+              className="sub-position-badge"
               style={{ backgroundColor: positionColor }}
             ></span>
             <img
               src={relevantNations[player.nation_id]?.nation_pic}
               alt="nation"
-              className="nation-flag"
+              className="sub-nation-flag"
             />
           </div>
         </div>
-        <div className="player-image-container">
+        <div className="sub-image-container">
           <img
             src={player.player_portrait}
             alt={player.player_name}
-            className="player-card-portrait"
+            className="sub-card-portrait"
             draggable={false}
           />
         </div>
-        <div className="player-card-footer">
-          <span className="player-name">{player.player_name}</span>
+        <div className="sub-card-footer">
+          <span className="sub-name">{player.player_name}</span>
         </div>
       </div>
     ) : (
-      <div className="player-card" draggable>
-        <div className="player-card-header">
-          <span className="kit-number">{player.player_kit_number}</span>
-          <div className="player-info">
+      <div className="starter-card" draggable>
+        <div className="starter-card-header">
+          <span className="starter-kit-number">{player.player_kit_number}</span>
+          <div className="starter-player-info">
             <span
-              className="position-badge"
+              className="starter-position-badge"
               style={{ backgroundColor: positionColor }}
             ></span>
             <img
               src={relevantNations[player.nation_id]?.nation_pic}
               alt="nation"
-              className="nation-flag"
+              className="starter-nation-flag"
             />
           </div>
         </div>
-        <div className="player-image-container">
+        <div className="starter-image-container">
           <img
             src={player.player_portrait}
             alt={player.player_name}
-            className="player-card-portrait"
+            className="starter-card-portrait"
             draggable={false}
           />
         </div>
-        <div className="player-card-footer">
-          <span className="player-name">{player.player_name}</span>
+        <div className="starter-card-footer">
+          <span className="starter-name">{player.player_name}</span>
         </div>
       </div>
     );
