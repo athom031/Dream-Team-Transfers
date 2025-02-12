@@ -75,10 +75,11 @@
 
 /* Lineup grid */
 .lineup-grid {
+  margin-top: 3rem;
   width: 100%;
   max-width: 50vw;
   max-height: 90vh;
-  aspect-ratio: clamp(4/5, 6/5, 8/5); /* Adjust dynamically */
+  aspect-ratio: clamp(4/5, 6/5, 8/5);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -96,7 +97,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: white;
+  background: linear-gradient(135deg, #f4e996, #dbcc82);
+  border: 2px solid #b89e5b;
+  color: black;
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   cursor: move;
@@ -165,72 +168,19 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 6.5rem;
-  height: 6.5rem;
+  width: 8rem;
+  height: 9.5rem;
   position: relative;
   transition: transform 0.2s ease-in-out;
   user-select: none;
   color: black;
+  background: linear-gradient(135deg, #f4e996, #dbcc82);
+  border: 2px solid #b89e5b;
+  border-radius: 12px;
 }
 
 .starter-card:hover {
   transform: scale(1.08);
-}
-
-.starter-card-header {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  align-items: center;
-}
-
-.starter-kit-number {
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 3px 8px;
-  border-radius: 5px;
-  font-size: 0.85rem;
-  font-weight: bold;
-}
-
-.starter-player-info {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.starter-nation-flag {
-  width: 22px;
-  height: auto;
-}
-
-.starter-position-badge {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid black;
-}
-
-.starter-image-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50%;
-  height: auto;
-}
-
-.starter-card-portrait {
-  width: 100%;
-  height: auto;
-  border-radius: 6px;
-  pointer-events: none;
-}
-
-.starter-card-footer {
-  font-size: 0.85rem;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 4px;
 }
 
 /* SUB CARD */
@@ -256,41 +206,66 @@
   transform: scale(1.08);
 }
 
-.sub-card-header {
+/* GENERAL CARD */
+
+.card-header {
   display: flex;
   justify-content: space-between;
   width: 100%;
   align-items: center;
 }
 
-.sub-kit-number {
+.player-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.85rem;
+}
+
+.kit-number,
+.position-badge,
+.nation-flag,
+.position-text {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.kit-number {
   background: rgba(0, 0, 0, 0.8);
   color: white;
   padding: 3px 8px;
   border-radius: 5px;
-  font-size: 0.85rem;
   font-weight: bold;
+  text-align: center;
 }
 
-.sub-player-info {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.sub-nation-flag {
-  width: 22px;
-  height: auto;
-}
-
-.sub-position-badge {
+.position-badge {
   width: 14px;
   height: 14px;
   border-radius: 50%;
   border: 2px solid black;
 }
 
-.sub-image-container {
+.nation-flag {
+  width: 22px;
+  height: auto;
+}
+
+.position-text {
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #333;
+}
+
+.player-name {
+  flex-grow: 1;
+  text-align: center;
+  font-weight: bold;
+}
+
+.image-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -298,16 +273,31 @@
   height: auto;
 }
 
-.sub-card-portrait {
+.card-portrait {
   width: 100%;
   height: auto;
   border-radius: 6px;
   pointer-events: none;
 }
 
-.sub-card-footer {
+.card-footer {
   font-size: 0.85rem;
   font-weight: bold;
   text-align: center;
   margin-top: 4px;
+}
+
+.starter-card .card-header {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.starter-card .card-footer {
+  padding-bottom: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }

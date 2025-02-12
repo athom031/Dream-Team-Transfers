@@ -42,7 +42,7 @@ function StartingEleven({
       setTeamPicked(data.team_picked);
       setPositionsPicked(data.team_positions || new Array(11).fill(null));
       setKitUpdates(data.team_kit_updates);
-      setLineup(data.team_positions || new Array(11).fill(null)); // Load saved lineup
+      setLineup(data.team_positions || new Array(11).fill(null));
     });
   }, []);
 
@@ -56,12 +56,11 @@ function StartingEleven({
     setLineup((prevLineup) => {
       const newLineup = [...prevLineup];
 
-      // Ensure lineup always has 11 slots
       while (newLineup.length < 11) {
         newLineup.push(null);
       }
 
-      return newLineup.slice(0, 11); // Trim excess (if any) and keep 11 slots
+      return newLineup.slice(0, 11);
     });
   }, [selectedFormation]);
 
@@ -105,13 +104,12 @@ function StartingEleven({
 
     setTeamPlayers(teamPlayersUpdate);
 
-    // Filter out players already in the starting lineup (lineup should not include any subs)
     const availableSubs = teamPlayersUpdate
       .map((player) => player.player_id)
       .filter((playerId) => !lineup.includes(playerId));
 
     setSubs(availableSubs);
-  }, [playersSold, playersBought, PlayersCSVData, teamPicked, lineup]); // Make sure to include lineup in the dependency array
+  }, [playersSold, playersBought, PlayersCSVData, teamPicked, lineup]);
 
   useEffect(() => {
     const relevantNationsUpdate = {};
@@ -158,13 +156,12 @@ function StartingEleven({
   const handleDrop = (e, targetIndex) => {
     e.preventDefault();
     const playerId = Number(e.dataTransfer.getData('playerId'));
-    const fromLineup = e.dataTransfer.getData('fromLineup') === 'true'; // Check if dragged from lineup
+    const fromLineup = e.dataTransfer.getData('fromLineup') === 'true';
 
     if (!playerId) return;
 
     const replacedPlayer = lineup[targetIndex];
 
-    // If dragging within lineup, swap positions
     let newLineup = [...lineup];
     if (fromLineup) {
       const sourceIndex = lineup.indexOf(playerId);
@@ -175,7 +172,6 @@ function StartingEleven({
         ];
       }
     } else {
-      // If dragging from subs, move player to lineup
       if (!lineup.includes(playerId)) {
         newLineup[targetIndex] = playerId;
         const newSubs = subs.filter((sub) => sub !== playerId);
@@ -186,14 +182,12 @@ function StartingEleven({
       }
     }
 
-    // Update lineup state
     setLineup(newLineup);
 
-    // Write changes to the database
     updateLineup(newLineup);
   };
 
-  const getPlayerCard = (playerId, isSub = true) => {
+  const getPlayerCard = (playerId, pos = '', isSub = true) => {
     if (teamPlayers.length === 0) return null;
 
     const player = teamPlayers.find(
@@ -211,58 +205,62 @@ function StartingEleven({
 
     return isSub ? (
       <div className="sub-card" draggable>
-        <div className="sub-card-header">
-          <span className="sub-kit-number">{player.player_kit_number}</span>
-          <div className="sub-player-info">
+        <div className="card-header">
+          <div className="player-info">
+            <span className="kit-number">{player.player_kit_number}</span>
+            <span class="position-text">
+              {relevantPositions[player.position_id].position_acronym}
+            </span>
             <span
-              className="sub-position-badge"
+              className="position-badge"
               style={{ backgroundColor: positionColor }}
             ></span>
             <img
               src={relevantNations[player.nation_id]?.nation_pic}
               alt="nation"
-              className="sub-nation-flag"
+              className="nation-flag"
             />
           </div>
         </div>
-        <div className="sub-image-container">
+        <div className="image-container">
           <img
             src={player.player_portrait}
             alt={player.player_name}
-            className="sub-card-portrait"
+            className="card-portrait"
             draggable={false}
           />
         </div>
-        <div className="sub-card-footer">
-          <span className="sub-name">{player.player_name}</span>
+        <div className="card-footer">
+          <span className="name">{player.player_name}</span>
         </div>
       </div>
     ) : (
       <div className="starter-card" draggable>
-        <div className="starter-card-header">
-          <span className="starter-kit-number">{player.player_kit_number}</span>
-          <div className="starter-player-info">
+        <div className="card-header">
+          <div className="player-info">
+            <span className="kit-number">{player.player_kit_number}</span>
+            <span class="position-text">{pos}</span>
             <span
-              className="starter-position-badge"
+              className="position-badge"
               style={{ backgroundColor: positionColor }}
             ></span>
             <img
               src={relevantNations[player.nation_id]?.nation_pic}
               alt="nation"
-              className="starter-nation-flag"
+              className="nation-flag"
             />
           </div>
         </div>
-        <div className="starter-image-container">
+        <div className="image-container">
           <img
             src={player.player_portrait}
             alt={player.player_name}
-            className="starter-card-portrait"
+            className="card-portrait"
             draggable={false}
           />
         </div>
-        <div className="starter-card-footer">
-          <span className="starter-name">{player.player_name}</span>
+        <div className="card-footer">
+          <span className="name">{player.player_name}</span>
         </div>
       </div>
     );
@@ -304,7 +302,7 @@ function StartingEleven({
                   return (
                     <div
                       key={colIndex}
-                      onDragOver={(e) => e.preventDefault()} // Allow drop
+                      onDragOver={(e) => e.preventDefault()}
                       onDrop={(e) => handleDrop(e, flatIndex)}
                       className="player-slot"
                     >
@@ -316,7 +314,7 @@ function StartingEleven({
                           }
                           className="draggable-player"
                         >
-                          {getPlayerCard(playerId, false)}
+                          {getPlayerCard(playerId, pos, false)}
                         </div>
                       ) : (
                         pos
