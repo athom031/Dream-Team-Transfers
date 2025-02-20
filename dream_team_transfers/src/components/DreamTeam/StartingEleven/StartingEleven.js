@@ -106,7 +106,14 @@ function StartingEleven({
       .filter((playerId) => !lineup.includes(playerId));
 
     setSubs(availableSubs);
-  }, [playersSold, playersBought, PlayersCSVData, teamPicked, lineup]);
+  }, [
+    playersSold,
+    playersBought,
+    PlayersCSVData,
+    teamPicked,
+    lineup,
+    kitUpdates,
+  ]);
 
   useEffect(() => {
     const relevantNationsUpdate = {};

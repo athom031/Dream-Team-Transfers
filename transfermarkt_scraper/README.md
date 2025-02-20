@@ -3,21 +3,21 @@
 ## Steps to Run the Transfermarkt Scraper
 
 1. **Install all required imports**:
-    Ensure that you have all the necessary dependencies installed. You can do this by running:
-    ```bash
-    pip install -r requirements.txt
-    ```
+   Ensure that you have all the necessary dependencies installed. You can do this by running:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 2. **Define user agent**:
-    Set up a user agent string to mimic a real browser request. This is necessary to avoid being blocked by the website. Instructions can be found in [`headers.py`](https://github.com/athom031/Dream-Team-Transfers/blob/main/transfermarkt_scraper/constants/headers.py)
-
+   Set up a user agent string to mimic a real browser request. This is necessary to avoid being blocked by the website. Instructions can be found in [`headers.py`](https://github.com/athom031/Dream-Team-Transfers/blob/main/transfermarkt_scraper/constants/headers.py)
 
 3. **Run the script**:
-    Execute the main script to start the scraping process:
-    ```bash
-    python main.py
-    ```
-    
+   Execute the main script to start the scraping process:
+   ```bash
+   python main.py
+   ```
+
 ![Demo](Demo.png)
 
 ## Introduction
@@ -61,6 +61,7 @@ With a map of league information that connects to supported teams, we can now sc
 To simplify database management, we have categorized the collected information and stored it in separate CSV files. Each CSV file contains a unique key to connect data points across different categories.
 
 **CSV Categories**
+
 - Leagues
 - Nations
 - Players
