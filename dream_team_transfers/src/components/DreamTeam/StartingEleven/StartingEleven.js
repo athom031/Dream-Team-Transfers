@@ -20,8 +20,6 @@ function StartingEleven({
   const [playersSold, setPlayersSold] = useState([]);
   const [playersBought, setPlayersBought] = useState([]);
   const [kitUpdates, setKitUpdates] = useState({});
-  // writing to db
-  const [positionsPicked, setPositionsPicked] = useState([]);
 
   const [lineup, setLineup] = React.useState([]);
   const [subs, setSubs] = React.useState([]);
@@ -40,7 +38,6 @@ function StartingEleven({
       setPlayersSold(data.players_sold);
       setPlayersBought(data.players_bought);
       setTeamPicked(data.team_picked);
-      setPositionsPicked(data.team_positions || new Array(11).fill(null));
       setKitUpdates(data.team_kit_updates);
       setLineup(data.team_positions || new Array(11).fill(null));
     });
