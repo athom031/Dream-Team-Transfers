@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { buyPlayer, getTeamData } from '../../../db/db-utils';
 import { loadCSVData } from '../../../utils/parse-csv';
 import './PlayerMarket.css';
@@ -12,7 +12,6 @@ function PlayerMarket() {
   const [loading, setLoading] = useState(true);
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
-  const [purchaseLoading, setPurchaseLoading] = useState(false);
   const [purchaseError, setPurchaseError] = useState('');
 
   // Pagination state
@@ -189,9 +188,6 @@ function PlayerMarket() {
   const handlePurchase = async () => {
     if (!selectedPlayer || !teamData) return;
 
-    setPurchaseLoading(true);
-    setPurchaseError('');
-
     try {
       await buyPlayer(
         selectedPlayer.player_id,
@@ -219,11 +215,52 @@ function PlayerMarket() {
 
       setShowPurchaseModal(false);
       setSelectedPlayer(null);
+      setPurchaseError('');
     } catch (error) {
       setPurchaseError(error.message);
-    } finally {
-      setPurchaseLoading(false);
     }
+  };
+
+  // Hold-to-click purchase button component for modal
+  const HoldToPurchaseButton = () => {
+    const [isButtonActive, setIsButtonActive] = useState(false);
+    const timer = useRef(null);
+
+    const handleButtonPress = () => {
+      setIsButtonActive(true);
+      timer.current = setTimeout(() => {
+        handlePurchase();
+        setIsButtonActive(false);
+      }, 2000);
+    };
+
+    const handleButtonRelease = () => {
+      clearTimeout(timer.current);
+      if (isButtonActive) {
+        setIsButtonActive(false);
+      }
+    };
+
+    const canAfford =
+      parseFloat(teamData?.team_budget || 0) >=
+      parseFloat(selectedPlayer?.player_market_value || 0);
+
+    return (
+      <button
+        className={`hold-purchase-button ${isButtonActive ? 'active' : ''}`}
+        onMouseDown={handleButtonPress}
+        onMouseUp={handleButtonRelease}
+        onMouseLeave={handleButtonRelease}
+        disabled={!canAfford}
+      >
+        <span
+          className={`hold-purchase-text ${isButtonActive ? 'active' : ''}`}
+        >
+          {canAfford ? 'Hold to Confirm Purchase' : 'Insufficient Funds'}
+        </span>
+        {isButtonActive && <div className="fill-effect"></div>}
+      </button>
+    );
   };
 
   const formatValue = (value) => {
@@ -609,21 +646,10 @@ function PlayerMarket() {
               <button
                 className="cancel-button"
                 onClick={() => setShowPurchaseModal(false)}
-                disabled={purchaseLoading}
               >
                 Cancel
               </button>
-              <button
-                className="purchase-button"
-                onClick={handlePurchase}
-                disabled={
-                  purchaseLoading ||
-                  parseFloat(teamData?.team_budget || 0) <
-                    parseFloat(selectedPlayer.player_market_value)
-                }
-              >
-                {purchaseLoading ? 'Processing...' : 'Confirm Purchase'}
-              </button>
+              <HoldToPurchaseButton />
             </div>
           </div>
         </div>

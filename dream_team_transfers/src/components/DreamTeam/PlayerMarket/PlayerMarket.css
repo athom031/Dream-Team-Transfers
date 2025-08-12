@@ -174,7 +174,6 @@
   border: 2px solid var(--light-grey-color);
   border-radius: var(--border-radius);
   padding: 20px;
-  cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
@@ -344,6 +343,247 @@
   color: white;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .player-market {
+    padding: 15px;
+  }
+
+  .player-market-header {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .player-market-header h1 {
+    font-size: 2rem;
+  }
+
+  .filter-row {
+    flex-direction: column;
+  }
+
+  .filter-input,
+  .filter-select {
+    min-width: auto;
+  }
+
+  .players-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .player-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .purchase-modal {
+    margin: 20px;
+    max-height: calc(100vh - 40px);
+  }
+
+  .player-details {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .player-market-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .budget-display {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .budget-display span {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+
+/* Hold-to-click Purchase Button Styles */
+.purchase-button-container {
+  margin-top: 15px;
+}
+
+.purchase-button {
+  background-color: var(--logo-gold-color);
+  border: none;
+  color: var(--logo-black-color);
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+  border-radius: 5%;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--main-font);
+  letter-spacing: var(--letter-spacing);
+  font-weight: bold;
+  width: 100%;
+}
+
+.purchase-button:hover:not(:disabled) {
+  background-color: var(--restart-brown-color);
+  color: white;
+}
+
+.purchase-button:disabled {
+  background-color: var(--light-grey-color);
+  cursor: not-allowed;
+  color: var(--dark-grey-color);
+}
+
+.purchase-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  background: var(--logo-gold-color);
+  width: 100%;
+  transition: width 2s linear;
+}
+
+.purchase-button.active::before {
+  width: 0;
+}
+
+.purchase-button .purchase-text {
+  position: relative;
+  z-index: 1;
+}
+
+.purchase-button.active .purchase-text {
+  color: white;
+}
+
+.purchase-button:not(.active)::before {
+  transition: none;
+}
+
+.fill-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--restart-brown-color);
+  width: 0;
+  animation: fill 2s linear forwards;
+}
+
+@keyframes fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 8px;
+  text-align: center;
+  font-family: var(--main-font);
+  letter-spacing: var(--letter-spacing);
+}
+
+/* Hold-to-click Purchase Button Styles for Modal */
+.hold-purchase-button {
+  background-color: var(--logo-gold-color);
+  border: none;
+  color: var(--logo-black-color);
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+  border-radius: 5%;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--main-font);
+  letter-spacing: var(--letter-spacing);
+  font-weight: bold;
+  min-width: 200px;
+}
+
+.hold-purchase-button:hover:not(:disabled) {
+  background-color: var(--restart-brown-color);
+  color: white;
+}
+
+.hold-purchase-button:disabled {
+  background-color: var(--light-grey-color);
+  cursor: not-allowed;
+  color: var(--dark-grey-color);
+}
+
+.hold-purchase-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  background: var(--logo-gold-color);
+  width: 100%;
+  transition: width 2s linear;
+}
+
+.hold-purchase-button.active::before {
+  width: 0;
+}
+
+.hold-purchase-button .hold-purchase-text {
+  position: relative;
+  z-index: 1;
+}
+
+.hold-purchase-button.active .hold-purchase-text {
+  color: white;
+}
+
+.hold-purchase-button:not(.active)::before {
+  transition: none;
+}
+
+.fill-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--restart-brown-color);
+  width: 0;
+  animation: fill 2s linear forwards;
+}
+
+@keyframes fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
 /* Modal Styles */
 .modal-overlay {
   position: fixed;
@@ -451,18 +691,6 @@
   color: var(--logo-gold-color);
 }
 
-.error-message {
-  background-color: #fee;
-  color: #c53030;
-  padding: 15px 25px;
-  margin: 0 25px;
-  border-radius: var(--border-radius);
-  border: 1px solid #fed7d7;
-  font-size: 0.9rem;
-  font-family: var(--main-font);
-  letter-spacing: var(--letter-spacing);
-}
-
 .modal-actions {
   display: flex;
   gap: 15px;
@@ -470,8 +698,7 @@
   justify-content: flex-end;
 }
 
-.cancel-button,
-.purchase-button {
+.cancel-button {
   padding: 12px 24px;
   border: none;
   border-radius: var(--border-radius);
@@ -482,9 +709,6 @@
   min-width: 120px;
   font-family: var(--main-font);
   letter-spacing: var(--letter-spacing);
-}
-
-.cancel-button {
   background-color: var(--light-grey-color);
   color: white;
 }
@@ -492,92 +716,4 @@
 .cancel-button:hover:not(:disabled) {
   background-color: var(--dark-grey-color);
   color: white;
-}
-
-.purchase-button {
-  background-color: var(--logo-gold-color);
-  color: var(--logo-black-color);
-}
-
-.purchase-button:hover:not(:disabled) {
-  background-color: var(--restart-brown-color);
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(139, 108, 66, 0.3);
-}
-
-.purchase-button:disabled {
-  background-color: var(--light-grey-color);
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-  color: var(--dark-grey-color);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .player-market {
-    padding: 15px;
-  }
-
-  .player-market-header {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
-  }
-
-  .player-market-header h1 {
-    font-size: 2rem;
-  }
-
-  .filter-row {
-    flex-direction: column;
-  }
-
-  .filter-input,
-  .filter-select {
-    min-width: auto;
-  }
-
-  .players-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-    padding: 15px;
-  }
-
-  .player-card {
-    flex-direction: column;
-    text-align: center;
-    padding: 15px;
-  }
-
-  .purchase-modal {
-    margin: 20px;
-    max-height: calc(100vh - 40px);
-  }
-
-  .player-details {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .modal-actions {
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 480px) {
-  .player-market-header h1 {
-    font-size: 1.8rem;
-  }
-
-  .budget-display {
-    flex-direction: row;
-    gap: 10px;
-  }
-
-  .budget-display span {
-    font-size: 12px;
-    padding: 6px 12px;
-  }
 }
