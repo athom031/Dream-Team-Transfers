@@ -430,6 +430,14 @@
   .modal-actions {
     flex-direction: column;
   }
+
+  .player-cost-highlight {
+    padding: 15px;
+  }
+
+  .cost-amount {
+    font-size: 1.5rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -543,9 +551,9 @@
 
 /* Hold-to-click Purchase Button Styles for Modal */
 .hold-purchase-button {
-  background-color: var(--logo-gold-color);
+  background-color: #27ae60;
   border: none;
-  color: var(--logo-black-color);
+  color: white;
   padding: 15px 32px;
   text-align: center;
   text-decoration: none;
@@ -564,7 +572,7 @@
 }
 
 .hold-purchase-button:hover:not(:disabled) {
-  background-color: var(--restart-brown-color);
+  background-color: #229954;
   color: white;
 }
 
@@ -580,7 +588,7 @@
   top: 0;
   right: 0;
   height: 100%;
-  background: var(--logo-gold-color);
+  background: #27ae60;
   width: 100%;
   transition: width 2s linear;
 }
@@ -726,6 +734,46 @@
 
 .player-info-details strong {
   color: var(--logo-gold-color);
+}
+
+/* Money Information Section */
+.money-information {
+  padding: 25px;
+  border-bottom: 1px solid var(--light-grey-color);
+  background-color: var(--restart-beige-color);
+}
+
+.player-cost-highlight {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(
+    135deg,
+    var(--logo-gold-color),
+    var(--restart-brown-color)
+  );
+  color: white;
+  padding: 20px;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(185, 143, 68, 0.3);
+  border: 2px solid var(--logo-gold-color);
+}
+
+.cost-label {
+  font-size: 1.1rem;
+  font-weight: bold;
+  font-family: var(--main-font);
+  letter-spacing: var(--letter-spacing);
+  text-transform: uppercase;
+}
+
+.cost-amount {
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: var(--main-font);
+  letter-spacing: var(--letter-spacing);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .modal-actions {

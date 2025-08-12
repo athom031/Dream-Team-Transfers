@@ -675,34 +675,30 @@ function PlayerMarket({
                     src={getNationFlag(selectedPlayer.nation_id)}
                     alt="Nationality"
                     className="player-nationality-flag"
-                    style={{ 
-                      width: '20px', 
-                      height: '15px', 
+                    style={{
+                      width: '20px',
+                      height: '15px',
                       marginLeft: '8px',
                       verticalAlign: 'middle',
-                      borderRadius: '2px'
+                      borderRadius: '2px',
                     }}
                     onError={(e) => {
-                      e.target.src = 'https://via.placeholder.com/20x15?text=Flag';
+                      e.target.src =
+                        'https://via.placeholder.com/20x15?text=Flag';
                     }}
-                  />
-                  {' '}{getNationName(selectedPlayer.nation_id)}
+                  />{' '}
+                  {getNationName(selectedPlayer.nation_id)}
                 </p>
-                <p>
-                  <strong>Market Value:</strong>{' '}
+              </div>
+            </div>
+
+            {/* Money Information Section */}
+            <div className="money-information">
+              <div className="player-cost-highlight">
+                <span className="cost-label">Player Cost</span>
+                <span className="cost-amount">
                   {formatValue(selectedPlayer.player_market_value)}
-                </p>
-                <p>
-                  <strong>Current Budget:</strong>{' '}
-                  {formatValue(teamData?.team_budget || 0)}
-                </p>
-                <p>
-                  <strong>Remaining Budget:</strong>{' '}
-                  {formatValue(
-                    parseFloat(teamData?.team_budget || 0) -
-                      parseFloat(selectedPlayer.player_market_value)
-                  )}
-                </p>
+                </span>
               </div>
             </div>
 
