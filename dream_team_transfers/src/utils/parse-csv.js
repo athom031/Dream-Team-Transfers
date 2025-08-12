@@ -1,46 +1,32 @@
-import Papa from 'papaparse';
+export function parseCSV(csvText) {
+  const lines = csvText.split('\n');
+  const headers = lines[0].split(',').map((header) => header.trim());
+  const data = [];
 
-import LeaguesCSVData from '../constants/csvs/leagues.csv';
-import NationsCSVData from '../constants/csvs/nations.csv';
-import PlayersCSVData from '../constants/csvs/players.csv';
-import PositionsCSVData from '../constants/csvs/positions.csv';
-import TeamsCSVData from '../constants/csvs/teams.csv';
-
-const LEAGUES = 'leagues';
-const NATIONS = 'nations';
-const PLAYERS = 'players';
-const POSITIONS = 'positions';
-const TEAMS = 'teams';
-
-const getCSVData = async (csvFile) => {
-  let CSVData;
-  switch (csvFile.toLowerCase()) {
-    case LEAGUES:
-      CSVData = LeaguesCSVData;
-      break;
-    case NATIONS:
-      CSVData = NationsCSVData;
-      break;
-    case PLAYERS:
-      CSVData = PlayersCSVData;
-      break;
-    case POSITIONS:
-      CSVData = PositionsCSVData;
-      break;
-    case TEAMS:
-      CSVData = TeamsCSVData;
-      break;
-    default:
-      throw new Error('Invalid csv file');
+  for (let i = 1; i < lines.length; i++) {
+    if (lines[i].trim()) {
+      const values = lines[i].split(',');
+      const player = {};
+      headers.forEach((header, index) => {
+        player[header] = values[index]?.trim() || '';
+      });
+      data.push(player);
+    }
   }
-  return fetch(CSVData)
-    .then((response) => response.text())
-    .then((text) => Papa.parse(text, { header: true }))
-    .then(({ data }) => data);
-};
 
-export const getLeaguesCSV = async () => getCSVData(LEAGUES);
-export const getNationsCSV = async () => getCSVData(NATIONS);
-export const getPlayersCSV = async () => getCSVData(PLAYERS);
-export const getPositionsCSV = async () => getCSVData(POSITIONS);
-export const getTeamsCSV = async () => getCSVData(TEAMS);
+  return data;
+}
+
+export async function loadCSVData(filename) {
+  try {
+    const response = await fetch(`/${filename}`);
+    if (!response.ok) {
+      throw new Error(`Failed to load ${filename}`);
+    }
+    const csvText = await response.text();
+    return parseCSV(csvText);
+  } catch (error) {
+    console.error(`Error loading ${filename}:`, error);
+    return [];
+  }
+}

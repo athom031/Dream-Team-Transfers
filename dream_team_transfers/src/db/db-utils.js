@@ -82,6 +82,23 @@ export function sellPlayer(playerId, playerValue) {
   });
 }
 
+export function buyPlayer(playerId, playerValue) {
+  return initializeDB().then(() => {
+    return db.get('dtt_data').then((doc) => {
+      // Check if we have enough budget
+      if (Number(doc.team_budget) < playerValue) {
+        throw new Error('Insufficient budget');
+      }
+
+      doc.team_budget = String(Number(doc.team_budget) - playerValue);
+      doc.team_value = String(Number(doc.team_value) + playerValue);
+      doc.players_bought = [...doc.players_bought, playerId];
+
+      return db.put(doc);
+    });
+  });
+}
+
 export function updateLineup(newLineup) {
   return initializeDB().then(() => {
     return db.get('dtt_data').then((doc) => {

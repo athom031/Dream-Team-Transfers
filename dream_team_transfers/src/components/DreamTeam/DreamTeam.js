@@ -10,18 +10,11 @@ import PageNotFound from './PageNotFound/PageNotFound';
 import Dev from '../Dev/Dev';
 import { useState, useEffect } from 'react';
 
-import {
-  // getLeaguesCSV,
-  getNationsCSV,
-  getPlayersCSV,
-  getPositionsCSV,
-  getTeamsCSV,
-} from '../../utils/parse-csv';
+import { loadCSVData } from '../../utils/parse-csv';
 
 import './DreamTeam.css';
 
 function DreamTeam() {
-  // const [LeagueCSVData, setLeagueCSVData] = useState(null);
   const [NationsCSVData, setNationsCSVData] = useState(null);
   const [PlayersCSVData, setPlayersCSVData] = useState(null);
   const [PositionsCSVData, setPositionsCSVData] = useState(null);
@@ -29,11 +22,26 @@ function DreamTeam() {
 
   // load in csv files when app loads once and pass it into dream team
   useEffect(() => {
-    // getLeaguesCSV().then(data => setLeagueCSVData(data));
-    getNationsCSV().then((data) => setNationsCSVData(data));
-    getPlayersCSV().then((data) => setPlayersCSVData(data));
-    getPositionsCSV().then((data) => setPositionsCSVData(data));
-    getTeamsCSV().then((data) => setTeamsCSVData(data));
+    const loadAllCSVData = async () => {
+      try {
+        const [nationsData, playersData, positionsData, teamsData] =
+          await Promise.all([
+            loadCSVData('nations.csv'),
+            loadCSVData('players.csv'),
+            loadCSVData('positions.csv'),
+            loadCSVData('teams.csv'),
+          ]);
+
+        setNationsCSVData(nationsData);
+        setPlayersCSVData(playersData);
+        setPositionsCSVData(positionsData);
+        setTeamsCSVData(teamsData);
+      } catch (error) {
+        console.error('Error loading CSV data:', error);
+      }
+    };
+
+    loadAllCSVData();
   }, []);
 
   return (
