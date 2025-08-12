@@ -19,11 +19,13 @@ function DreamTeam() {
   const [PlayersCSVData, setPlayersCSVData] = useState(null);
   const [PositionsCSVData, setPositionsCSVData] = useState(null);
   const [TeamsCSVData, setTeamsCSVData] = useState(null);
+  const [csvLoading, setCsvLoading] = useState(true);
 
   // load in csv files when app loads once and pass it into dream team
   useEffect(() => {
     const loadAllCSVData = async () => {
       try {
+        setCsvLoading(true);
         const [nationsData, playersData, positionsData, teamsData] =
           await Promise.all([
             loadCSVData('nations.csv'),
@@ -36,8 +38,10 @@ function DreamTeam() {
         setPlayersCSVData(playersData);
         setPositionsCSVData(positionsData);
         setTeamsCSVData(teamsData);
+        setCsvLoading(false);
       } catch (error) {
         console.error('Error loading CSV data:', error);
+        setCsvLoading(false);
       }
     };
 
@@ -59,7 +63,17 @@ function DreamTeam() {
               />
             }
           />
-          <Route path="/player-market" element={<PlayerMarket />} />
+          <Route
+            path="/player-market"
+            element={
+              <PlayerMarket
+                NationsCSVData={NationsCSVData}
+                PlayersCSVData={PlayersCSVData}
+                TeamsCSVData={TeamsCSVData}
+                csvLoading={csvLoading}
+              />
+            }
+          />
           <Route path="/transfer-summary" element={<TransferSummary />} />
           <Route path="/team-restart" element={<TeamRestart />} />
           <Route

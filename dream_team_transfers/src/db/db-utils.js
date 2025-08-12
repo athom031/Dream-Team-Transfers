@@ -8,26 +8,44 @@ function getEmptyTeam() {
 }
 
 export function initializeDB() {
-  return db.info().then(function (info) {
-    if (info.doc_count === 0) {
-      const initialData = {
-        _id: 'dtt_data',
-        team_picked: -1,
-        team_nickname: '',
-        team_budget: 0.0,
-        team_value: 0.0,
-        team_positions: getEmptyTeam(),
-        team_kit_updates: {},
-        players_bought: [],
-        players_sold: [],
-      };
-      return db.put(initialData);
-    }
-  });
+  return db
+    .info()
+    .then(function (info) {
+      if (info.doc_count === 0) {
+        const initialData = {
+          _id: 'dtt_data',
+          team_picked: -1,
+          team_nickname: '',
+          team_budget: 0.0,
+          team_value: 0.0,
+          team_positions: getEmptyTeam(),
+          team_kit_updates: {},
+          players_bought: [],
+          players_sold: [],
+        };
+        return db.put(initialData);
+      } else {
+        return Promise.resolve();
+      }
+    })
+    .catch((error) => {
+      console.error('Error in initializeDB:', error);
+      throw error;
+    });
 }
 
 export function getTeamData() {
-  return initializeDB().then(() => db.get('dtt_data'));
+  return initializeDB()
+    .then(() => {
+      return db.get('dtt_data');
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error('Error in getTeamData:', error);
+      throw error;
+    });
 }
 
 export function getTeamPicked() {

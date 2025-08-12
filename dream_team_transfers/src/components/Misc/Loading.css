@@ -57,7 +57,7 @@ body {
   }
 }
 
-h3 {
+.loading h3 {
   color: var(--gold-color);
   font-family: var(--main-font);
   font-weight: 900;
@@ -65,7 +65,7 @@ h3 {
   font-size: 3vw;
 }
 
-h3::after {
+.loading h3::after {
   content: '';
   animation: loading 4s infinite;
 }

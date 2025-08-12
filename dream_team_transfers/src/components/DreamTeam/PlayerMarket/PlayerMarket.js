@@ -3,7 +3,12 @@ import { buyPlayer, getTeamData } from '../../../db/db-utils';
 import { loadCSVData } from '../../../utils/parse-csv';
 import './PlayerMarket.css';
 
-function PlayerMarket() {
+function PlayerMarket({
+  NationsCSVData,
+  PlayersCSVData,
+  TeamsCSVData,
+  csvLoading,
+}) {
   const [players, setPlayers] = useState([]);
   const [filteredPlayers, setFilteredPlayers] = useState([]);
   const [teams, setTeams] = useState([]);
@@ -31,26 +36,28 @@ function PlayerMarket() {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [NationsCSVData, PlayersCSVData, TeamsCSVData, csvLoading]);
 
   const loadData = async () => {
     try {
+      setLoading(true);
+
+      // Check if CSV data is available
+      if (csvLoading || !NationsCSVData || !PlayersCSVData || !TeamsCSVData) {
+        setLoading(true);
+        return;
+      }
+
       // Load team data
       const team = await getTeamData();
       setTeamData(team);
 
-      // Load all CSV data in parallel
-      const [playersData, teamsData, nationsData] = await Promise.all([
-        loadCSVData('players.csv'),
-        loadCSVData('teams.csv'),
-        loadCSVData('nations.csv'),
-      ]);
-
-      setTeams(teamsData);
-      setNations(nationsData);
+      // Use the CSV data passed as props instead of loading it again
+      setTeams(TeamsCSVData);
+      setNations(NationsCSVData);
 
       // Filter out players we already own or have sold
-      const availablePlayers = playersData.filter(
+      const availablePlayers = PlayersCSVData.filter(
         (player) =>
           !team.players_bought.includes(player.player_id) &&
           !team.players_sold.includes(player.player_id)
@@ -62,6 +69,16 @@ function PlayerMarket() {
     } catch (error) {
       console.error('Error loading data:', error);
       setLoading(false);
+      // Set empty arrays as fallback to prevent infinite loading
+      setPlayers([]);
+      setFilteredPlayers([]);
+      setTeams([]);
+      setNations([]);
+
+      // Show error message to user
+      alert(
+        `Failed to load player market data: ${error.message}. Please refresh the page.`
+      );
     }
   };
 
@@ -298,7 +315,9 @@ function PlayerMarket() {
 
   const getNationFlag = (nationId) => {
     const nation = nations.find((n) => n.nation_id === nationId);
-    return nation ? nation.nation_flag_small_pic : 'https://via.placeholder.com/20x15?text=Flag';
+    return nation
+      ? nation.nation_flag_small_pic
+      : 'https://via.placeholder.com/20x15?text=Flag';
   };
 
   const getNationName = (nationId) => {
@@ -317,9 +336,20 @@ function PlayerMarket() {
     return leagues[leagueId] || 'Unknown League';
   };
 
-  if (loading) {
+  if (
+    csvLoading ||
+    loading ||
+    !NationsCSVData ||
+    !PlayersCSVData ||
+    !TeamsCSVData
+  ) {
     return (
-      <div className="player-market-loading">Loading player market...</div>
+      <div className="player-market-loading">
+        <div>Loading player market...</div>
+        <div style={{ fontSize: '14px', marginTop: '10px', color: '#666' }}>
+          This may take a few seconds
+        </div>
+      </div>
     );
   }
 
@@ -464,49 +494,52 @@ function PlayerMarket() {
         </div>
 
         <div className="players-grid">
-          {currentPlayers.map((player) => (
-            <div
-              key={player.player_id}
-              className="player-card"
-              onClick={() => handlePlayerClick(player)}
-            >
-              {/* Row 1: Photo + Name */}
-              <div className="player-row player-row-1">
-                <div className="player-image">
+          {currentPlayers.map((player) => {
+            return (
+              <div
+                key={player.player_id}
+                className="player-card"
+                onClick={() => handlePlayerClick(player)}
+              >
+                {/* Row 1: Photo + Name */}
+                <div className="player-row player-row-1">
+                  <div className="player-image">
+                    <img
+                      src={player.player_portrait_small_pic}
+                      alt={player.player_name}
+                      onError={(e) => {
+                        e.target.src =
+                          'https://via.placeholder.com/60x60?text=Player';
+                      }}
+                    />
+                  </div>
+                  <h4 className="player-name">{player.player_name}</h4>
+                </div>
+
+                {/* Row 2: Current team name */}
+                <p className="player-club">{getTeamName(player.team_id)}</p>
+
+                {/* Row 3: Nationality Flag + Position + Money */}
+                <div className="player-row player-row-3">
                   <img
-                    src={player.player_portrait_small_pic}
-                    alt={player.player_name}
+                    src={getNationFlag(player.nation_id)}
+                    alt="Nationality"
+                    className="player-nationality-flag"
                     onError={(e) => {
                       e.target.src =
-                        'https://via.placeholder.com/60x60?text=Player';
+                        'https://via.placeholder.com/20x15?text=Flag';
                     }}
                   />
+                  <span className="player-position">
+                    {getPositionName(player.position_id)}
+                  </span>
+                  <span className="player-value">
+                    {formatValue(player.player_market_value)}
+                  </span>
                 </div>
-                <h4 className="player-name">{player.player_name}</h4>
               </div>
-
-              {/* Row 2: Current team name */}
-              <p className="player-club">{getTeamName(player.team_id)}</p>
-
-              {/* Row 3: Nationality Flag + Position + Money */}
-              <div className="player-row player-row-3">
-                <img 
-                  src={getNationFlag(player.nation_id)} 
-                  alt="Nationality" 
-                  className="player-nationality-flag"
-                  onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/20x15?text=Flag';
-                  }}
-                />
-                <span className="player-position">
-                  {getPositionName(player.position_id)}
-                </span>
-                <span className="player-value">
-                  {formatValue(player.player_market_value)}
-                </span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Pagination Controls */}
@@ -638,7 +671,22 @@ function PlayerMarket() {
                 </p>
                 <p>
                   <strong>Nation:</strong>{' '}
-                  {getNationName(selectedPlayer.nation_id)}
+                  <img
+                    src={getNationFlag(selectedPlayer.nation_id)}
+                    alt="Nationality"
+                    className="player-nationality-flag"
+                    style={{ 
+                      width: '20px', 
+                      height: '15px', 
+                      marginLeft: '8px',
+                      verticalAlign: 'middle',
+                      borderRadius: '2px'
+                    }}
+                    onError={(e) => {
+                      e.target.src = 'https://via.placeholder.com/20x15?text=Flag';
+                    }}
+                  />
+                  {' '}{getNationName(selectedPlayer.nation_id)}
                 </p>
                 <p>
                   <strong>Market Value:</strong>{' '}
