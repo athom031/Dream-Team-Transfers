@@ -296,6 +296,11 @@ function PlayerMarket() {
     return team ? team.team_name : 'Unknown Team';
   };
 
+  const getNationFlag = (nationId) => {
+    const nation = nations.find((n) => n.nation_id === nationId);
+    return nation ? nation.nation_flag_small_pic : 'https://via.placeholder.com/20x15?text=Flag';
+  };
+
   const getNationName = (nationId) => {
     const nation = nations.find((n) => n.nation_id === nationId);
     return nation ? nation.nation_name : 'Unknown Nation';
@@ -465,25 +470,40 @@ function PlayerMarket() {
               className="player-card"
               onClick={() => handlePlayerClick(player)}
             >
-              <div className="player-image">
-                <img
-                  src={player.player_portrait_small_pic}
-                  alt={player.player_name}
+              {/* Row 1: Photo + Name */}
+              <div className="player-row player-row-1">
+                <div className="player-image">
+                  <img
+                    src={player.player_portrait_small_pic}
+                    alt={player.player_name}
+                    onError={(e) => {
+                      e.target.src =
+                        'https://via.placeholder.com/60x60?text=Player';
+                    }}
+                  />
+                </div>
+                <h4 className="player-name">{player.player_name}</h4>
+              </div>
+
+              {/* Row 2: Current team name */}
+              <p className="player-club">{getTeamName(player.team_id)}</p>
+
+              {/* Row 3: Nationality Flag + Position + Money */}
+              <div className="player-row player-row-3">
+                <img 
+                  src={getNationFlag(player.nation_id)} 
+                  alt="Nationality" 
+                  className="player-nationality-flag"
                   onError={(e) => {
-                    e.target.src =
-                      'https://via.placeholder.com/80x80?text=Player';
+                    e.target.src = 'https://via.placeholder.com/20x15?text=Flag';
                   }}
                 />
-              </div>
-              <div className="player-info">
-                <h4>{player.player_name}</h4>
-                <p className="player-position">
+                <span className="player-position">
                   {getPositionName(player.position_id)}
-                </p>
-                <p className="player-value">
+                </span>
+                <span className="player-value">
                   {formatValue(player.player_market_value)}
-                </p>
-                <p className="player-club">{getTeamName(player.team_id)}</p>
+                </span>
               </div>
             </div>
           ))}

@@ -173,12 +173,13 @@
   background-color: white;
   border: 2px solid var(--light-grey-color);
   border-radius: var(--border-radius);
-  padding: 20px;
+  padding: 16px;
   transition: all 0.3s ease;
   display: flex;
-  align-items: center;
-  gap: 15px;
+  flex-direction: column;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  min-height: 160px;
+  overflow: hidden;
 }
 
 .player-card:hover {
@@ -187,53 +188,77 @@
   box-shadow: 0 8px 25px rgba(185, 143, 68, 0.15);
 }
 
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.player-row-1 {
+  margin-bottom: 8px;
+}
+
+.player-row-3 {
+  margin-top: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.player-nationality-flag {
+  width: 20px;
+  height: 15px;
+  object-fit: cover;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
 .player-image img {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--light-grey-color);
   transition: border-color 0.3s ease;
+  flex-shrink: 0;
 }
 
 .player-card:hover .player-image img {
   border-color: var(--logo-gold-color);
 }
 
-.player-info {
-  flex: 1;
-}
-
-.player-info h4 {
-  margin: 0 0 8px 0;
+.player-name {
+  margin: 0;
   color: var(--dark-grey-color);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: bold;
   font-family: var(--main-font);
   letter-spacing: var(--letter-spacing);
+  line-height: 1.2;
+  flex: 1;
 }
 
 .player-position {
-  margin: 0 0 8px 0;
+  margin: 0;
   color: var(--logo-gold-color);
   font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing);
   font-family: var(--main-font);
 }
 
 .player-value {
-  margin: 0 0 8px 0;
+  margin: 0;
   color: var(--restart-brown-color);
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-family: var(--main-font);
   letter-spacing: var(--letter-spacing);
 }
 
 .player-club {
-  margin: 0;
+  margin: 0 0 8px 0;
   color: var(--light-grey-color);
   font-size: 0.9rem;
   font-style: italic;
@@ -378,6 +403,18 @@
     flex-direction: column;
     text-align: center;
     padding: 15px;
+    min-height: auto;
+  }
+
+  .player-row {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .player-row-3 {
+    justify-content: center;
+    gap: 16px;
   }
 
   .purchase-modal {
