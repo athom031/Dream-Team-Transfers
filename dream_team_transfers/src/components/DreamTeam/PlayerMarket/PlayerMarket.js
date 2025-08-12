@@ -128,14 +128,14 @@ function PlayerMarket({
       // Check if current nation is still valid for the new league
       const currentNationValid = nations.some((nation) => {
         const leaguePlayers = players.filter(
-          (player) => player.league_id === filters.league
+          (player) => player.league_id == filters.league
         );
         const nationIds = [
           ...new Set(leaguePlayers.map((player) => player.nation_id)),
         ];
         return (
           nationIds.includes(nation.nation_id) &&
-          nation.nation_id === filters.nation
+          nation.nation_id == filters.nation
         );
       });
 
@@ -176,7 +176,7 @@ function PlayerMarket({
 
     if (filters.nation) {
       filtered = filtered.filter(
-        (player) => player.nation_id === filters.nation
+        (player) => player.nation_id == filters.nation
       );
     }
 
@@ -314,14 +314,14 @@ function PlayerMarket({
   };
 
   const getNationFlag = (nationId) => {
-    const nation = nations.find((n) => n.nation_id === nationId);
+    const nation = nations.find((n) => n.nation_id == nationId);
     return nation
       ? nation.nation_flag_small_pic
       : 'https://via.placeholder.com/20x15?text=Flag';
   };
 
   const getNationName = (nationId) => {
-    const nation = nations.find((n) => n.nation_id === nationId);
+    const nation = nations.find((n) => n.nation_id == nationId);
     return nation ? nation.nation_name : 'Unknown Nation';
   };
 

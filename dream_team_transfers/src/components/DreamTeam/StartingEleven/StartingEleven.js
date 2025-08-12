@@ -129,22 +129,28 @@ function StartingEleven({
 
     for (let i = 0; i < teamPlayers.length; i++) {
       if (!relevantNationsUpdate[teamPlayers[i].nation_id]) {
-        const { nation_name, nation_flag_small_pic } =
-          NationsCSVData[teamPlayers[i].nation_id];
-        relevantNationsUpdate[teamPlayers[i].nation_id] = {
-          nation_name: nation_name,
-          nation_pic: nation_flag_small_pic,
-        };
+        const nation = NationsCSVData.find(
+          (n) => n.nation_id == teamPlayers[i].nation_id
+        );
+        if (nation) {
+          relevantNationsUpdate[teamPlayers[i].nation_id] = {
+            nation_name: nation.nation_name,
+            nation_pic: nation.nation_flag_small_pic,
+          };
+        }
       }
 
       if (!relevantPositionsUpdate[teamPlayers[i].position_id]) {
-        const { position_acronym, position_name, position_grouping } =
-          PositionsCSVData[teamPlayers[i].position_id];
-        relevantPositionsUpdate[teamPlayers[i].position_id] = {
-          position_acronym,
-          position_name,
-          position_grouping,
-        };
+        const position = PositionsCSVData.find(
+          (p) => p.position_id == teamPlayers[i].position_id
+        );
+        if (position) {
+          relevantPositionsUpdate[teamPlayers[i].position_id] = {
+            position_acronym: position.position_acronym,
+            position_name: position.position_name,
+            position_grouping: position.position_grouping,
+          };
+        }
       }
     }
 
