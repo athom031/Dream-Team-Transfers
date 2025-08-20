@@ -252,27 +252,25 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
         {
           Header: 'Position',
           accessor: 'position_id',
-          Cell: ({ row }) => (
-            <div className="player-position">
-              <FontAwesomeIcon
-                icon={faCircle}
-                className={`position-circle ${relevantPositions[row.original.position_id].position_grouping}`}
-                style={{
-                  border: '2px solid white',
-                  borderRadius: '50%',
-                  color:
-                    POSITION_CIRCLES[
-                      relevantPositions[row.original.position_id]
-                        .position_grouping
-                    ],
-                }}
-              />
-              &nbsp;
-              <div>
-                {relevantPositions[row.original.position_id].position_acronym}
+          Cell: ({ row }) => {
+            const position = relevantPositions[row.original.position_id];
+            if (!position) return <div>Loading...</div>;
+            return (
+              <div className="player-position">
+                <FontAwesomeIcon
+                  icon={faCircle}
+                  className={`position-circle ${position.position_grouping}`}
+                  style={{
+                    border: '2px solid white',
+                    borderRadius: '50%',
+                    color: POSITION_CIRCLES[position.position_grouping],
+                  }}
+                />
+                &nbsp;
+                <div>{position.position_acronym}</div>
               </div>
-            </div>
-          ),
+            );
+          },
         },
         {
           Header: 'Kit #',
@@ -287,15 +285,16 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
         {
           Header: 'Nation',
           accessor: 'nation_id',
-          Cell: ({ row }) => (
-            <div className="nation-cell">
-              <img
-                src={relevantNations[row.original.nation_id].nation_pic}
-                alt="Flag"
-              />
-              <p>{relevantNations[row.original.nation_id].nation_name}</p>
-            </div>
-          ),
+          Cell: ({ row }) => {
+            const nation = relevantNations[row.original.nation_id];
+            if (!nation) return <div>Loading...</div>;
+            return (
+              <div className="nation-cell">
+                <img src={nation.nation_pic} alt="Flag" />
+                <p>{nation.nation_name}</p>
+              </div>
+            );
+          },
         },
         {
           Header: 'Age',

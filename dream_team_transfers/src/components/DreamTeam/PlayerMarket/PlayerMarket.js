@@ -34,6 +34,20 @@ function PlayerMarket({
     maxValue: '',
   });
 
+  // Modal states for modern filters
+  const [showLeagueModal, setShowLeagueModal] = useState(false);
+  const [showClubModal, setShowClubModal] = useState(false);
+  const [showNationModal, setShowNationModal] = useState(false);
+  const [showPositionModal, setShowPositionModal] = useState(false);
+  const [positionSelectionStep, setPositionSelectionStep] = useState('groups'); // 'groups' or 'positions'
+  const [selectedPositionGroup, setSelectedPositionGroup] = useState(null);
+
+  // Search states for modals
+  const [leagueSearch, setLeagueSearch] = useState('');
+  const [clubSearch, setClubSearch] = useState('');
+  const [nationSearch, setNationSearch] = useState('');
+  const [positionSearch, setPositionSearch] = useState('');
+
   useEffect(() => {
     loadData();
   }, [NationsCSVData, PlayersCSVData, TeamsCSVData, csvLoading]);
@@ -159,9 +173,20 @@ function PlayerMarket({
     }
 
     if (filters.position) {
-      filtered = filtered.filter(
-        (player) => player.position_id === filters.position
-      );
+      if (filters.position.startsWith('group:')) {
+        // Handle position group filtering
+        const groupName = filters.position.replace('group:', '');
+        const groupPositions = getPositionsByGroup(groupName).map((p) => p.id);
+        filtered = filtered.filter((player) =>
+          groupPositions.includes(parseInt(player.position_id))
+        );
+      } else {
+        // Handle specific position filtering
+        filtered = filtered.filter(
+          (player) =>
+            parseInt(player.position_id) === parseInt(filters.position)
+        );
+      }
     }
 
     if (filters.league) {
@@ -297,13 +322,15 @@ function PlayerMarket({
       2: 'LB',
       3: 'RB',
       4: 'CM',
-      5: 'CDM',
-      6: 'CAM',
-      7: 'LM',
-      8: 'RM',
+      5: 'DM',
+      6: 'LM',
+      7: 'RM',
+      8: 'AM',
       9: 'LW',
       10: 'RW',
-      11: 'ST',
+      11: 'CF',
+      12: 'SS',
+      13: 'ST',
     };
     return positions[positionId] || 'Unknown';
   };
@@ -334,6 +361,136 @@ function PlayerMarket({
       4: 'Serie A',
     };
     return leagues[leagueId] || 'Unknown League';
+  };
+
+  // Helper functions for modals
+  const getLeagueData = () => {
+    const leagues = [
+      {
+        id: 0,
+        name: 'Premier League',
+        logo: 'https://tmssl.akamaized.net/images/logo/small/gb1.png?lm=1521104656',
+      },
+      {
+        id: 1,
+        name: 'Championship',
+        logo: 'https://tmssl.akamaized.net/images/logo/small/gb2.png?lm=1643026970',
+      },
+      {
+        id: 2,
+        name: 'La Liga',
+        logo: 'https://tmssl.akamaized.net/images/logo/small/es1.png?lm=1557051003',
+      },
+      {
+        id: 3,
+        name: 'Bundesliga',
+        logo: 'https://tmssl.akamaized.net/images/logo/small/l1.png?lm=1525905518',
+      },
+      {
+        id: 4,
+        name: 'Serie A',
+        logo: 'https://tmssl.akamaized.net/images/logo/small/it1.png?lm=1656073460',
+      },
+      {
+        id: 5,
+        name: 'Ligue One',
+        logo: 'https://tmssl.akamaized.net/images/logo/small/fr1.png?lm=1648360140',
+      },
+      {
+        id: 6,
+        name: 'Liga Portugal',
+        logo: 'https://tmssl.akamaized.net/images/logo/small/po1.png?lm=1626110146',
+      },
+      {
+        id: 7,
+        name: 'Eredivisie',
+        logo: 'https://tmssl.akamaized.net/images/logo/small/nl1.png?lm=1674743474',
+      },
+    ];
+    return leagues.filter((league) =>
+      league.name.toLowerCase().includes(leagueSearch.toLowerCase())
+    );
+  };
+
+  const getPositionData = () => {
+    const positions = [
+      { id: 0, name: 'Goalkeeper', acronym: 'GK', group: 'Goalkeeper' },
+      { id: 1, name: 'Centre-Back', acronym: 'CB', group: 'Defender' },
+      { id: 2, name: 'Left-Back', acronym: 'LB', group: 'Defender' },
+      { id: 3, name: 'Right-Back', acronym: 'RB', group: 'Defender' },
+      { id: 4, name: 'Central Midfielder', acronym: 'CM', group: 'Midfielder' },
+      {
+        id: 5,
+        name: 'Defensive Midfielder',
+        acronym: 'DM',
+        group: 'Midfielder',
+      },
+      { id: 6, name: 'Left Midfielder', acronym: 'LM', group: 'Midfielder' },
+      { id: 7, name: 'Right Midfielder', acronym: 'RM', group: 'Midfielder' },
+      {
+        id: 8,
+        name: 'Attacking Midfielder',
+        acronym: 'AM',
+        group: 'Midfielder',
+      },
+      { id: 9, name: 'Left Winger', acronym: 'LW', group: 'Attacker' },
+      { id: 10, name: 'Right Winger', acronym: 'RW', group: 'Attacker' },
+      { id: 11, name: 'Centre-Forward', acronym: 'CF', group: 'Attacker' },
+      { id: 12, name: 'Second Striker', acronym: 'SS', group: 'Attacker' },
+      { id: 13, name: 'Striker', acronym: 'ST', group: 'Attacker' },
+    ];
+    return positions.filter(
+      (position) =>
+        position.name.toLowerCase().includes(positionSearch.toLowerCase()) ||
+        position.acronym.toLowerCase().includes(positionSearch.toLowerCase())
+    );
+  };
+
+  const getPositionGroups = () => {
+    const groups = [
+      { name: 'Goalkeeper', icon: '🥅', count: 1 },
+      { name: 'Defender', icon: '🛡️', count: 3 },
+      { name: 'Midfielder', icon: '⚽', count: 5 },
+      { name: 'Attacker', icon: '⚡', count: 5 },
+    ];
+    return groups;
+  };
+
+  const getPositionsByGroup = (groupName) => {
+    return getPositionData().filter((position) => position.group === groupName);
+  };
+
+  const getFilteredClubs = () => {
+    let clubs = availableClubs;
+    if (clubSearch) {
+      clubs = clubs.filter((team) =>
+        team.team_name.toLowerCase().includes(clubSearch.toLowerCase())
+      );
+    }
+    return clubs;
+  };
+
+  const getFilteredNations = () => {
+    let nationsList = availableNations;
+    if (nationSearch) {
+      nationsList = nationsList.filter((nation) =>
+        nation.nation_name.toLowerCase().includes(nationSearch.toLowerCase())
+      );
+    }
+    return nationsList;
+  };
+
+  const clearAllFilters = () => {
+    setFilters({
+      name: '',
+      position: '',
+      league: '',
+      club: '',
+      nation: '',
+      minValue: '',
+      maxValue: '',
+    });
+    setCurrentPage(1);
   };
 
   if (
@@ -384,107 +541,124 @@ function PlayerMarket({
             </button>
           </div>
         )}
-        <div className="filter-row">
-          <input
-            type="text"
-            placeholder="Player name..."
-            value={filters.name}
-            onChange={(e) =>
-              setFilters((prev) => ({ ...prev, name: e.target.value }))
-            }
-            className="filter-input"
-          />
-          <select
-            value={filters.position}
-            onChange={(e) =>
-              setFilters((prev) => ({ ...prev, position: e.target.value }))
-            }
-            className="filter-select"
-          >
-            <option value="">All Positions</option>
-            <option value="0">Goalkeeper</option>
-            <option value="1">Center Back</option>
-            <option value="2">Left Back</option>
-            <option value="3">Right Back</option>
-            <option value="4">Center Midfielder</option>
-            <option value="5">Defensive Midfielder</option>
-            <option value="6">Attacking Midfielder</option>
-            <option value="7">Left Midfielder</option>
-            <option value="8">Right Midfielder</option>
-            <option value="9">Left Winger</option>
-            <option value="10">Right Winger</option>
-            <option value="11">Striker</option>
-          </select>
-          <select
-            value={filters.league}
-            onChange={(e) =>
-              setFilters((prev) => ({ ...prev, league: e.target.value }))
-            }
-            className="filter-select"
-          >
-            <option value="">All Leagues</option>
-            <option value="0">Premier League</option>
-            <option value="1">Championship</option>
-            <option value="2">La Liga</option>
-            <option value="3">Bundesliga</option>
-            <option value="4">Serie A</option>
-          </select>
-        </div>
-        <div className="filter-row">
-          <select
-            value={filters.club}
-            onChange={(e) =>
-              setFilters((prev) => ({ ...prev, club: e.target.value }))
-            }
-            className="filter-select"
-          >
-            <option value="">
-              {filters.league
-                ? `All Clubs (${availableClubs.length})`
-                : 'All Clubs'}
-            </option>
-            {availableClubs.map((team) => (
-              <option key={team.team_id} value={team.team_id}>
-                {team.team_name}
-              </option>
-            ))}
-          </select>
-          <select
-            value={filters.nation}
-            onChange={(e) =>
-              setFilters((prev) => ({ ...prev, nation: e.target.value }))
-            }
-            className="filter-select"
-          >
-            <option value="">
-              {filters.league
-                ? `All Nations (${availableNations.length})`
-                : 'All Nations'}
-            </option>
-            {availableNations.map((nation) => (
-              <option key={nation.nation_id} value={nation.nation_id}>
-                {nation.nation_name}
-              </option>
-            ))}
-          </select>
-          <input
-            type="number"
-            placeholder="Min value (€)"
-            value={filters.minValue}
-            onChange={(e) =>
-              setFilters((prev) => ({ ...prev, minValue: e.target.value }))
-            }
-            className="filter-input"
-          />
-          <input
-            type="number"
-            placeholder="Max value (€)"
-            value={filters.maxValue}
-            onChange={(e) =>
-              setFilters((prev) => ({ ...prev, maxValue: e.target.value }))
-            }
-            className="filter-input"
-          />
+
+        <div className="modern-filters">
+          {/* Row 1: Player Name + Clear Filters */}
+          <div className="filter-item filter-name">
+            <input
+              type="text"
+              placeholder="Player name..."
+              value={filters.name}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, name: e.target.value }))
+              }
+              className="filter-input"
+            />
+          </div>
+          <div className="filter-item filter-clear">
+            <button className="clear-filters-button" onClick={clearAllFilters}>
+              Clear All
+            </button>
+          </div>
+
+          {/* Row 2: All Leagues + All Clubs */}
+          <div className="filter-item">
+            <button
+              className="filter-button"
+              onClick={() => setShowLeagueModal(true)}
+            >
+              <span>
+                {filters.league ? getLeagueName(filters.league) : 'All Leagues'}
+              </span>
+              <img
+                src="/assets/team-picker-arrows/right.png"
+                alt=">"
+                className="filter-chevron"
+              />
+            </button>
+          </div>
+          <div className="filter-item">
+            <button
+              className="filter-button"
+              onClick={() => setShowClubModal(true)}
+              disabled={!filters.league}
+            >
+              <span>
+                {!filters.league
+                  ? 'Pick your League first!'
+                  : filters.club
+                    ? getTeamName(filters.club)
+                    : 'All Clubs'}
+              </span>
+              <img
+                src="/assets/team-picker-arrows/right.png"
+                alt=">"
+                className="filter-chevron"
+              />
+            </button>
+          </div>
+
+          {/* Row 3: All Nations + All Positions */}
+          <div className="filter-item">
+            <button
+              className="filter-button"
+              onClick={() => setShowNationModal(true)}
+            >
+              <span>
+                {filters.nation ? getNationName(filters.nation) : 'All Nations'}
+              </span>
+              <img
+                src="/assets/team-picker-arrows/right.png"
+                alt=">"
+                className="filter-chevron"
+              />
+            </button>
+          </div>
+          <div className="filter-item">
+            <button
+              className="filter-button"
+              onClick={() => setShowPositionModal(true)}
+            >
+              <span>
+                {filters.position
+                  ? filters.position.startsWith('group:')
+                    ? filters.position.replace('group:', '') + 's'
+                    : getPositionData().find(
+                        (p) => p.id == parseInt(filters.position)
+                      )?.name
+                  : 'All Positions'}
+              </span>
+              <img
+                src="/assets/team-picker-arrows/right.png"
+                alt=">"
+                className="filter-chevron"
+              />
+            </button>
+          </div>
+
+          {/* Row 4: Min Value + Max Value */}
+          <div className="filter-item">
+            <input
+              type="number"
+              placeholder="Min value (€)"
+              value={filters.minValue}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, minValue: e.target.value }))
+              }
+              className="filter-input"
+            />
+          </div>
+          <div className="filter-item">
+            <input
+              type="number"
+              placeholder="Max value (€)"
+              value={filters.maxValue}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, maxValue: e.target.value }))
+              }
+              className="filter-input"
+            />
+          </div>
         </div>
       </div>
 
@@ -642,7 +816,7 @@ function PlayerMarket({
         >
           <div className="purchase-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>Confirm Purchase</h2>
+              <h2>Confirm Player Purchase</h2>
               <button
                 className="close-button"
                 onClick={() => setShowPurchaseModal(false)}
@@ -715,6 +889,337 @@ function PlayerMarket({
               </button>
               <HoldToPurchaseButton />
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* League Selection Modal */}
+      {showLeagueModal && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowLeagueModal(false)}
+        >
+          <div className="filter-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Choose League</h3>
+              <button
+                className="close-button"
+                onClick={() => setShowLeagueModal(false)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="modal-search">
+              <input
+                type="text"
+                placeholder="Search leagues..."
+                value={leagueSearch}
+                onChange={(e) => setLeagueSearch(e.target.value)}
+                className="search-input"
+              />
+            </div>
+            <div className="modal-content">
+              <div
+                className="option-item"
+                onClick={() => {
+                  setFilters((prev) => ({
+                    ...prev,
+                    league: '',
+                    club: '',
+                    nation: '',
+                  }));
+                  setShowLeagueModal(false);
+                  setLeagueSearch('');
+                }}
+              >
+                <div className="option-info">
+                  <span className="option-name">All Leagues</span>
+                </div>
+              </div>
+              {getLeagueData().map((league) => (
+                <div
+                  key={league.id}
+                  className="option-item"
+                  onClick={() => {
+                    setFilters((prev) => ({
+                      ...prev,
+                      league: league.id.toString(),
+                      club: '',
+                      nation: '',
+                    }));
+                    setShowLeagueModal(false);
+                    setLeagueSearch('');
+                  }}
+                >
+                  <div className="option-info">
+                    <img
+                      src={league.logo}
+                      alt={league.name}
+                      className="option-logo"
+                    />
+                    <span className="option-name">{league.name}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Club Selection Modal */}
+      {showClubModal && (
+        <div className="modal-overlay" onClick={() => setShowClubModal(false)}>
+          <div className="filter-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Choose Club</h3>
+              <button
+                className="close-button"
+                onClick={() => setShowClubModal(false)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="modal-search">
+              <input
+                type="text"
+                placeholder="Search clubs..."
+                value={clubSearch}
+                onChange={(e) => setClubSearch(e.target.value)}
+                className="search-input"
+              />
+            </div>
+            <div className="modal-content">
+              <div
+                className="option-item"
+                onClick={() => {
+                  setFilters((prev) => ({ ...prev, club: '' }));
+                  setShowClubModal(false);
+                  setClubSearch('');
+                }}
+              >
+                <div className="option-info">
+                  <span className="option-name">All Clubs</span>
+                </div>
+              </div>
+              {getFilteredClubs().map((team) => (
+                <div
+                  key={team.team_id}
+                  className="option-item"
+                  onClick={() => {
+                    setFilters((prev) => ({
+                      ...prev,
+                      club: team.team_id.toString(),
+                    }));
+                    setShowClubModal(false);
+                    setClubSearch('');
+                  }}
+                >
+                  <div className="option-info">
+                    <span className="option-name">{team.team_name}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Nation Selection Modal */}
+      {showNationModal && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowNationModal(false)}
+        >
+          <div className="filter-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Choose Nationality</h3>
+              <button
+                className="close-button"
+                onClick={() => setShowNationModal(false)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="modal-search">
+              <input
+                type="text"
+                placeholder="Search nations..."
+                value={nationSearch}
+                onChange={(e) => setNationSearch(e.target.value)}
+                className="search-input"
+              />
+            </div>
+            <div className="modal-content">
+              <div
+                className="option-item"
+                onClick={() => {
+                  setFilters((prev) => ({ ...prev, nation: '' }));
+                  setShowNationModal(false);
+                  setNationSearch('');
+                }}
+              >
+                <div className="option-name">All Nations</div>
+              </div>
+              {getFilteredNations().map((nation) => (
+                <div
+                  key={nation.nation_id}
+                  className="option-item"
+                  onClick={() => {
+                    setFilters((prev) => ({
+                      ...prev,
+                      nation: nation.nation_id.toString(),
+                    }));
+                    setShowNationModal(false);
+                    setNationSearch('');
+                  }}
+                >
+                  <div className="option-info">
+                    <img
+                      src={nation.nation_flag_small_pic}
+                      alt={nation.nation_name}
+                      className="option-flag"
+                    />
+                    <span className="option-name">{nation.nation_name}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Position Selection Modal */}
+      {showPositionModal && (
+        <div
+          className="modal-overlay"
+          onClick={() => {
+            setShowPositionModal(false);
+            setPositionSelectionStep('groups');
+            setSelectedPositionGroup(null);
+          }}
+        >
+          <div className="filter-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>
+                {positionSelectionStep === 'groups'
+                  ? 'Select Position Group'
+                  : `Select ${selectedPositionGroup?.name} Position`}
+              </h3>
+              <button
+                className="close-button"
+                onClick={() => {
+                  setShowPositionModal(false);
+                  setPositionSelectionStep('groups');
+                  setSelectedPositionGroup(null);
+                }}
+              >
+                ×
+              </button>
+            </div>
+
+            {/* Step 1: Position Groups Grid */}
+            {positionSelectionStep === 'groups' && (
+              <>
+                <div className="modal-content">
+                  <div
+                    className="option-item"
+                    onClick={() => {
+                      setFilters((prev) => ({ ...prev, position: '' }));
+                      setShowPositionModal(false);
+                      setPositionSelectionStep('groups');
+                      setSelectedPositionGroup(null);
+                    }}
+                  >
+                    <div className="option-name">All Positions</div>
+                  </div>
+                </div>
+
+                <div className="position-groups-grid">
+                  {getPositionGroups().map((group) => (
+                    <div
+                      key={group.name}
+                      className="position-group-card"
+                      onClick={() => {
+                        setSelectedPositionGroup(group);
+                        setPositionSelectionStep('positions');
+                      }}
+                    >
+                      <div className="group-card-icon">{group.icon}</div>
+                      <div className="group-card-name">{group.name}</div>
+                      <div className="group-card-count">
+                        {group.count} position{group.count > 1 ? 's' : ''}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* Step 2: Specific Positions within Group */}
+            {positionSelectionStep === 'positions' && selectedPositionGroup && (
+              <>
+                <div className="modal-content">
+                  <div
+                    className="option-item group-option"
+                    onClick={() => {
+                      setFilters((prev) => ({
+                        ...prev,
+                        position: `group:${selectedPositionGroup.name}`,
+                      }));
+                      setShowPositionModal(false);
+                      setPositionSelectionStep('groups');
+                      setSelectedPositionGroup(null);
+                    }}
+                  >
+                    <div className="option-info">
+                      <span className="option-name">
+                        Any {selectedPositionGroup.name}
+                      </span>
+                      <span className="option-acronym">
+                        (All {selectedPositionGroup.name}s)
+                      </span>
+                    </div>
+                  </div>
+
+                  {getPositionsByGroup(selectedPositionGroup.name).map(
+                    (position) => (
+                      <div
+                        key={position.id}
+                        className="option-item position-option"
+                        onClick={() => {
+                          setFilters((prev) => ({
+                            ...prev,
+                            position: position.id.toString(),
+                          }));
+                          setShowPositionModal(false);
+                          setPositionSelectionStep('groups');
+                          setSelectedPositionGroup(null);
+                        }}
+                      >
+                        <div className="option-info">
+                          <span className="option-name">{position.name}</span>
+                          <span className="option-acronym">
+                            ({position.acronym})
+                          </span>
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+
+                <div className="modal-footer">
+                  <button
+                    className="back-button"
+                    onClick={() => {
+                      setPositionSelectionStep('groups');
+                      setSelectedPositionGroup(null);
+                    }}
+                  >
+                    ← Back to Groups
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
