@@ -1,9 +1,17 @@
 /* #F2D9B6 */
 /* General layout */
 .starting-eleven {
+  --team-builder-height: calc(100dvh - clamp(64px, 8vh, 86px));
+  --starter-card-width: clamp(7.35rem, min(10vw, 15.2dvh), 9.25rem);
+  --starter-card-height: clamp(8.9rem, min(12.2vw, 18.5dvh), 10.85rem);
+  --sub-card-width: clamp(6.35rem, min(8vw, 12.4dvh), 7.55rem);
+  --sub-card-height: clamp(8.35rem, min(10.6vw, 16.4dvh), 10.05rem);
+  --card-radius: clamp(8px, 1vw, 12px);
+  --card-header-font-size: clamp(0.68rem, min(0.9vw, 1.45dvh), 0.86rem);
+  --card-footer-font-size: clamp(0.68rem, min(0.82vw, 1.3dvh), 0.86rem);
   display: flex;
   flex-direction: column;
-  min-height: calc(100dvh - clamp(64px, 8vh, 86px));
+  min-height: var(--team-builder-height);
   width: 100%;
   font-family: 'Roboto', sans-serif;
   overflow-x: hidden;
@@ -14,7 +22,7 @@
   flex-direction: row;
   align-items: stretch;
   width: 100%;
-  min-height: calc(100dvh - clamp(64px, 8vh, 86px));
+  min-height: var(--team-builder-height);
   margin: 0;
   padding: 0;
 }
@@ -23,7 +31,7 @@
   position: relative;
   background-color: #38a169;
   width: 50%;
-  min-height: calc(100dvh - clamp(64px, 8vh, 86px));
+  min-height: var(--team-builder-height);
   border-radius: 2em;
   margin-top: 0.5em;
   margin-left: 0.5em;
@@ -41,11 +49,17 @@
   pointer-events: none;
 }
 
-.formation-selector {
+.desktop-team-controls {
   position: absolute;
   left: 1rem;
   bottom: 1rem;
   z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.formation-selector {
   background: linear-gradient(135deg, #f4e996, #dbcc82);
   color: #333;
   font-weight: bold;
@@ -56,6 +70,45 @@
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+}
+
+.team-export-button {
+  border: 2px solid var(--logo-black-color);
+  border-radius: 10px;
+  background: var(--logo-gold-color);
+  color: var(--logo-black-color);
+  font-family: var(--main-font);
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.team-export-button:disabled {
+  cursor: progress;
+  opacity: 0.65;
+}
+
+.desktop-export-button {
+  min-width: 9rem;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.95rem;
+}
+
+.team-export-error {
+  position: absolute;
+  left: 1rem;
+  bottom: 4.25rem;
+  z-index: 25;
+  max-width: 16rem;
+  padding: 0.45rem 0.65rem;
+  border: 2px solid #8b1e1e;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #8b1e1e;
+  font-family: var(--main-font);
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .formation-selector:hover {
@@ -78,24 +131,29 @@
 
 /* Lineup grid */
 .lineup-grid {
-  margin-top: 3rem;
+  height: calc(var(--team-builder-height) - 1.1rem);
+  margin-top: 0.6rem;
+  padding: 0.3rem 1.35rem 4.55rem;
   width: 100%;
   max-width: 100%;
-  min-height: calc(100dvh - clamp(150px, 18vh, 190px));
   aspect-ratio: 6 / 5;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  gap: clamp(0.15rem, 0.8dvh, 0.65rem);
 }
 
 .lineup-row {
   display: flex;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: clamp(0.7rem, 2vw, 1.75rem);
+  min-height: var(--starter-card-height);
 }
 
 .player-slot {
-  width: 5rem;
-  height: 5rem;
+  width: clamp(3.6rem, min(4.8vw, 8dvh), 5rem);
+  height: clamp(3.6rem, min(4.8vw, 8dvh), 5rem);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -106,6 +164,20 @@
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   cursor: move;
+}
+
+.player-slot.has-player {
+  width: var(--starter-card-width);
+  height: var(--starter-card-height);
+  background: transparent;
+  border-color: transparent;
+  border-radius: var(--card-radius);
+  box-shadow: none;
+}
+
+.draggable-player {
+  width: 100%;
+  height: 100%;
 }
 
 .player {
@@ -123,7 +195,7 @@
   margin-top: 0.5em;
   margin-left: 0.5em;
   width: 50%;
-  min-height: calc(100dvh - clamp(64px, 8vh, 86px));
+  min-height: var(--team-builder-height);
   overflow: hidden;
 }
 
@@ -138,11 +210,15 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  width: 100%;
+  padding: 1.25rem;
 }
 
 .sub {
-  padding: 0.5rem;
+  width: var(--sub-card-width);
+  height: var(--sub-card-height);
+  padding: 0;
   background-color: #f4e996;
   color: black;
   border-radius: 0.25rem;
@@ -150,7 +226,7 @@
 }
 
 .arrow-button {
-  width: 5rem;
+  width: clamp(3.35rem, min(4.8vw, 7.5dvh), 5.1rem);
   height: auto;
   cursor: pointer;
 }
@@ -159,7 +235,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 1rem;
+  gap: clamp(1rem, min(1.8vw, 2.4dvh), 1.65rem);
   justify-items: center;
   align-items: center;
 }
@@ -170,15 +246,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 8rem;
-  height: 9.5rem;
+  width: 100%;
+  height: 100%;
   position: relative;
   transition: transform 0.2s ease-in-out;
   user-select: none;
   color: black;
   background: linear-gradient(135deg, #f4e996, #dbcc82);
   border: 2px solid #b89e5b;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
+  overflow: hidden;
 }
 
 .starter-card.is-selected,
@@ -198,12 +275,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 6.5rem;
-  height: 9rem;
-  border-radius: 12px;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--card-radius);
   border: 3px solid #dbcc82;
   background: rgba(255, 255, 255, 0.1);
-  padding: 0.5rem;
+  padding: clamp(0.22rem, 0.55vw, 0.5rem);
   position: relative;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
   transition: transform 0.2s ease-in-out;
@@ -228,7 +305,8 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  font-size: 0.85rem;
+  font-size: var(--card-header-font-size);
+  gap: clamp(0.06rem, 0.3vw, 0.2rem);
 }
 
 .kit-number,
@@ -242,21 +320,21 @@
 .kit-number {
   background: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 3px 8px;
+  padding: clamp(1px, 0.25vw, 3px) clamp(4px, 0.5vw, 8px);
   border-radius: 5px;
   font-weight: bold;
   text-align: center;
 }
 
 .position-badge {
-  width: 14px;
-  height: 14px;
+  width: clamp(9px, 1vw, 14px);
+  height: clamp(9px, 1vw, 14px);
   border-radius: 50%;
   border: 2px solid black;
 }
 
 .nation-flag {
-  width: 22px;
+  width: clamp(15px, 1.35vw, 22px);
   height: auto;
 }
 
@@ -277,37 +355,65 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50%;
-  height: auto;
+  flex: 1 1 auto;
+  width: 62%;
+  min-height: 0;
+  padding: 0.1rem 0;
 }
 
 .card-portrait {
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
   border-radius: 6px;
+  object-fit: contain;
   pointer-events: none;
 }
 
 .card-footer {
-  font-size: 0.85rem;
+  font-size: var(--card-footer-font-size);
   font-weight: bold;
   text-align: center;
-  margin-top: 4px;
+  line-height: 1;
+  margin-top: 0;
 }
 
 .starter-card .card-header {
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
+  padding-left: clamp(0.35rem, 0.85vw, 0.75rem);
+  padding-right: clamp(0.35rem, 0.85vw, 0.75rem);
+  padding-top: clamp(0.12rem, 0.35vw, 0.25rem);
+  padding-bottom: clamp(0.08rem, 0.25vw, 0.2rem);
   width: 100%;
   box-sizing: border-box;
 }
 
 .starter-card .card-footer {
-  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 0 0.35rem clamp(0.25rem, 0.55vw, 0.5rem);
   width: 100%;
   box-sizing: border-box;
+}
+
+.sub-card .card-header,
+.sub-card .card-footer {
+  width: 100%;
+}
+
+.sub-card .card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.card-footer .name {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  line-height: 1.02;
 }
 
 .starter-card .name-mobile {
@@ -323,6 +429,7 @@
 
 @media screen and (max-width: 768px) {
   .starting-eleven {
+    --team-builder-height: calc(100dvh - 66px);
     height: calc(100dvh - 66px);
     min-height: 0;
     overflow: hidden;
@@ -483,7 +590,10 @@
     display: none;
   }
 
-  .formation-selector {
+  .desktop-team-controls,
+  .formation-selector,
+  .desktop-export-button,
+  .team-export-error {
     display: none;
   }
 
@@ -502,7 +612,7 @@
     bottom: 0.75rem;
     z-index: 450;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(6.5rem, 0.65fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.65rem;
     padding: 0.45rem;
     border: 2px solid var(--logo-black-color);
@@ -527,6 +637,11 @@
     letter-spacing: 1px;
     font-weight: 700;
     text-align: left;
+  }
+
+  .mobile-control-button:disabled {
+    cursor: progress;
+    opacity: 0.65;
   }
 
   .mobile-control-button span {

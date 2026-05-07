@@ -7,9 +7,23 @@ import {
 } from '../../../db/db-utils';
 import React, { useEffect, useRef, useState } from 'react';
 import calculateAge from '../../../utils/calculate-age';
+import {
+  getGeneratedNationFlagPath,
+  getGeneratedPlayerPortraitPath,
+  getGeneratedTeamCrestPath,
+  getRemoteFallbackImage,
+} from '../../../utils/local-assets';
 import { POSITION_CIRCLES } from '../../../utils/positions';
 
 const MOBILE_BREAKPOINT = '(max-width: 768px)';
+const EXPORT_WIDTH = 390;
+const EXPORT_HEIGHT = 844;
+const EXPORT_HEADER_HEIGHT = 76;
+const EXPORT_META_HEIGHT = 42;
+const EXPORT_PITCH_TOP = EXPORT_HEADER_HEIGHT + EXPORT_META_HEIGHT;
+const EXPORT_PITCH_BOTTOM = EXPORT_HEIGHT;
+const EXPORT_CARD_WIDTH = 68;
+const EXPORT_CARD_HEIGHT = 92;
 const SLOT_POSITION_ALIASES = {
   ST: 'CF',
   CAM: 'AM',
@@ -59,8 +73,9 @@ const getMobileCardName = (playerName) => {
 };
 
 const getMobileNameFitClass = (displayName) => {
-  const nameLength = Array.from(String(displayName || '').replace(/\s+/g, ''))
-    .length;
+  const nameLength = Array.from(
+    String(displayName || '').replace(/\s+/g, '')
+  ).length;
 
   if (nameLength >= 12) return 'is-tiny';
   if (nameLength >= 8) return 'is-compact';
@@ -69,6 +84,95 @@ const getMobileNameFitClass = (displayName) => {
 
 const getValidFormation = (formation) =>
   FORMATIONS[formation] ? formation : DEFAULT_FORMATION;
+
+const getPlayerInitials = (playerName) =>
+  String(playerName || '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join('')
+    .toUpperCase();
+
+const loadExportImage = (src) =>
+  new Promise((resolve) => {
+    if (!src) {
+      resolve(null);
+      return;
+    }
+
+    const image = new Image();
+    image.crossOrigin = 'anonymous';
+    image.onload = () => resolve(image);
+    image.onerror = () => resolve(null);
+    image.src = src;
+  });
+
+const loadBestExportImage = async (...sources) => {
+  for (const source of sources.filter(Boolean)) {
+    const image = await loadExportImage(source);
+    if (image) return image;
+  }
+
+  return null;
+};
+
+const drawRoundedRect = (context, x, y, width, height, radius) => {
+  context.beginPath();
+  context.moveTo(x + radius, y);
+  context.lineTo(x + width - radius, y);
+  context.quadraticCurveTo(x + width, y, x + width, y + radius);
+  context.lineTo(x + width, y + height - radius);
+  context.quadraticCurveTo(
+    x + width,
+    y + height,
+    x + width - radius,
+    y + height
+  );
+  context.lineTo(x + radius, y + height);
+  context.quadraticCurveTo(x, y + height, x, y + height - radius);
+  context.lineTo(x, y + radius);
+  context.quadraticCurveTo(x, y, x + radius, y);
+  context.closePath();
+};
+
+const drawContainedImage = (context, image, x, y, width, height) => {
+  if (!image) return;
+
+  const imageRatio = image.width / image.height;
+  const targetRatio = width / height;
+  const drawWidth = imageRatio > targetRatio ? width : height * imageRatio;
+  const drawHeight = imageRatio > targetRatio ? width / imageRatio : height;
+  const drawX = x + (width - drawWidth) / 2;
+  const drawY = y + (height - drawHeight) / 2;
+
+  context.drawImage(image, drawX, drawY, drawWidth, drawHeight);
+};
+
+const drawWrappedCenteredText = (context, text, x, y, maxWidth, lineHeight) => {
+  const words = String(text || '')
+    .split(/\s+/)
+    .filter(Boolean);
+  const lines = [];
+  let currentLine = '';
+
+  words.forEach((word) => {
+    const nextLine = currentLine ? `${currentLine} ${word}` : word;
+    if (context.measureText(nextLine).width <= maxWidth || !currentLine) {
+      currentLine = nextLine;
+    } else {
+      lines.push(currentLine);
+      currentLine = word;
+    }
+  });
+
+  if (currentLine) lines.push(currentLine);
+
+  lines.slice(0, 2).forEach((line, index) => {
+    context.fillText(line, x, y + index * lineHeight);
+  });
+};
 
 function StartingEleven({
   NationsCSVData,
@@ -97,6 +201,8 @@ function StartingEleven({
   const [mobilePickerSlotIndex, setMobilePickerSlotIndex] = useState(null);
   const [selectedMobilePlayerId, setSelectedMobilePlayerId] = useState(null);
   const [mobileDragState, setMobileDragState] = useState(null);
+  const [isExportingTeam, setIsExportingTeam] = useState(false);
+  const [exportError, setExportError] = useState('');
   const mobileDragStateRef = useRef(null);
   const suppressNextMobileClickRef = useRef(false);
 
@@ -130,7 +236,7 @@ function StartingEleven({
   useEffect(() => {
     if (Number(teamPicked) === -1) return;
     if (TeamsCSVData === null) return;
-    setTeamBadge(TeamsCSVData[Number(teamPicked)].team_crest_big_pic);
+    setTeamBadge(TeamsCSVData[Number(teamPicked)].team_crest_small_pic);
   }, [teamPicked, TeamsCSVData]);
 
   useEffect(() => {
@@ -176,6 +282,7 @@ function StartingEleven({
           player_market_value: Number(player_market_value),
           player_name: player_name,
           player_portrait: player_portrait_big_pic,
+          player_portrait_local: getGeneratedPlayerPortraitPath(player_id),
           position_id: Number(position_id),
           player_id: Number(player_id),
         };
@@ -220,6 +327,7 @@ function StartingEleven({
           relevantNationsUpdate[teamPlayers[i].nation_id] = {
             nation_name: nation.nation_name,
             nation_pic: nation.nation_flag_small_pic,
+            nation_pic_local: getGeneratedNationFlagPath(nation.nation_id),
           };
         }
       }
@@ -248,7 +356,8 @@ function StartingEleven({
   };
 
   const isMobileViewport = () =>
-    typeof window !== 'undefined' && window.matchMedia(MOBILE_BREAKPOINT).matches;
+    typeof window !== 'undefined' &&
+    window.matchMedia(MOBILE_BREAKPOINT).matches;
 
   const getPlayerById = (playerId) => {
     if (playerId === null || playerId === undefined) return undefined;
@@ -294,7 +403,9 @@ function StartingEleven({
     const slotGrouping = getSlotGrouping(slotIndex);
 
     if (!playerPosition) return 3;
-    if (playerPosition.position_acronym === getNormalizedSlotAcronym(slotIndex)) {
+    if (
+      playerPosition.position_acronym === getNormalizedSlotAcronym(slotIndex)
+    ) {
       return 0;
     }
     if (slotGrouping && playerPosition.position_grouping === slotGrouping) {
@@ -390,10 +501,7 @@ function StartingEleven({
   };
 
   const handleMobilePlayerSelect = (playerId) => {
-    if (
-      mobilePickerSlotIndex !== null &&
-      mobilePickerSlotIndex !== undefined
-    ) {
+    if (mobilePickerSlotIndex !== null && mobilePickerSlotIndex !== undefined) {
       placePlayerInSlot(playerId, mobilePickerSlotIndex);
       closeMobileDrawer();
       return;
@@ -486,6 +594,215 @@ function StartingEleven({
     updateMobileDragState(null);
   };
 
+  const downloadTeamExport = async () => {
+    if (isExportingTeam) return;
+
+    setIsExportingTeam(true);
+    setExportError('');
+
+    try {
+      const canvas = document.createElement('canvas');
+      const scale = 2;
+      canvas.width = EXPORT_WIDTH * scale;
+      canvas.height = EXPORT_HEIGHT * scale;
+
+      const context = canvas.getContext('2d');
+      context.scale(scale, scale);
+      context.textBaseline = 'middle';
+
+      context.fillStyle = '#fdf5e6';
+      context.fillRect(0, 0, EXPORT_WIDTH, EXPORT_HEIGHT);
+
+      context.fillStyle = '#b98f44';
+      context.fillRect(0, 0, EXPORT_WIDTH, EXPORT_HEADER_HEIGHT);
+      context.strokeStyle = '#000';
+      context.lineWidth = 3;
+      context.beginPath();
+      context.moveTo(0, EXPORT_HEADER_HEIGHT);
+      context.lineTo(EXPORT_WIDTH, EXPORT_HEADER_HEIGHT);
+      context.stroke();
+
+      const [dreamTeamLogo, exportedTeamBadge] = await Promise.all([
+        loadExportImage(
+          `${process.env.PUBLIC_URL}/assets/navbar-icons/logo.png`
+        ),
+        loadBestExportImage(getGeneratedTeamCrestPath(teamPicked), teamBadge),
+      ]);
+
+      drawContainedImage(context, dreamTeamLogo, 18, 14, 48, 48);
+      context.fillStyle = '#000';
+      context.font = '800 30px "Saira Condensed", Arial, sans-serif';
+      context.letterSpacing = '0px';
+      context.fillText('Dream Team', 74, 39);
+      drawContainedImage(context, exportedTeamBadge, 324, 14, 48, 48);
+
+      context.fillStyle = '#454545';
+      context.fillRect(
+        0,
+        EXPORT_HEADER_HEIGHT,
+        EXPORT_WIDTH,
+        EXPORT_META_HEIGHT
+      );
+      context.fillStyle = '#fff';
+      context.font = '800 17px "Saira Condensed", Arial, sans-serif';
+      context.fillText('Starting XI', 18, 97);
+      context.fillStyle = '#b98f44';
+      context.textAlign = 'right';
+      context.fillText(selectedFormation, 372, 97);
+      context.textAlign = 'left';
+
+      context.fillStyle = '#38a169';
+      context.fillRect(
+        0,
+        EXPORT_PITCH_TOP,
+        EXPORT_WIDTH,
+        EXPORT_PITCH_BOTTOM - EXPORT_PITCH_TOP
+      );
+
+      const pitchTop = EXPORT_PITCH_TOP + EXPORT_CARD_HEIGHT / 2 + 14;
+      const pitchBottom = EXPORT_PITCH_BOTTOM - EXPORT_CARD_HEIGHT / 2 - 18;
+      const pitchHeight = pitchBottom - pitchTop;
+      const rowCount = positions.length;
+      const rowGap = rowCount > 1 ? pitchHeight / (rowCount - 1) : 0;
+
+      for (let rowIndex = 0; rowIndex < positions.length; rowIndex++) {
+        const row = positions[rowIndex];
+        const centerY = pitchTop + rowIndex * rowGap;
+
+        for (let colIndex = 0; colIndex < row.length; colIndex++) {
+          const pos = row[colIndex];
+          const flatIndex =
+            positions.slice(0, rowIndex).flat().length + colIndex;
+          const playerId = lineup[flatIndex];
+          const centerX = ((colIndex + 1) * EXPORT_WIDTH) / (row.length + 1);
+          const player = getPlayerById(playerId);
+
+          if (
+            !player ||
+            !relevantPositions[player.position_id] ||
+            !relevantNations[player.nation_id]
+          ) {
+            context.fillStyle = '#f4e996';
+            context.strokeStyle = '#b89e5b';
+            context.lineWidth = 2;
+            context.beginPath();
+            context.arc(centerX, centerY, 37, 0, Math.PI * 2);
+            context.fill();
+            context.stroke();
+            context.fillStyle = '#000';
+            context.font = '800 18px Arial, sans-serif';
+            context.textAlign = 'center';
+            context.fillText(pos, centerX, centerY);
+            context.textAlign = 'left';
+            continue;
+          }
+
+          const cardWidth = EXPORT_CARD_WIDTH;
+          const cardHeight = EXPORT_CARD_HEIGHT;
+          const cardX = centerX - cardWidth / 2;
+          const cardY = centerY - cardHeight / 2;
+          const positionColor =
+            POSITION_CIRCLES[
+              relevantPositions[player.position_id].position_grouping
+            ];
+          const [portrait, flag] = await Promise.all([
+            loadBestExportImage(
+              player.player_portrait_local,
+              player.player_portrait
+            ),
+            loadBestExportImage(
+              relevantNations[player.nation_id]?.nation_pic_local,
+              relevantNations[player.nation_id]?.nation_pic
+            ),
+          ]);
+
+          drawRoundedRect(context, cardX, cardY, cardWidth, cardHeight, 8);
+          context.fillStyle = '#f4e996';
+          context.fill();
+          context.strokeStyle = '#b89e5b';
+          context.lineWidth = 2;
+          context.stroke();
+
+          context.fillStyle = 'rgba(0, 0, 0, 0.8)';
+          drawRoundedRect(context, cardX + 5, cardY + 4, 20, 16, 4);
+          context.fill();
+          context.fillStyle = '#fff';
+          context.font = '800 10px Arial, sans-serif';
+          context.textAlign = 'center';
+          context.fillText(
+            String(player.player_kit_number),
+            cardX + 15,
+            cardY + 12
+          );
+
+          context.fillStyle = '#333';
+          context.fillText(pos, cardX + 35, cardY + 12);
+          context.fillStyle = positionColor;
+          context.strokeStyle = '#000';
+          context.lineWidth = 1;
+          context.beginPath();
+          context.arc(cardX + 48, cardY + 12, 5, 0, Math.PI * 2);
+          context.fill();
+          context.stroke();
+          drawContainedImage(context, flag, cardX + 56, cardY + 6, 12, 12);
+
+          if (portrait) {
+            context.save();
+            drawRoundedRect(context, cardX + 15, cardY + 24, 38, 46, 5);
+            context.clip();
+            drawContainedImage(
+              context,
+              portrait,
+              cardX + 15,
+              cardY + 24,
+              38,
+              46
+            );
+            context.restore();
+          } else {
+            context.fillStyle = '#ffffff';
+            drawRoundedRect(context, cardX + 15, cardY + 24, 38, 46, 5);
+            context.fill();
+            context.fillStyle = '#454545';
+            context.font = '800 18px Arial, sans-serif';
+            context.fillText(
+              getPlayerInitials(player.player_name),
+              cardX + cardWidth / 2,
+              cardY + 47
+            );
+          }
+
+          context.fillStyle = 'rgba(255, 255, 255, 0.35)';
+          drawRoundedRect(context, cardX + 4, cardY + 74, cardWidth - 8, 15, 5);
+          context.fill();
+          context.fillStyle = '#000';
+          context.font = '800 9px Arial, sans-serif';
+          const displayName = getMobileCardName(player.player_name);
+          drawWrappedCenteredText(
+            context,
+            displayName,
+            cardX + cardWidth / 2,
+            cardY + 79,
+            cardWidth - 12,
+            8
+          );
+          context.textAlign = 'left';
+        }
+      }
+
+      const dataUrl = canvas.toDataURL('image/png');
+      const downloadLink = document.createElement('a');
+      downloadLink.download = `dream-team-${selectedFormation.toLowerCase()}.png`;
+      downloadLink.href = dataUrl;
+      downloadLink.click();
+    } catch (error) {
+      console.error('Could not export dream team image:', error);
+      setExportError('Could not export image. Please try again.');
+    } finally {
+      setIsExportingTeam(false);
+    }
+  };
+
   const getPlayerCard = (playerId, pos = '', isSub = true) => {
     if (teamPlayers.length === 0) return null;
 
@@ -515,17 +832,24 @@ function StartingEleven({
               style={{ backgroundColor: positionColor }}
             ></span>
             <img
-              src={relevantNations[player.nation_id]?.nation_pic}
+              src={relevantNations[player.nation_id]?.nation_pic_local}
               alt="nation"
               className="nation-flag"
+              onError={(e) =>
+                getRemoteFallbackImage(
+                  e,
+                  relevantNations[player.nation_id]?.nation_pic
+                )
+              }
             />
           </div>
         </div>
         <div className="image-container">
           <img
-            src={player.player_portrait}
+            src={player.player_portrait_local}
             alt={player.player_name}
             className="card-portrait"
+            onError={(e) => getRemoteFallbackImage(e, player.player_portrait)}
             draggable={false}
           />
         </div>
@@ -547,17 +871,24 @@ function StartingEleven({
               style={{ backgroundColor: positionColor }}
             ></span>
             <img
-              src={relevantNations[player.nation_id]?.nation_pic}
+              src={relevantNations[player.nation_id]?.nation_pic_local}
               alt="nation"
               className="nation-flag"
+              onError={(e) =>
+                getRemoteFallbackImage(
+                  e,
+                  relevantNations[player.nation_id]?.nation_pic
+                )
+              }
             />
           </div>
         </div>
         <div className="image-container">
           <img
-            src={player.player_portrait}
+            src={player.player_portrait_local}
             alt={player.player_name}
             className="card-portrait"
+            onError={(e) => getRemoteFallbackImage(e, player.player_portrait)}
             draggable={false}
           />
         </div>
@@ -602,9 +933,10 @@ function StartingEleven({
         }}
       >
         <img
-          src={player.player_portrait}
+          src={player.player_portrait_local}
           alt={player.player_name}
           className="mobile-squad-portrait"
+          onError={(e) => getRemoteFallbackImage(e, player.player_portrait)}
           draggable={false}
         />
         <span className="mobile-squad-details">
@@ -617,9 +949,15 @@ function StartingEleven({
             ></span>
             {position.position_acronym}
             <img
-              src={relevantNations[player.nation_id]?.nation_pic}
+              src={relevantNations[player.nation_id]?.nation_pic_local}
               alt=""
               className="mobile-squad-flag"
+              onError={(e) =>
+                getRemoteFallbackImage(
+                  e,
+                  relevantNations[player.nation_id]?.nation_pic
+                )
+              }
             />
           </span>
         </span>
@@ -731,18 +1069,36 @@ function StartingEleven({
             ))}
           </div>
 
-          <select
-            value={selectedFormation}
-            onChange={(e) => handleFormationChange(e.target.value)}
-            className="formation-selector"
-          >
-            {Object.keys(FORMATIONS).map((formation) => (
-              <option key={formation} value={formation}>
-                {formation}
-              </option>
-            ))}
-          </select>
-          <img src={teamBadge} alt="Team Badge" className="team-badge" />
+          <div className="desktop-team-controls">
+            <select
+              value={selectedFormation}
+              onChange={(e) => handleFormationChange(e.target.value)}
+              className="formation-selector"
+            >
+              {Object.keys(FORMATIONS).map((formation) => (
+                <option key={formation} value={formation}>
+                  {formation}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              className="team-export-button desktop-export-button"
+              onClick={downloadTeamExport}
+              disabled={isExportingTeam}
+            >
+              {isExportingTeam ? 'Exporting' : 'Export Team'}
+            </button>
+          </div>
+          {exportError && (
+            <div className="team-export-error">{exportError}</div>
+          )}
+          <img
+            src={getGeneratedTeamCrestPath(teamPicked)}
+            alt="Team Badge"
+            className="team-badge"
+            onError={(e) => getRemoteFallbackImage(e, teamBadge)}
+          />
           <div className="mobile-control-bar">
             <button
               type="button"
@@ -759,6 +1115,15 @@ function StartingEleven({
             >
               <span>Squad</span>
               <strong>{subs.length}</strong>
+            </button>
+            <button
+              type="button"
+              className="mobile-control-button"
+              onClick={downloadTeamExport}
+              disabled={isExportingTeam}
+            >
+              <span>Share</span>
+              <strong>{isExportingTeam ? 'Saving' : 'Export'}</strong>
             </button>
           </div>
         </div>
@@ -828,9 +1193,7 @@ function StartingEleven({
             </div>
             <div className="mobile-squad-list">
               {mobilePickerPlayerIds.length === 0 ? (
-                <div className="mobile-squad-empty">
-                  No players available
-                </div>
+                <div className="mobile-squad-empty">No players available</div>
               ) : (
                 mobilePickerPlayerIds.map((subId) => (
                   <React.Fragment key={subId}>
@@ -887,8 +1250,11 @@ function StartingEleven({
           }}
         >
           <img
-            src={draggedMobilePlayer.player_portrait}
+            src={draggedMobilePlayer.player_portrait_local}
             alt=""
+            onError={(e) =>
+              getRemoteFallbackImage(e, draggedMobilePlayer.player_portrait)
+            }
             draggable={false}
           />
           <span>{draggedMobilePlayer.player_name}</span>
