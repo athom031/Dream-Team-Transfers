@@ -66,6 +66,7 @@ function PlayerMarket({
   const [clubSearch, setClubSearch] = useState('');
   const [nationSearch, setNationSearch] = useState('');
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const loadData = async () => {
     try {
       setLoading(true);
@@ -146,6 +147,7 @@ function PlayerMarket({
 
   useEffect(() => {
     loadData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [NationsCSVData, PlayersCSVData, TeamsCSVData, csvLoading]);
 
   // Computed values for smart filtering
@@ -275,6 +277,7 @@ function PlayerMarket({
 
   useEffect(() => {
     applyFilters();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, players]);
 
   // Reset club and nation filters when league changes
