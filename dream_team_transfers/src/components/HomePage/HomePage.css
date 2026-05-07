@@ -7,87 +7,72 @@ html {
   letter-spacing: var(--letter-spacing);
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
   background-color: var(--dark-grey-color);
 }
 
 .home-page {
-  width: 100vw;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-}
-
-/* BASE FLEX SETTINGS */
-.title,
-.home-page-content,
-.intro-and-selection,
-.concept,
-.concept-container,
-.concept-icon-container,
-.team-selector,
-.team-selection-background,
-.team-picker,
-.logo-container,
-.team-name,
-.selected-team-information,
-.home-page-slideshow,
-.team-summary,
-.team-value,
-.team-budget,
-.submit-button {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: clamp(1.25rem, 3vh, 2rem) clamp(1rem, 4vw, 4rem);
+  overflow-x: hidden;
+}
+
+.title {
+  width: 100%;
+  margin: 0 0 clamp(1rem, 4vh, 2.25rem);
+  color: var(--logo-gold-color);
+  font-size: clamp(3rem, 5.5vw, 5.5rem);
+  font-weight: 900;
+  letter-spacing: clamp(2px, 0.3vw, 4px);
+  line-height: 0.95;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.home-page-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 0.95fr);
+  align-items: stretch;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  width: min(100%, 1180px);
   flex: 1;
+  min-height: 0;
 }
 
 .intro-and-selection,
-.concept-container,
-.concept-icon-container,
-.team-selector,
-.selected-team-information,
-.team-value,
-.team-budget,
-.submit-button,
-.team-selection-background {
+.selected-team-information {
+  display: flex;
   flex-direction: column;
+  min-width: 0;
+  gap: clamp(1rem, 3vh, 1.75rem);
 }
 
-.title,
-.home-page-content,
-.concept,
-.team-picker,
-.logo-container,
-.team-name,
-.team-summary,
-.home-page-slideshow {
-  flex-direction: row;
-}
-
-/* TITLE */
-.title {
-  height: 10vh;
-  width: 100vw;
-  margin: 0;
-  font-weight: 900;
-  text-align: center;
+.intro-and-selection {
   justify-content: center;
-  align-items: center;
-  padding-top: 2vh 1vw;
 }
 
-/* CONCEPT STYLES */
+.selected-team-information {
+  justify-content: center;
+}
+
+/* Concept */
 .concept {
-  padding: 4vh 4vw;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
 }
 
 .concept-container {
-  width: 25.32%;
-  padding: 1.67%;
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  padding: 0 clamp(0.75rem, 1.5vw, 1.25rem);
 }
 
 .concept-container:first-child {
@@ -100,53 +85,68 @@ html {
 
 .concept-icon-container {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  height: clamp(7rem, 14vw, 10rem);
+  width: 100%;
 }
 
 .concept-icon {
-  width: 100%;
-  height: auto;
+  width: min(100%, 8.75rem);
+  max-height: 100%;
   object-fit: contain;
 }
 
 .concept-text {
-  height: 40%;
+  margin: clamp(0.75rem, 1.5vh, 1rem) 0 0;
+  font-size: clamp(1rem, 1.5vw, 1.35rem);
+  line-height: 1.35;
   text-align: center;
 }
 
-/* TEAM SELECTOR */
-
+/* Team selector */
 .team-selector {
+  display: flex;
+  align-items: center;
   justify-content: center;
+  min-height: 0;
+}
+
+.team-selection-padding {
+  width: min(100%, 38rem);
+  padding: 0;
 }
 
 .team-selection-background {
-  background-color: var(--light-grey-color);
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  width: 100%;
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  background-color: var(--light-grey-color);
   border-radius: var(--border-radius);
 }
 
 .team-picker {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-evenly;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  width: 100%;
 }
 
 .arrow-button {
-  height: 25%;
-  width: auto;
-  padding: 1em;
-}
-
-.team-logo,
-.team-name h1 {
-  object-fit: contain;
-  color: var(--logo-black-color);
+  width: clamp(2.25rem, 4vw, 3.25rem);
+  height: auto;
+  padding: 0;
+  cursor: pointer;
 }
 
 .logo-container {
+  display: flex;
   justify-content: center;
-  max-width: 50%;
+  min-width: 0;
+  height: clamp(10rem, 20vw, 16rem);
 }
 
 @keyframes grow-shrink {
@@ -162,42 +162,57 @@ html {
 }
 
 .team-logo {
+  width: 100%;
   height: 100%;
-  width: auto;
+  object-fit: contain;
   animation: grow-shrink 4s infinite ease-in-out;
 }
 
-/* SLIDESHOW */
-
-.home-page-slideshow {
-  position: relative;
-  overflow: hidden;
-  height: 100%;
-  flex: 5;
+.team-name {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
-/* TEAM SUMMARY */
+.team-name h1 {
+  margin: clamp(0.5rem, 2vh, 1rem) 0 0;
+  color: var(--logo-black-color);
+  font-size: clamp(1.75rem, 3vw, 3rem);
+  line-height: 1;
+  text-align: center;
+}
 
+/* Slideshow */
+.home-page-slideshow {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: clamp(16rem, 40vh, 27rem);
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  background: rgba(137, 148, 153, 0.28);
+}
+
+/* Team summary */
 .team-summary {
-  margin: 0;
-  flex: 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   justify-content: center;
+  margin: 0;
 }
 
 .team-value,
 .team-budget {
-  margin: 0;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 0em 2em;
   justify-content: center;
-}
-
-.team-value {
-  padding: 0vh 0vw 0vh 10vw;
+  min-width: 0;
+  padding: clamp(0.75rem, 2vh, 1.25rem) clamp(0.75rem, 2vw, 1.5rem);
+  border-left: 1px solid rgba(255, 255, 255, 0.56);
 }
 
 .team-budget {
-  padding: 0vh 10vw 0vh 0vw;
+  border-right: 1px solid rgba(255, 255, 255, 0.56);
 }
 
 .category,
@@ -207,224 +222,119 @@ html {
 }
 
 .money {
-  font-size: 5vh;
-  font-weight: bold;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  line-height: 1;
 }
 
 .category,
 .unit {
-  font-size: 2.5vh;
+  font-size: clamp(1rem, 1.6vw, 1.4rem);
+  line-height: 1.15;
 }
 
 .category {
+  margin-bottom: 0.5rem;
   border-bottom: 1px solid var(--logo-gold-color);
 }
 
-/* SUBMIT BUTTON */
-
+/* Submit button */
 .submit-button {
-  flex: 2;
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 2vh;
+  min-width: 0;
 }
 
-/* Styles for laptops and larger screens */
 @media screen and (min-width: 1024px) {
   body,
   .home-page {
     overflow: hidden;
   }
+}
+
+@media screen and (max-width: 1023px) {
+  body,
+  .home-page {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .home-page {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: clamp(2.4rem, 11vw, 4.75rem);
+    white-space: normal;
+  }
 
   .home-page-content {
-    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    width: min(100%, 42rem);
   }
 
-  /* TITLE */
-  .title {
-    font-size: 4.5vw;
-  }
-
-  /* CONCEPT */
   .concept-icon-container {
-    padding: 2% 5%;
-  }
-  .concept-text {
-    font-size: 2.5vh;
+    height: clamp(5.5rem, 20vw, 8rem);
   }
 
-  /* TEAM SELECTOR */
-  .team-selection-padding {
-    padding: 0em 6em;
+  .concept-text {
+    font-size: clamp(0.9rem, 3.4vw, 1.2rem);
   }
+
   .logo-container {
-    height: 15vw;
-    width: 15vw;
+    height: clamp(9rem, 36vw, 14rem);
   }
-  .team-name {
-    font-size: 1vw;
+
+  .home-page-slideshow {
+    min-height: clamp(14rem, 50vw, 22rem);
   }
 }
 
-/* Styles for phones and tablets in landscape mode */
-@media screen and (max-width: 1023px) and (orientation: landscape) {
-  body,
-  .home-page {
-    overflow-y: scroll;
-    overflow-x: auto;
-  }
-
-  .home-page-content {
-    flex-direction: column;
-  }
-
-  /* TITLE */
-  .title {
-    font-size: 5.5vw;
-  }
-
-  /* CONCEPT */
+@media screen and (max-width: 560px) {
   .concept {
-    padding-top: 10vh;
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
   }
+
+  .concept-container {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.8rem 0;
+  }
+
+  .concept-container:first-child,
+  .concept-container:last-child {
+    border: 0;
+  }
+
+  .concept-container + .concept-container {
+    border-top: 1px dashed var(--logo-gold-color);
+  }
+
   .concept-icon-container {
-    padding: 4% 10%;
+    height: 4.5rem;
   }
+
   .concept-text {
-    font-size: 3.5vh;
-  }
-
-  /* TEAM SELECTOR */
-  .team-selection-padding {
-    padding: 2em 6em;
-  }
-  .logo-container {
-    height: 25vw;
-    width: 25vw;
-  }
-  .team-name {
-    font-size: 2vw;
-  }
-
-  /* SLIDESHOW */
-  .home-page-slideshow {
-    padding: 25vw 20vw;
-  }
-
-  /* TEAM SUMMARY */
-  .team-summary {
     margin: 0;
-    flex: 2;
-    justify-content: center;
+    text-align: left;
+  }
+
+  .team-selection-background {
+    padding: 1rem;
+  }
+
+  .team-summary {
+    gap: 0.75rem;
   }
 
   .team-value,
   .team-budget {
-    margin: 0;
-    align-items: center;
-    padding: 0em 2em;
-    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: var(--border-radius);
   }
-
-  .team-value {
-    padding: 0vh 0vw 0vh 10vw;
-  }
-
-  .team-budget {
-    padding: 0vh 10vw 0vh 0vw;
-  }
-
-  .category,
-  .money,
-  .unit {
-    text-align: center;
-  }
-
-  .money {
-    font-size: 5vh;
-    font-weight: bold;
-  }
-
-  .category,
-  .unit {
-    font-size: 2.5vh;
-  }
-
-  .category {
-    border-bottom: 1px solid var(--logo-gold-color);
-  }
-
-  /* TEAM SUMMARY */
-  .team-value {
-    padding: 5vh 0vw 10vh 15vw;
-  }
-  .team-budget {
-    padding: 5vh 15vw 10vh 0vw;
-  }
-  .money {
-    font-size: 10vh;
-  }
-  .category,
-  .unit {
-    font-size: 5vh;
-  }
-
-  /* SUBMIT BUTTON */
-  .submit-button {
-    padding: 0em 0em 5em 0em;
-  }
-}
-
-/* Styles for phones and tablets in portrait mode */
-@media screen and (max-width: 1023px) and (orientation: portrait) {
-  body,
-  .home-page {
-    overflow-y: scroll;
-    overflow-x: auto;
-  }
-
-  .home-page-content {
-    flex-direction: column;
-  }
-
-  /* TITLE */
-  .title {
-    font-size: 6.5vw;
-  }
-
-  /* CONCEPT */
-  .concept-icon-container {
-    padding: 2vh 0vw;
-  }
-  .concept-text {
-    font-size: 2vh;
-  }
-
-  /* TEAM SELECTOR */
-  .team-selection-padding {
-    padding: 2em 4em;
-  }
-  .logo-container {
-    height: 35vw;
-    width: 35vw;
-  }
-  .team-name {
-    font-size: 2.5vw;
-  }
-
-  /* SLIDESHOW */
-  .home-page-slideshow {
-    padding: 30vw 20vw;
-  }
-
-  /* SUBMIT BUTTON */
-  .submit-button {
-    padding: 5em 0em 5em 0em;
-  }
-}
-
-.arrow-button {
-  height: 25%;
-  width: auto;
-  padding: 1em;
 }

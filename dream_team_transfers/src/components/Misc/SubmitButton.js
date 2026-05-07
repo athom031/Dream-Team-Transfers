@@ -17,7 +17,9 @@ export const getSubmitButton = () => {
         props.team !== null
           ? PREMIER_LEAGUE_TEAM_INFOS[props.team].third_color
           : '#5A5A5A'};
-    padding: 2vh 5vw;
+    width: min(100%, 28rem);
+    min-height: clamp(4.25rem, 9vh, 6.5rem);
+    padding: clamp(0.75rem, 1.5vh, 1.25rem) clamp(1rem, 2vw, 2rem);
     border-radius: 20px;
     font-family: 'Saira Condensed', sans-serif;
     font-weight: 900;
@@ -30,17 +32,17 @@ export const getSubmitButton = () => {
 
     /* Styles for laptops and larger screens */
     @media screen and (min-width: 1024px) {
-      font-size: 1.5vw;
+      font-size: clamp(1.2rem, 1.5vw, 1.75rem);
     }
 
     /* Styles for phones and tablets in landscape mode */
     @media screen and (max-width: 1023px) and (orientation: landscape) {
-      font-size: 2vw;
+      font-size: clamp(1rem, 2vw, 1.35rem);
     }
 
     /* Styles for phones and tablets in portrait mode */
     @media screen and (max-width: 1023px) and (orientation: portrait) {
-      font-size: 3vw;
+      font-size: clamp(1rem, 4vw, 1.35rem);
     }
 
     &:hover {

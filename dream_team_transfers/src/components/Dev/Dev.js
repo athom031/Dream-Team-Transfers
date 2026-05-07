@@ -1,5 +1,8 @@
 import './Dev.css';
-import { PREMIER_LEAGUE_TEAM_INFOS } from '../../constants/pl-team-infos';
+import {
+  PREMIER_LEAGUE_TEAM_COUNT,
+  PREMIER_LEAGUE_TEAM_INFOS,
+} from '../../constants/pl-team-infos';
 import React, { useState, useEffect } from 'react';
 
 function Dev() {
@@ -29,7 +32,7 @@ function Dev() {
   const [teamPhotos, setTeamPhotos] = useState([]);
 
   useEffect(() => {
-    if (currTeam < 0 || currTeam >= 20) return;
+    if (currTeam < 0 || currTeam >= PREMIER_LEAGUE_TEAM_COUNT) return;
 
     const teamPhotos = PREMIER_LEAGUE_TEAM_INFOS[currTeam].team_photos.map(
       (url, index) => (

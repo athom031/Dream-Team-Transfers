@@ -1,10 +1,74 @@
 import './StartingEleven.css';
-import { FORMATIONS } from '../../../utils/formations';
-import { getTeamData } from '../../../db/db-utils';
-import React, { useEffect, useState } from 'react';
+import { DEFAULT_FORMATION, FORMATIONS } from '../../../utils/formations';
+import {
+  getTeamData,
+  updateLineup,
+  updateSelectedFormation,
+} from '../../../db/db-utils';
+import React, { useEffect, useRef, useState } from 'react';
 import calculateAge from '../../../utils/calculate-age';
 import { POSITION_CIRCLES } from '../../../utils/positions';
-import { updateLineup } from '../../../db/db-utils';
+
+const MOBILE_BREAKPOINT = '(max-width: 768px)';
+const SLOT_POSITION_ALIASES = {
+  ST: 'CF',
+  CAM: 'AM',
+  CDM: 'DM',
+  LWB: 'LB',
+  RWB: 'RB',
+};
+const SURNAME_PREFIXES = new Set([
+  'al',
+  'da',
+  'das',
+  'de',
+  'del',
+  'den',
+  'der',
+  'des',
+  'di',
+  'do',
+  'dos',
+  'du',
+  'el',
+  'la',
+  'le',
+  'ten',
+  'ter',
+  'van',
+  'von',
+]);
+
+const getMobileCardName = (playerName) => {
+  const nameParts = String(playerName || '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (nameParts.length <= 1) return nameParts[0] || '';
+
+  let surnameStartIndex = nameParts.length - 1;
+  while (
+    surnameStartIndex > 0 &&
+    SURNAME_PREFIXES.has(nameParts[surnameStartIndex - 1].toLowerCase())
+  ) {
+    surnameStartIndex -= 1;
+  }
+
+  return nameParts.slice(surnameStartIndex).join(' ');
+};
+
+const getMobileNameFitClass = (displayName) => {
+  const nameLength = Array.from(String(displayName || '').replace(/\s+/g, ''))
+    .length;
+
+  if (nameLength >= 12) return 'is-tiny';
+  if (nameLength >= 8) return 'is-compact';
+  return '';
+};
+
+const getValidFormation = (formation) =>
+  FORMATIONS[formation] ? formation : DEFAULT_FORMATION;
 
 function StartingEleven({
   NationsCSVData,
@@ -25,23 +89,43 @@ function StartingEleven({
   const [subs, setSubs] = React.useState([]);
   const [teamBadge, setTeamBadge] = React.useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const [selectedFormation, setSelectedFormation] = React.useState('4-3-3');
+  const [selectedFormation, setSelectedFormation] =
+    React.useState(DEFAULT_FORMATION);
   const [isHoveredLeft, setIsHoveredLeft] = useState(false);
   const [isHoveredRight, setIsHoveredRight] = useState(false);
+  const [activeMobileDrawer, setActiveMobileDrawer] = useState(null);
+  const [mobilePickerSlotIndex, setMobilePickerSlotIndex] = useState(null);
+  const [selectedMobilePlayerId, setSelectedMobilePlayerId] = useState(null);
+  const [mobileDragState, setMobileDragState] = useState(null);
+  const mobileDragStateRef = useRef(null);
+  const suppressNextMobileClickRef = useRef(false);
 
   const positions = FORMATIONS[selectedFormation];
   const subsPerPage = 9;
+  const flatPositions = positions.flat();
 
   // read from db
   useEffect(() => {
+    if (!PlayersCSVData || !NationsCSVData || !PositionsCSVData) {
+      console.log('StartingEleven: CSV data not ready yet', {
+        PlayersCSVData: PlayersCSVData?.length,
+        NationsCSVData: NationsCSVData?.length,
+        PositionsCSVData: PositionsCSVData?.length,
+      });
+      return;
+    }
+
+    console.log('StartingEleven: CSV data ready, loading team data...');
     getTeamData().then((data) => {
+      console.log('StartingEleven: Team data loaded:', data);
       setPlayersSold(data.players_sold);
       setPlayersBought(data.players_bought);
       setTeamPicked(data.team_picked);
       setKitUpdates(data.team_kit_updates);
       setLineup(data.team_positions || new Array(11).fill(null));
+      setSelectedFormation(getValidFormation(data.selected_formation));
     });
-  }, []);
+  }, [PlayersCSVData, NationsCSVData, PositionsCSVData]);
 
   useEffect(() => {
     if (Number(teamPicked) === -1) return;
@@ -67,9 +151,10 @@ function StartingEleven({
     if (PlayersCSVData === null) return;
 
     for (let i = 0; i < PlayersCSVData.length; i++) {
+      const playerId = Number(PlayersCSVData[i].player_id);
       if (
-        playersBought.includes(Number(PlayersCSVData[i].player_id)) ||
-        (!playersSold.includes(Number(PlayersCSVData[i].player_id)) &&
+        playersBought.map((id) => Number(id)).includes(playerId) ||
+        (!playersSold.map((id) => Number(id)).includes(playerId) &&
           Number(PlayersCSVData[i].team_id) === teamPicked)
       ) {
         const {
@@ -86,9 +171,8 @@ function StartingEleven({
           nation_id: Number(nation_id),
           player_birth_date: new Date(player_birth_date),
           player_age: calculateAge(new Date(player_birth_date)),
-          player_kit_number: kitUpdates[Number(player_id)]
-            ? Number(kitUpdates[Number(player_id)])
-            : Number(player_kit_number),
+          player_kit_number:
+            kitUpdates[Number(player_id)] ?? Number(player_kit_number),
           player_market_value: Number(player_market_value),
           player_name: player_name,
           player_portrait: player_portrait_big_pic,
@@ -120,8 +204,8 @@ function StartingEleven({
     const relevantPositionsUpdate = {};
 
     if (
-      NationsCSVData == null ||
-      PositionsCSVData == null ||
+      NationsCSVData === null ||
+      PositionsCSVData === null ||
       NationsCSVData.length <= 0 ||
       PositionsCSVData.length <= 0
     )
@@ -130,7 +214,7 @@ function StartingEleven({
     for (let i = 0; i < teamPlayers.length; i++) {
       if (!relevantNationsUpdate[teamPlayers[i].nation_id]) {
         const nation = NationsCSVData.find(
-          (n) => n.nation_id == teamPlayers[i].nation_id
+          (n) => Number(n.nation_id) === teamPlayers[i].nation_id
         );
         if (nation) {
           relevantNationsUpdate[teamPlayers[i].nation_id] = {
@@ -142,7 +226,7 @@ function StartingEleven({
 
       if (!relevantPositionsUpdate[teamPlayers[i].position_id]) {
         const position = PositionsCSVData.find(
-          (p) => p.position_id == teamPlayers[i].position_id
+          (p) => Number(p.position_id) === teamPlayers[i].position_id
         );
         if (position) {
           relevantPositionsUpdate[teamPlayers[i].position_id] = {
@@ -163,46 +247,249 @@ function StartingEleven({
     e.dataTransfer.setData('fromLineup', fromLineup);
   };
 
-  const handleDrop = (e, targetIndex) => {
-    e.preventDefault();
-    const playerId = Number(e.dataTransfer.getData('playerId'));
-    const fromLineup = e.dataTransfer.getData('fromLineup') === 'true';
+  const isMobileViewport = () =>
+    typeof window !== 'undefined' && window.matchMedia(MOBILE_BREAKPOINT).matches;
 
-    if (!playerId) return;
+  const getPlayerById = (playerId) => {
+    if (playerId === null || playerId === undefined) return undefined;
+    return teamPlayers.find((player) => player.player_id === Number(playerId));
+  };
 
+  const closeMobileDrawer = () => {
+    setActiveMobileDrawer(null);
+    setMobilePickerSlotIndex(null);
+  };
+
+  const openMobilePlayerDrawer = (slotIndex = null) => {
+    setMobilePickerSlotIndex(slotIndex);
+    setActiveMobileDrawer('players');
+  };
+
+  const openMobileFormationDrawer = () => {
+    setMobilePickerSlotIndex(null);
+    setActiveMobileDrawer('formations');
+  };
+
+  const getNormalizedSlotAcronym = (slotIndex) => {
+    const slotPosition = flatPositions[slotIndex];
+    return SLOT_POSITION_ALIASES[slotPosition] || slotPosition;
+  };
+
+  const getSlotGrouping = (slotIndex) => {
+    const normalizedSlotAcronym = getNormalizedSlotAcronym(slotIndex);
+    const position = PositionsCSVData?.find(
+      (p) => p.position_acronym === normalizedSlotAcronym
+    );
+
+    return position?.position_grouping || null;
+  };
+
+  const getPlayerCompatibilityRank = (playerId, slotIndex) => {
+    if (slotIndex === null || slotIndex === undefined) return 0;
+
+    const player = getPlayerById(playerId);
+    const playerPosition = player
+      ? relevantPositions[player.position_id]
+      : null;
+    const slotGrouping = getSlotGrouping(slotIndex);
+
+    if (!playerPosition) return 3;
+    if (playerPosition.position_acronym === getNormalizedSlotAcronym(slotIndex)) {
+      return 0;
+    }
+    if (slotGrouping && playerPosition.position_grouping === slotGrouping) {
+      return 1;
+    }
+    return 2;
+  };
+
+  const getCompatibilityLabel = (playerId) => {
+    if (mobilePickerSlotIndex === null || mobilePickerSlotIndex === undefined) {
+      return '';
+    }
+
+    const rank = getPlayerCompatibilityRank(playerId, mobilePickerSlotIndex);
+    if (rank === 0) return 'Exact';
+    if (rank === 1) return 'Role';
+    return 'Any';
+  };
+
+  const getMobilePickerPlayerIds = () => {
+    const playerIds =
+      mobilePickerSlotIndex !== null && mobilePickerSlotIndex !== undefined
+        ? teamPlayers.map((player) => player.player_id)
+        : subs;
+
+    if (mobilePickerSlotIndex === null || mobilePickerSlotIndex === undefined) {
+      return playerIds;
+    }
+
+    return [...playerIds].sort((a, b) => {
+      const rankDifference =
+        getPlayerCompatibilityRank(a, mobilePickerSlotIndex) -
+        getPlayerCompatibilityRank(b, mobilePickerSlotIndex);
+      if (rankDifference !== 0) return rankDifference;
+
+      const playerA = getPlayerById(a);
+      const playerB = getPlayerById(b);
+      return (
+        Number(playerB?.player_market_value || 0) -
+          Number(playerA?.player_market_value || 0) ||
+        String(playerA?.player_name || '').localeCompare(
+          String(playerB?.player_name || '')
+        )
+      );
+    });
+  };
+
+  const placePlayerInSlot = (playerId, targetIndex) => {
+    const normalizedPlayerId = Number(playerId);
+    if (Number.isNaN(normalizedPlayerId)) return;
+
+    const newLineup = [...lineup];
     const replacedPlayer = lineup[targetIndex];
+    const sourceIndex = newLineup.indexOf(normalizedPlayerId);
 
-    let newLineup = [...lineup];
-    if (fromLineup) {
-      const sourceIndex = lineup.indexOf(playerId);
-      if (sourceIndex !== -1) {
-        [newLineup[sourceIndex], newLineup[targetIndex]] = [
-          newLineup[targetIndex],
-          newLineup[sourceIndex],
-        ];
-      }
+    if (sourceIndex !== -1) {
+      [newLineup[sourceIndex], newLineup[targetIndex]] = [
+        newLineup[targetIndex],
+        newLineup[sourceIndex],
+      ];
     } else {
-      if (!lineup.includes(playerId)) {
-        newLineup[targetIndex] = playerId;
-        const newSubs = subs.filter((sub) => sub !== playerId);
-        if (replacedPlayer) {
-          newSubs.push(replacedPlayer);
-        }
-        setSubs(newSubs);
+      newLineup[targetIndex] = normalizedPlayerId;
+      const newSubs = subs.filter((sub) => Number(sub) !== normalizedPlayerId);
+      if (replacedPlayer !== null && replacedPlayer !== undefined) {
+        newSubs.push(replacedPlayer);
       }
+      setSubs(newSubs);
     }
 
     setLineup(newLineup);
-
+    setSelectedMobilePlayerId(null);
     updateLineup(newLineup);
+  };
+
+  const handleDrop = (e, targetIndex) => {
+    e.preventDefault();
+    const playerId = Number(e.dataTransfer.getData('playerId'));
+
+    placePlayerInSlot(playerId, targetIndex);
+  };
+
+  const handleSlotClick = (targetIndex) => {
+    if (!isMobileViewport()) {
+      return;
+    }
+
+    if (selectedMobilePlayerId !== null) {
+      placePlayerInSlot(selectedMobilePlayerId, targetIndex);
+      return;
+    }
+
+    openMobilePlayerDrawer(targetIndex);
+  };
+
+  const handleMobilePlayerSelect = (playerId) => {
+    if (
+      mobilePickerSlotIndex !== null &&
+      mobilePickerSlotIndex !== undefined
+    ) {
+      placePlayerInSlot(playerId, mobilePickerSlotIndex);
+      closeMobileDrawer();
+      return;
+    }
+
+    setSelectedMobilePlayerId(Number(playerId));
+    closeMobileDrawer();
+  };
+
+  const handleFormationChange = (formation) => {
+    const nextFormation = getValidFormation(formation);
+
+    setSelectedFormation(nextFormation);
+
+    if (nextFormation !== selectedFormation) {
+      updateSelectedFormation(nextFormation).catch((error) => {
+        console.error('Error updating selected formation:', error);
+      });
+    }
+  };
+
+  const updateMobileDragState = (nextDragState) => {
+    mobileDragStateRef.current = nextDragState;
+    setMobileDragState(nextDragState);
+  };
+
+  const handleMobilePointerDown = (e, playerId) => {
+    if (!isMobileViewport()) return;
+
+    const nextDragState = {
+      playerId: Number(playerId),
+      startX: e.clientX,
+      startY: e.clientY,
+      x: e.clientX,
+      y: e.clientY,
+      dragging: false,
+    };
+
+    updateMobileDragState(nextDragState);
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+  };
+
+  const handleMobilePointerMove = (e) => {
+    const currentDragState = mobileDragStateRef.current;
+    if (!currentDragState) return;
+
+    const dragDistance = Math.hypot(
+      e.clientX - currentDragState.startX,
+      e.clientY - currentDragState.startY
+    );
+    const dragging = currentDragState.dragging || dragDistance > 8;
+
+    if (dragging) {
+      e.preventDefault();
+    }
+
+    updateMobileDragState({
+      ...currentDragState,
+      x: e.clientX,
+      y: e.clientY,
+      dragging,
+    });
+  };
+
+  const handleMobilePointerUp = (e) => {
+    const currentDragState = mobileDragStateRef.current;
+    if (!currentDragState) return;
+
+    if (currentDragState.dragging) {
+      suppressNextMobileClickRef.current = true;
+      const dropTarget = document
+        .elementFromPoint(e.clientX, e.clientY)
+        ?.closest('.player-slot');
+      const slotIndex = Number(dropTarget?.dataset.slotIndex);
+
+      if (!Number.isNaN(slotIndex)) {
+        placePlayerInSlot(currentDragState.playerId, slotIndex);
+        closeMobileDrawer();
+      }
+
+      window.setTimeout(() => {
+        suppressNextMobileClickRef.current = false;
+      }, 0);
+    }
+
+    updateMobileDragState(null);
+  };
+
+  const handleMobilePointerCancel = () => {
+    updateMobileDragState(null);
   };
 
   const getPlayerCard = (playerId, pos = '', isSub = true) => {
     if (teamPlayers.length === 0) return null;
 
-    const player = teamPlayers.find(
-      (player) => player.player_id === Number(playerId)
-    );
+    const player = getPlayerById(playerId);
     if (
       !player ||
       !relevantPositions[player.position_id] ||
@@ -212,13 +499,15 @@ function StartingEleven({
 
     const positionColor =
       POSITION_CIRCLES[relevantPositions[player.position_id].position_grouping];
+    const isSelected = selectedMobilePlayerId === Number(playerId);
+    const mobileCardName = getMobileCardName(player.player_name);
 
     return isSub ? (
-      <div className="sub-card" draggable>
+      <div className={`sub-card ${isSelected ? 'is-selected' : ''}`} draggable>
         <div className="card-header">
           <div className="player-info">
             <span className="kit-number">{player.player_kit_number}</span>
-            <span class="position-text">
+            <span className="position-text">
               {relevantPositions[player.position_id].position_acronym}
             </span>
             <span
@@ -245,11 +534,14 @@ function StartingEleven({
         </div>
       </div>
     ) : (
-      <div className="starter-card" draggable>
+      <div
+        className={`starter-card ${isSelected ? 'is-selected' : ''}`}
+        draggable
+      >
         <div className="card-header">
           <div className="player-info">
             <span className="kit-number">{player.player_kit_number}</span>
-            <span class="position-text">{pos}</span>
+            <span className="position-text">{pos}</span>
             <span
               className="position-badge"
               style={{ backgroundColor: positionColor }}
@@ -270,9 +562,87 @@ function StartingEleven({
           />
         </div>
         <div className="card-footer">
-          <span className="name">{player.player_name}</span>
+          <span className="name name-full">{player.player_name}</span>
+          <span
+            className={`name name-mobile ${getMobileNameFitClass(
+              mobileCardName
+            )}`}
+            title={player.player_name}
+          >
+            {mobileCardName}
+          </span>
         </div>
       </div>
+    );
+  };
+
+  const getPlayerDrawerRow = (playerId) => {
+    const player = getPlayerById(playerId);
+
+    if (
+      !player ||
+      !relevantPositions[player.position_id] ||
+      !relevantNations[player.nation_id]
+    )
+      return null;
+
+    const position = relevantPositions[player.position_id];
+    const positionColor = POSITION_CIRCLES[position.position_grouping];
+    const compatibilityLabel = getCompatibilityLabel(playerId);
+
+    return (
+      <button
+        type="button"
+        className={`mobile-squad-row ${
+          selectedMobilePlayerId === Number(playerId) ? 'is-selected' : ''
+        }`}
+        onClick={() => {
+          if (suppressNextMobileClickRef.current) return;
+          handleMobilePlayerSelect(playerId);
+        }}
+      >
+        <img
+          src={player.player_portrait}
+          alt={player.player_name}
+          className="mobile-squad-portrait"
+          draggable={false}
+        />
+        <span className="mobile-squad-details">
+          <span className="mobile-squad-name">{player.player_name}</span>
+          <span className="mobile-squad-meta">
+            <span className="mobile-squad-kit">{player.player_kit_number}</span>
+            <span
+              className="mobile-squad-position-dot"
+              style={{ backgroundColor: positionColor }}
+            ></span>
+            {position.position_acronym}
+            <img
+              src={relevantNations[player.nation_id]?.nation_pic}
+              alt=""
+              className="mobile-squad-flag"
+            />
+          </span>
+        </span>
+        {compatibilityLabel && (
+          <span
+            className={`mobile-squad-fit rank-${compatibilityLabel.toLowerCase()}`}
+          >
+            {compatibilityLabel}
+          </span>
+        )}
+        <span
+          className="mobile-squad-drag-handle"
+          aria-hidden="true"
+          onPointerDown={(e) => handleMobilePointerDown(e, playerId)}
+          onPointerMove={handleMobilePointerMove}
+          onPointerUp={handleMobilePointerUp}
+          onPointerCancel={handleMobilePointerCancel}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
     );
   };
 
@@ -297,10 +667,29 @@ function StartingEleven({
     }
   };
 
+  const selectedMobilePlayer = getPlayerById(selectedMobilePlayerId);
+  const draggedMobilePlayer = getPlayerById(mobileDragState?.playerId);
+  const mobilePickerPlayerIds = getMobilePickerPlayerIds();
+  const mobilePickerSlotPosition =
+    mobilePickerSlotIndex !== null && mobilePickerSlotIndex !== undefined
+      ? flatPositions[mobilePickerSlotIndex]
+      : null;
+
   return (
     <div className="starting-eleven">
       <div className="starting-eleven-container">
         <div className="soccer-field-container">
+          {selectedMobilePlayer && (
+            <div className="mobile-selected-player">
+              <span>Selected: {selectedMobilePlayer.player_name}</span>
+              <button
+                type="button"
+                onClick={() => setSelectedMobilePlayerId(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          )}
           <div className="lineup-grid">
             {positions.map((row, rowIndex) => (
               <div key={rowIndex} className="lineup-row">
@@ -314,9 +703,15 @@ function StartingEleven({
                       key={colIndex}
                       onDragOver={(e) => e.preventDefault()}
                       onDrop={(e) => handleDrop(e, flatIndex)}
-                      className="player-slot"
+                      onClick={() => handleSlotClick(flatIndex)}
+                      data-slot-index={flatIndex}
+                      className={`player-slot ${
+                        playerId !== null && playerId !== undefined
+                          ? 'has-player'
+                          : ''
+                      }`}
                     >
-                      {playerId ? (
+                      {playerId !== null && playerId !== undefined ? (
                         <div
                           draggable
                           onDragStart={(e) =>
@@ -337,7 +732,8 @@ function StartingEleven({
           </div>
 
           <select
-            onChange={(e) => setSelectedFormation(e.target.value)}
+            value={selectedFormation}
+            onChange={(e) => handleFormationChange(e.target.value)}
             className="formation-selector"
           >
             {Object.keys(FORMATIONS).map((formation) => (
@@ -347,6 +743,24 @@ function StartingEleven({
             ))}
           </select>
           <img src={teamBadge} alt="Team Badge" className="team-badge" />
+          <div className="mobile-control-bar">
+            <button
+              type="button"
+              className="mobile-control-button"
+              onClick={openMobileFormationDrawer}
+            >
+              <span>Formation</span>
+              <strong>{selectedFormation}</strong>
+            </button>
+            <button
+              type="button"
+              className="mobile-control-button"
+              onClick={() => openMobilePlayerDrawer(null)}
+            >
+              <span>Squad</span>
+              <strong>{subs.length}</strong>
+            </button>
+          </div>
         </div>
         <div className="subs-bench-container">
           <div className="subs-pagination-controls">
@@ -386,6 +800,100 @@ function StartingEleven({
           </div>
         </div>
       </div>
+      {activeMobileDrawer === 'players' && (
+        <div
+          className={`mobile-drawer-overlay ${
+            mobileDragState?.dragging ? 'is-dragging' : ''
+          }`}
+          onClick={closeMobileDrawer}
+        >
+          <div
+            className="mobile-bottom-drawer mobile-player-drawer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mobile-drawer-header">
+              <div>
+                <h2>
+                  {mobilePickerSlotPosition
+                    ? `Pick ${mobilePickerSlotPosition}`
+                    : 'Squad'}
+                </h2>
+                {mobilePickerSlotPosition && (
+                  <p>Exact positions first, then similar roles.</p>
+                )}
+              </div>
+              <button type="button" onClick={closeMobileDrawer}>
+                Close
+              </button>
+            </div>
+            <div className="mobile-squad-list">
+              {mobilePickerPlayerIds.length === 0 ? (
+                <div className="mobile-squad-empty">
+                  No players available
+                </div>
+              ) : (
+                mobilePickerPlayerIds.map((subId) => (
+                  <React.Fragment key={subId}>
+                    {getPlayerDrawerRow(subId)}
+                  </React.Fragment>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      {activeMobileDrawer === 'formations' && (
+        <div className="mobile-drawer-overlay" onClick={closeMobileDrawer}>
+          <div
+            className="mobile-bottom-drawer mobile-formation-drawer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mobile-drawer-header">
+              <div>
+                <h2>Formation</h2>
+                <p>Choose how the pitch is arranged.</p>
+              </div>
+              <button type="button" onClick={closeMobileDrawer}>
+                Close
+              </button>
+            </div>
+            <div className="mobile-formation-list">
+              {Object.keys(FORMATIONS).map((formation) => (
+                <button
+                  key={formation}
+                  type="button"
+                  className={`mobile-formation-option ${
+                    selectedFormation === formation ? 'is-active' : ''
+                  }`}
+                  onClick={() => {
+                    handleFormationChange(formation);
+                    closeMobileDrawer();
+                  }}
+                >
+                  <span>{formation}</span>
+                  {selectedFormation === formation && <strong>Current</strong>}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+      {mobileDragState?.dragging && draggedMobilePlayer && (
+        <div
+          className="mobile-drag-preview"
+          style={{
+            left: mobileDragState.x,
+            top: mobileDragState.y,
+          }}
+        >
+          <img
+            src={draggedMobilePlayer.player_portrait}
+            alt=""
+            draggable={false}
+          />
+          <span>{draggedMobilePlayer.player_name}</span>
+        </div>
+      )}
     </div>
   );
 }

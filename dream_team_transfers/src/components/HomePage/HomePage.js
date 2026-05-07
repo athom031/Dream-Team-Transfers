@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-import { PREMIER_LEAGUE_TEAM_INFOS } from '../../constants/pl-team-infos';
+import {
+  PREMIER_LEAGUE_TEAM_COUNT,
+  PREMIER_LEAGUE_TEAM_INFOS,
+} from '../../constants/pl-team-infos';
 import {
   CURRENCY_UNIT,
   getCurrencyDenomination,
@@ -53,9 +56,11 @@ function HomePage() {
   // Team Picker Left Button
   const handleLeftClick = () => {
     if (teamIndex === null) {
-      setTeamIndex(19);
+      setTeamIndex(PREMIER_LEAGUE_TEAM_COUNT - 1);
     } else {
-      setTeamIndex((teamIndex + 19) /* -1 + 20 */ % 20);
+      setTeamIndex(
+        (teamIndex + PREMIER_LEAGUE_TEAM_COUNT - 1) % PREMIER_LEAGUE_TEAM_COUNT
+      );
     }
   };
 
@@ -64,7 +69,7 @@ function HomePage() {
     if (teamIndex === null) {
       setTeamIndex(0);
     } else {
-      setTeamIndex((teamIndex + 1) % 20);
+      setTeamIndex((teamIndex + 1) % PREMIER_LEAGUE_TEAM_COUNT);
     }
   };
 

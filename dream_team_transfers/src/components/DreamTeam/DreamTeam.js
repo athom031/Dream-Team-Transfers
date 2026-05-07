@@ -26,6 +26,8 @@ function DreamTeam() {
     const loadAllCSVData = async () => {
       try {
         setCsvLoading(true);
+        console.log('Starting to load CSV data...');
+
         const [nationsData, playersData, positionsData, teamsData] =
           await Promise.all([
             loadCSVData('nations.csv'),
@@ -33,6 +35,13 @@ function DreamTeam() {
             loadCSVData('positions.csv'),
             loadCSVData('teams.csv'),
           ]);
+
+        console.log('CSV data loaded:', {
+          nations: nationsData?.length,
+          players: playersData?.length,
+          positions: positionsData?.length,
+          teams: teamsData?.length,
+        });
 
         setNationsCSVData(nationsData);
         setPlayersCSVData(playersData);

@@ -1,6 +1,3 @@
 pandas
-csv
-datetime
-bs4
-os
+beautifulsoup4
 requests

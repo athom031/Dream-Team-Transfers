@@ -1,7 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { buyPlayer, getTeamData } from '../../../db/db-utils';
-import { loadCSVData } from '../../../utils/parse-csv';
 import './PlayerMarket.css';
+
+function normalizeSearchText(value) {
+  return String(value ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+}
+
+function sortPlayersByValue(players) {
+  return [...players].sort(
+    (a, b) =>
+      parseFloat(b.player_market_value || 0) -
+        parseFloat(a.player_market_value || 0) ||
+      normalizeSearchText(a.player_name).localeCompare(
+        normalizeSearchText(b.player_name)
+      )
+  );
+}
 
 function PlayerMarket({
   NationsCSVData,
@@ -18,6 +36,7 @@ function PlayerMarket({
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [purchaseError, setPurchaseError] = useState('');
+  const [showFiltersModal, setShowFiltersModal] = useState(false);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,24 +65,35 @@ function PlayerMarket({
   const [leagueSearch, setLeagueSearch] = useState('');
   const [clubSearch, setClubSearch] = useState('');
   const [nationSearch, setNationSearch] = useState('');
-  const [positionSearch, setPositionSearch] = useState('');
-
-  useEffect(() => {
-    loadData();
-  }, [NationsCSVData, PlayersCSVData, TeamsCSVData, csvLoading]);
 
   const loadData = async () => {
     try {
       setLoading(true);
 
+      console.log('loadData called with:', {
+        csvLoading,
+        NationsCSVDataLength: NationsCSVData?.length,
+        PlayersCSVDataLength: PlayersCSVData?.length,
+        TeamsCSVDataLength: TeamsCSVData?.length,
+      });
+
       // Check if CSV data is available
       if (csvLoading || !NationsCSVData || !PlayersCSVData || !TeamsCSVData) {
+        console.log('CSV data not ready yet, returning early');
         setLoading(true);
         return;
       }
 
       // Load team data
       const team = await getTeamData();
+      console.log('PlayerMarket: Team data loaded:', team);
+
+      if (!team) {
+        console.error('PlayerMarket: No team data available');
+        setLoading(false);
+        return;
+      }
+
       setTeamData(team);
 
       // Use the CSV data passed as props instead of loading it again
@@ -71,14 +101,32 @@ function PlayerMarket({
       setNations(NationsCSVData);
 
       // Filter out players we already own or have sold
-      const availablePlayers = PlayersCSVData.filter(
-        (player) =>
-          !team.players_bought.includes(player.player_id) &&
-          !team.players_sold.includes(player.player_id)
+      console.log('Team data:', team);
+      console.log('Players CSV data length:', PlayersCSVData?.length);
+      console.log('Team players_bought:', team.players_bought);
+      console.log('Team players_sold:', team.players_sold);
+
+      const availablePlayers = PlayersCSVData.filter((player) => {
+        const playerId = Number(player.player_id);
+        const playersBought = (team.players_bought || []).map((id) =>
+          Number(id)
+        );
+        const playersSold = (team.players_sold || []).map((id) => Number(id));
+
+        return (
+          !playersBought.includes(playerId) && !playersSold.includes(playerId)
+        );
+      });
+
+      console.log(
+        'Available players after filtering:',
+        availablePlayers.length
       );
 
-      setPlayers(availablePlayers);
-      setFilteredPlayers(availablePlayers);
+      const rankedAvailablePlayers = sortPlayersByValue(availablePlayers);
+
+      setPlayers(rankedAvailablePlayers);
+      setFilteredPlayers(rankedAvailablePlayers);
       setLoading(false);
     } catch (error) {
       console.error('Error loading data:', error);
@@ -96,6 +144,10 @@ function PlayerMarket({
     }
   };
 
+  useEffect(() => {
+    loadData();
+  }, [NationsCSVData, PlayersCSVData, TeamsCSVData, csvLoading]);
+
   // Computed values for smart filtering
   const availableClubs = filters.league
     ? teams.filter((team) => team.league_id === filters.league)
@@ -103,17 +155,52 @@ function PlayerMarket({
 
   const availableNations = filters.league
     ? nations.filter((nation) => {
-        // Get all players from the selected league
         const leaguePlayers = players.filter(
           (player) => player.league_id === filters.league
         );
-        // Get unique nation IDs from those players
         const nationIds = [
           ...new Set(leaguePlayers.map((player) => player.nation_id)),
         ];
         return nationIds.includes(nation.nation_id);
       })
     : nations;
+
+  const positionData = () => {
+    const positions = [
+      { id: 0, name: 'Goalkeeper', acronym: 'GK', group: 'Goalkeeper' },
+      { id: 1, name: 'Centre-Back', acronym: 'CB', group: 'Defender' },
+      { id: 2, name: 'Left-Back', acronym: 'LB', group: 'Defender' },
+      { id: 3, name: 'Right-Back', acronym: 'RB', group: 'Defender' },
+      { id: 4, name: 'Central Midfielder', acronym: 'CM', group: 'Midfielder' },
+      {
+        id: 5,
+        name: 'Defensive Midfielder',
+        acronym: 'DM',
+        group: 'Midfielder',
+      },
+      { id: 6, name: 'Left Midfielder', acronym: 'LM', group: 'Midfielder' },
+      { id: 7, name: 'Right Midfielder', acronym: 'RM', group: 'Midfielder' },
+      {
+        id: 8,
+        name: 'Attacking Midfielder',
+        acronym: 'AM',
+        group: 'Midfielder',
+      },
+      { id: 9, name: 'Left Winger', acronym: 'LW', group: 'Attacker' },
+      { id: 10, name: 'Right Winger', acronym: 'RW', group: 'Attacker' },
+      { id: 11, name: 'Centre-Forward', acronym: 'CF', group: 'Attacker' },
+      { id: 12, name: 'Second Striker', acronym: 'SS', group: 'Attacker' },
+    ];
+    return positions.filter(
+      (position) =>
+        position.name.toLowerCase().includes(filters.position.toLowerCase()) ||
+        position.acronym.toLowerCase().includes(filters.position.toLowerCase())
+    );
+  };
+
+  const getPositionsByGroup = (groupName) => {
+    return positionData().filter((position) => position.group === groupName);
+  };
 
   // Pagination logic
   const totalPages = Math.ceil(filteredPlayers.length / playersPerPage);
@@ -126,49 +213,13 @@ function PlayerMarket({
     setCurrentPage(1);
   }, [filters]);
 
-  useEffect(() => {
-    applyFilters();
-  }, [filters, players]);
-
-  // Reset club and nation filters when league changes
-  useEffect(() => {
-    if (filters.league) {
-      // Check if current club is still valid for the new league
-      const currentClubValid = teams.some(
-        (team) =>
-          team.team_id === filters.club && team.league_id === filters.league
-      );
-
-      // Check if current nation is still valid for the new league
-      const currentNationValid = nations.some((nation) => {
-        const leaguePlayers = players.filter(
-          (player) => player.league_id == filters.league
-        );
-        const nationIds = [
-          ...new Set(leaguePlayers.map((player) => player.nation_id)),
-        ];
-        return (
-          nationIds.includes(nation.nation_id) &&
-          nation.nation_id == filters.nation
-        );
-      });
-
-      // Reset invalid filters
-      if (!currentClubValid) {
-        setFilters((prev) => ({ ...prev, club: '' }));
-      }
-      if (!currentNationValid) {
-        setFilters((prev) => ({ ...prev, nation: '' }));
-      }
-    }
-  }, [filters.league, filters.club, filters.nation, teams, nations, players]);
-
   const applyFilters = () => {
     let filtered = [...players];
 
     if (filters.name) {
+      const playerNameSearch = normalizeSearchText(filters.name);
       filtered = filtered.filter((player) =>
-        player.player_name.toLowerCase().includes(filters.name.toLowerCase())
+        normalizeSearchText(player.player_name).includes(playerNameSearch)
       );
     }
 
@@ -201,7 +252,7 @@ function PlayerMarket({
 
     if (filters.nation) {
       filtered = filtered.filter(
-        (player) => player.nation_id == filters.nation
+        (player) => player.nation_id === filters.nation
       );
     }
 
@@ -219,8 +270,45 @@ function PlayerMarket({
       );
     }
 
-    setFilteredPlayers(filtered);
+    setFilteredPlayers(sortPlayersByValue(filtered));
   };
+
+  useEffect(() => {
+    applyFilters();
+  }, [filters, players]);
+
+  // Reset club and nation filters when league changes
+  useEffect(() => {
+    if (filters.league) {
+      // Check if current club is still valid for the new league
+      const currentClubValid = teams.some(
+        (team) =>
+          team.team_id === filters.club && team.league_id === filters.league
+      );
+
+      // Check if current nation is still valid for the new league
+      const currentNationValid = nations.some((nation) => {
+        const leaguePlayers = players.filter(
+          (player) => player.league_id === filters.league
+        );
+        const nationIds = [
+          ...new Set(leaguePlayers.map((player) => player.nation_id)),
+        ];
+        return (
+          nationIds.includes(nation.nation_id) &&
+          nation.nation_id === filters.nation
+        );
+      });
+
+      // Reset invalid filters
+      if (!currentClubValid) {
+        setFilters((prev) => ({ ...prev, club: '' }));
+      }
+      if (!currentNationValid) {
+        setFilters((prev) => ({ ...prev, nation: '' }));
+      }
+    }
+  }, [filters.league, filters.club, filters.nation, teams, nations, players]);
 
   const handlePlayerClick = (player) => {
     setSelectedPlayer(player);
@@ -341,14 +429,14 @@ function PlayerMarket({
   };
 
   const getNationFlag = (nationId) => {
-    const nation = nations.find((n) => n.nation_id == nationId);
+    const nation = nations.find((n) => n.nation_id === nationId);
     return nation
       ? nation.nation_flag_small_pic
       : 'https://via.placeholder.com/20x15?text=Flag';
   };
 
   const getNationName = (nationId) => {
-    const nation = nations.find((n) => n.nation_id == nationId);
+    const nation = nations.find((n) => n.nation_id === nationId);
     return nation ? nation.nation_name : 'Unknown Nation';
   };
 
@@ -359,6 +447,9 @@ function PlayerMarket({
       2: 'La Liga',
       3: 'Bundesliga',
       4: 'Serie A',
+      5: 'Ligue One',
+      6: 'Liga Portugal',
+      7: 'Eredivisie',
     };
     return leagues[leagueId] || 'Unknown League';
   };
@@ -407,42 +498,9 @@ function PlayerMarket({
         logo: 'https://tmssl.akamaized.net/images/logo/small/nl1.png?lm=1674743474',
       },
     ];
+    const normalizedLeagueSearch = normalizeSearchText(leagueSearch);
     return leagues.filter((league) =>
-      league.name.toLowerCase().includes(leagueSearch.toLowerCase())
-    );
-  };
-
-  const getPositionData = () => {
-    const positions = [
-      { id: 0, name: 'Goalkeeper', acronym: 'GK', group: 'Goalkeeper' },
-      { id: 1, name: 'Centre-Back', acronym: 'CB', group: 'Defender' },
-      { id: 2, name: 'Left-Back', acronym: 'LB', group: 'Defender' },
-      { id: 3, name: 'Right-Back', acronym: 'RB', group: 'Defender' },
-      { id: 4, name: 'Central Midfielder', acronym: 'CM', group: 'Midfielder' },
-      {
-        id: 5,
-        name: 'Defensive Midfielder',
-        acronym: 'DM',
-        group: 'Midfielder',
-      },
-      { id: 6, name: 'Left Midfielder', acronym: 'LM', group: 'Midfielder' },
-      { id: 7, name: 'Right Midfielder', acronym: 'RM', group: 'Midfielder' },
-      {
-        id: 8,
-        name: 'Attacking Midfielder',
-        acronym: 'AM',
-        group: 'Midfielder',
-      },
-      { id: 9, name: 'Left Winger', acronym: 'LW', group: 'Attacker' },
-      { id: 10, name: 'Right Winger', acronym: 'RW', group: 'Attacker' },
-      { id: 11, name: 'Centre-Forward', acronym: 'CF', group: 'Attacker' },
-      { id: 12, name: 'Second Striker', acronym: 'SS', group: 'Attacker' },
-      { id: 13, name: 'Striker', acronym: 'ST', group: 'Attacker' },
-    ];
-    return positions.filter(
-      (position) =>
-        position.name.toLowerCase().includes(positionSearch.toLowerCase()) ||
-        position.acronym.toLowerCase().includes(positionSearch.toLowerCase())
+      normalizeSearchText(league.name).includes(normalizedLeagueSearch)
     );
   };
 
@@ -456,15 +514,12 @@ function PlayerMarket({
     return groups;
   };
 
-  const getPositionsByGroup = (groupName) => {
-    return getPositionData().filter((position) => position.group === groupName);
-  };
-
   const getFilteredClubs = () => {
     let clubs = availableClubs;
     if (clubSearch) {
+      const normalizedClubSearch = normalizeSearchText(clubSearch);
       clubs = clubs.filter((team) =>
-        team.team_name.toLowerCase().includes(clubSearch.toLowerCase())
+        normalizeSearchText(team.team_name).includes(normalizedClubSearch)
       );
     }
     return clubs;
@@ -473,8 +528,9 @@ function PlayerMarket({
   const getFilteredNations = () => {
     let nationsList = availableNations;
     if (nationSearch) {
+      const normalizedNationSearch = normalizeSearchText(nationSearch);
       nationsList = nationsList.filter((nation) =>
-        nation.nation_name.toLowerCase().includes(nationSearch.toLowerCase())
+        normalizeSearchText(nation.nation_name).includes(normalizedNationSearch)
       );
     }
     return nationsList;
@@ -492,6 +548,146 @@ function PlayerMarket({
     });
     setCurrentPage(1);
   };
+
+  const activeFilterCount = Object.values(filters).filter(Boolean).length;
+
+  const renderFilters = (className = '') => (
+    <div className={`filters-section ${className}`.trim()}>
+      {filters.league && (
+        <div className="smart-filter-indicator">
+          <span>Smart filtering active for {getLeagueName(filters.league)}</span>
+          <button
+            className="clear-league-filter"
+            onClick={() =>
+              setFilters((prev) => ({
+                ...prev,
+                league: '',
+                club: '',
+                nation: '',
+              }))
+            }
+          >
+            Clear League Filter
+          </button>
+        </div>
+      )}
+
+      <div className="modern-filters">
+        <div className="filter-item filter-name">
+          <input
+            type="text"
+            placeholder="Player name..."
+            value={filters.name}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, name: e.target.value }))
+            }
+            className="filter-input"
+          />
+        </div>
+        <div className="filter-item filter-clear">
+          <button className="clear-filters-button" onClick={clearAllFilters}>
+            Clear All
+          </button>
+        </div>
+
+        <div className="filter-item">
+          <button
+            className="filter-button"
+            onClick={() => setShowLeagueModal(true)}
+          >
+            <span>
+              {filters.league ? getLeagueName(filters.league) : 'All Leagues'}
+            </span>
+            <img
+              src="/assets/team-picker-arrows/right.png"
+              alt=""
+              className="filter-chevron"
+            />
+          </button>
+        </div>
+        <div className="filter-item">
+          <button
+            className="filter-button"
+            onClick={() => setShowClubModal(true)}
+            disabled={!filters.league}
+          >
+            <span>
+              {!filters.league
+                ? 'Pick your League first!'
+                : filters.club
+                  ? getTeamName(filters.club)
+                  : 'All Clubs'}
+            </span>
+            <img
+              src="/assets/team-picker-arrows/right.png"
+              alt=""
+              className="filter-chevron"
+            />
+          </button>
+        </div>
+
+        <div className="filter-item">
+          <button
+            className="filter-button"
+            onClick={() => setShowNationModal(true)}
+          >
+            <span>
+              {filters.nation ? getNationName(filters.nation) : 'All Nations'}
+            </span>
+            <img
+              src="/assets/team-picker-arrows/right.png"
+              alt=""
+              className="filter-chevron"
+            />
+          </button>
+        </div>
+        <div className="filter-item">
+          <button
+            className="filter-button"
+            onClick={() => setShowPositionModal(true)}
+          >
+            <span>
+              {filters.position
+                ? filters.position.startsWith('group:')
+                  ? filters.position.replace('group:', '') + 's'
+                  : positionData().find(
+                      (p) => p.id === parseInt(filters.position)
+                    )?.name
+                : 'All Positions'}
+            </span>
+            <img
+              src="/assets/team-picker-arrows/right.png"
+              alt=""
+              className="filter-chevron"
+            />
+          </button>
+        </div>
+
+        <div className="filter-item">
+          <input
+            type="number"
+            placeholder="Min value (€)"
+            value={filters.minValue}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, minValue: e.target.value }))
+            }
+            className="filter-input"
+          />
+        </div>
+        <div className="filter-item">
+          <input
+            type="number"
+            placeholder="Max value (€)"
+            value={filters.maxValue}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, maxValue: e.target.value }))
+            }
+            className="filter-input"
+          />
+        </div>
+      </div>
+    </div>
+  );
 
   if (
     csvLoading ||
@@ -520,146 +716,16 @@ function PlayerMarket({
         </div>
       </div>
 
-      <div className="filters-section">
-        {filters.league && (
-          <div className="smart-filter-indicator">
-            <span>
-              🎯 Smart filtering active for {getLeagueName(filters.league)}
-            </span>
-            <button
-              className="clear-league-filter"
-              onClick={() =>
-                setFilters((prev) => ({
-                  ...prev,
-                  league: '',
-                  club: '',
-                  nation: '',
-                }))
-              }
-            >
-              Clear League Filter
-            </button>
-          </div>
-        )}
+      {renderFilters('desktop-filters-section')}
 
-        <div className="modern-filters">
-          {/* Row 1: Player Name + Clear Filters */}
-          <div className="filter-item filter-name">
-            <input
-              type="text"
-              placeholder="Player name..."
-              value={filters.name}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, name: e.target.value }))
-              }
-              className="filter-input"
-            />
-          </div>
-          <div className="filter-item filter-clear">
-            <button className="clear-filters-button" onClick={clearAllFilters}>
-              Clear All
-            </button>
-          </div>
-
-          {/* Row 2: All Leagues + All Clubs */}
-          <div className="filter-item">
-            <button
-              className="filter-button"
-              onClick={() => setShowLeagueModal(true)}
-            >
-              <span>
-                {filters.league ? getLeagueName(filters.league) : 'All Leagues'}
-              </span>
-              <img
-                src="/assets/team-picker-arrows/right.png"
-                alt=">"
-                className="filter-chevron"
-              />
-            </button>
-          </div>
-          <div className="filter-item">
-            <button
-              className="filter-button"
-              onClick={() => setShowClubModal(true)}
-              disabled={!filters.league}
-            >
-              <span>
-                {!filters.league
-                  ? 'Pick your League first!'
-                  : filters.club
-                    ? getTeamName(filters.club)
-                    : 'All Clubs'}
-              </span>
-              <img
-                src="/assets/team-picker-arrows/right.png"
-                alt=">"
-                className="filter-chevron"
-              />
-            </button>
-          </div>
-
-          {/* Row 3: All Nations + All Positions */}
-          <div className="filter-item">
-            <button
-              className="filter-button"
-              onClick={() => setShowNationModal(true)}
-            >
-              <span>
-                {filters.nation ? getNationName(filters.nation) : 'All Nations'}
-              </span>
-              <img
-                src="/assets/team-picker-arrows/right.png"
-                alt=">"
-                className="filter-chevron"
-              />
-            </button>
-          </div>
-          <div className="filter-item">
-            <button
-              className="filter-button"
-              onClick={() => setShowPositionModal(true)}
-            >
-              <span>
-                {filters.position
-                  ? filters.position.startsWith('group:')
-                    ? filters.position.replace('group:', '') + 's'
-                    : getPositionData().find(
-                        (p) => p.id == parseInt(filters.position)
-                      )?.name
-                  : 'All Positions'}
-              </span>
-              <img
-                src="/assets/team-picker-arrows/right.png"
-                alt=">"
-                className="filter-chevron"
-              />
-            </button>
-          </div>
-
-          {/* Row 4: Min Value + Max Value */}
-          <div className="filter-item">
-            <input
-              type="number"
-              placeholder="Min value (€)"
-              value={filters.minValue}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, minValue: e.target.value }))
-              }
-              className="filter-input"
-            />
-          </div>
-          <div className="filter-item">
-            <input
-              type="number"
-              placeholder="Max value (€)"
-              value={filters.maxValue}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, maxValue: e.target.value }))
-              }
-              className="filter-input"
-            />
-          </div>
-        </div>
+      <div className="mobile-market-actions">
+        <button
+          type="button"
+          className="mobile-filter-button"
+          onClick={() => setShowFiltersModal(true)}
+        >
+          Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
+        </button>
       </div>
 
       <div className="results-section">
@@ -667,146 +733,202 @@ function PlayerMarket({
           <h3>Available Players ({filteredPlayers.length})</h3>
         </div>
 
-        <div className="players-grid">
-          {currentPlayers.map((player) => {
-            return (
-              <div
-                key={player.player_id}
-                className="player-card"
-                onClick={() => handlePlayerClick(player)}
-              >
-                {/* Row 1: Photo + Name */}
-                <div className="player-row player-row-1">
-                  <div className="player-image">
-                    <img
-                      src={player.player_portrait_small_pic}
-                      alt={player.player_name}
-                      onError={(e) => {
-                        e.target.src =
-                          'https://via.placeholder.com/60x60?text=Player';
-                      }}
-                    />
-                  </div>
-                  <h4 className="player-name">{player.player_name}</h4>
-                </div>
-
-                {/* Row 2: Current team name */}
-                <p className="player-club">{getTeamName(player.team_id)}</p>
-
-                {/* Row 3: Nationality Flag + Position + Money */}
-                <div className="player-row player-row-3">
-                  <img
-                    src={getNationFlag(player.nation_id)}
-                    alt="Nationality"
-                    className="player-nationality-flag"
-                    onError={(e) => {
-                      e.target.src =
-                        'https://via.placeholder.com/20x15?text=Flag';
-                    }}
-                  />
-                  <span className="player-position">
-                    {getPositionName(player.position_id)}
-                  </span>
-                  <span className="player-value">
-                    {formatValue(player.player_market_value)}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Pagination Controls */}
-        <div className="pagination-controls">
-          <div className="pagination-info">
-            Showing {startIndex + 1}-
-            {Math.min(endIndex, filteredPlayers.length)} of{' '}
-            {filteredPlayers.length} players
+        {filteredPlayers.length === 0 ? (
+          <div className="empty-results">
+            <h4>No players found</h4>
+            <p>Try adjusting your filters.</p>
           </div>
-          {totalPages > 1 && (
-            <>
-              <div className="players-per-page-selector">
-                <label htmlFor="players-per-page">Players per page:</label>
-                <select
-                  id="players-per-page"
-                  value={playersPerPage}
-                  onChange={(e) => {
-                    setPlayersPerPage(Number(e.target.value));
-                    setCurrentPage(1); // Reset to first page when changing page size
-                  }}
-                  className="players-per-page-select"
-                >
-                  <option value={10}>10</option>
-                  <option value={20}>20</option>
-                  <option value={50}>50</option>
-                  <option value={100}>100</option>
-                </select>
-              </div>
-              <div className="pagination-buttons">
-                <button
-                  className="pagination-button"
-                  onClick={() => setCurrentPage(1)}
-                  disabled={currentPage === 1}
-                >
-                  First
-                </button>
-                <button
-                  className="pagination-button"
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.max(1, prev - 1))
-                  }
-                  disabled={currentPage === 1}
-                >
-                  Previous
-                </button>
+        ) : (
+          <div className="players-table-container">
+            <table className="players-table">
+              <thead>
+                <tr>
+                  <th>Player</th>
+                  <th>Club</th>
+                  <th>League</th>
+                  <th>Nation</th>
+                  <th>Pos</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentPlayers.map((player) => (
+                  <tr
+                    key={player.player_id}
+                    className="player-table-row"
+                    onClick={() => handlePlayerClick(player)}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handlePlayerClick(player);
+                      }
+                    }}
+                  >
+                    <td>
+                      <div className="market-player-cell">
+                        <img
+                          src={player.player_portrait_small_pic}
+                          alt={player.player_name}
+                          className="market-player-image"
+                          onError={(e) => {
+                            e.target.src =
+                              'https://via.placeholder.com/60x60?text=Player';
+                          }}
+                        />
+                        <span className="market-player-name">
+                          {player.player_name}
+                        </span>
+                      </div>
+                    </td>
+                    <td>{getTeamName(player.team_id)}</td>
+                    <td>{getLeagueName(player.league_id)}</td>
+                    <td>
+                      <div className="market-nation-cell">
+                        <img
+                          src={getNationFlag(player.nation_id)}
+                          alt=""
+                          className="market-nationality-flag"
+                          onError={(e) => {
+                            e.target.src =
+                              'https://via.placeholder.com/20x15?text=Flag';
+                          }}
+                        />
+                        <span>{getNationName(player.nation_id)}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span className="market-position-pill">
+                        {getPositionName(player.position_id)}
+                      </span>
+                    </td>
+                    <td className="market-value-cell">
+                      {formatValue(player.player_market_value)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
-                {/* Page numbers */}
-                <div className="page-numbers">
-                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                    let pageNum;
-                    if (totalPages <= 5) {
-                      pageNum = i + 1;
-                    } else if (currentPage <= 3) {
-                      pageNum = i + 1;
-                    } else if (currentPage >= totalPages - 2) {
-                      pageNum = totalPages - 4 + i;
-                    } else {
-                      pageNum = currentPage - 2 + i;
-                    }
-
-                    return (
-                      <button
-                        key={pageNum}
-                        className={`pagination-button page-number ${currentPage === pageNum ? 'active' : ''}`}
-                        onClick={() => setCurrentPage(pageNum)}
-                      >
-                        {pageNum}
-                      </button>
-                    );
-                  })}
+        {filteredPlayers.length > 0 && (
+          <div className="pagination-controls">
+            <div className="pagination-info">
+              Showing {startIndex + 1}-
+              {Math.min(endIndex, filteredPlayers.length)} of{' '}
+              {filteredPlayers.length} players
+            </div>
+            {totalPages > 1 && (
+              <>
+                <div className="players-per-page-selector">
+                  <label htmlFor="players-per-page">Players per page:</label>
+                  <select
+                    id="players-per-page"
+                    value={playersPerPage}
+                    onChange={(e) => {
+                      setPlayersPerPage(Number(e.target.value));
+                      setCurrentPage(1); // Reset to first page when changing page size
+                    }}
+                    className="players-per-page-select"
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                    <option value={100}>100</option>
+                  </select>
                 </div>
+                <div className="pagination-buttons">
+                  <button
+                    className="pagination-button"
+                    onClick={() => setCurrentPage(1)}
+                    disabled={currentPage === 1}
+                  >
+                    First
+                  </button>
+                  <button
+                    className="pagination-button"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(1, prev - 1))
+                    }
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </button>
 
-                <button
-                  className="pagination-button"
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.min(totalPages, prev + 1))
-                  }
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                </button>
-                <button
-                  className="pagination-button"
-                  onClick={() => setCurrentPage(totalPages)}
-                  disabled={currentPage === totalPages}
-                >
-                  Last
-                </button>
-              </div>
-            </>
-          )}
-        </div>
+                  {/* Page numbers */}
+                  <div className="page-numbers">
+                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                      let pageNum;
+                      if (totalPages <= 5) {
+                        pageNum = i + 1;
+                      } else if (currentPage <= 3) {
+                        pageNum = i + 1;
+                      } else if (currentPage >= totalPages - 2) {
+                        pageNum = totalPages - 4 + i;
+                      } else {
+                        pageNum = currentPage - 2 + i;
+                      }
+
+                      return (
+                        <button
+                          key={pageNum}
+                          className={`pagination-button page-number ${currentPage === pageNum ? 'active' : ''}`}
+                          onClick={() => setCurrentPage(pageNum)}
+                        >
+                          {pageNum}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <button
+                    className="pagination-button"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+                    }
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </button>
+                  <button
+                    className="pagination-button"
+                    onClick={() => setCurrentPage(totalPages)}
+                    disabled={currentPage === totalPages}
+                  >
+                    Last
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
       </div>
+
+      {showFiltersModal && (
+        <div
+          className="modal-overlay filters-modal-overlay"
+          onClick={() => setShowFiltersModal(false)}
+        >
+          <div
+            className="filter-modal market-filters-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-header">
+              <h3>Filters</h3>
+              <button
+                className="close-button"
+                onClick={() => setShowFiltersModal(false)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="market-filters-modal-body">
+              {renderFilters('modal-filters-section')}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Purchase Modal */}
       {showPurchaseModal && selectedPlayer && (

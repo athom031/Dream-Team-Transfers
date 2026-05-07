@@ -10,3 +10,13 @@
   --letter-spacing: 4px;
   --border-radius: 10px;
 }
+
+html {
+  scrollbar-gutter: stable;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

@@ -2,11 +2,14 @@
 
 ## Steps to Run the Transfermarkt Scraper
 
-1. **Install all required imports**:
-   Ensure that you have all the necessary dependencies installed. You can do this by running:
+1. **Create a virtual environment and install dependencies**:
+   Homebrew-managed Python blocks system-wide package installs, so keep scraper dependencies in a local virtual environment:
 
    ```bash
-   pip install -r requirements.txt
+   cd transfermarkt_scraper
+   python3 -m venv .venv
+   source .venv/bin/activate
+   python -m pip install -r requirements.txt
    ```
 
 2. **Define user agent**:
@@ -22,7 +25,7 @@
 
 ## Introduction
 
-This repository is dedicated to scraping data from [Transfermarkt](https://www.transfermarkt.com) to provide a comprehensive database of player, team, and league information. This data will be used to create a virtual marketplace for the European Transfer Market, ensuring the accuracy and realism of player transfers in the 24/25 season.
+This repository is dedicated to scraping data from [Transfermarkt](https://www.transfermarkt.com) to provide a comprehensive database of player, team, and league information. This data will be used to create a virtual marketplace for the European Transfer Market, ensuring the accuracy and realism of player transfers for the configured season.
 
 ## Purpose
 
@@ -40,13 +43,15 @@ To maintain a realistic scope for the website while providing a wide range of pl
 - Liga Portugal (Portuguese Top Tier)
 - Eredivisie (Dutch Top Tier)
 
-## Supported Teams: Integrating Relegation
+## Supported Teams
 
-European football includes the practice of relegation and promotion, which means that top-tier leagues are part of a broader system of multiple leagues. To account for this, we have manually collected information on teams that are getting relegated from and promoted into the supported leagues. This information is crucial for the upcoming 24/25 season.
+The team list is configured in [`constants/leagues_to_parse.py`](https://github.com/athom031/Dream-Team-Transfers/blob/main/transfermarkt_scraper/constants/leagues_to_parse.py).
 
-[League Parsing Script](https://github.com/athom031/Dream-Team-Transfers/blob/main/transfermarkt_scraper/constants/leagues_to_parse.py)
+By default, the scraper uses `TEAM_SELECTION_MODE = CURRENT_LEAGUE_PAGES`. In this mode it scrapes each supported Transfermarkt league page directly and treats every club on that page as part of that league. Use this when Transfermarkt has already updated the target season's league membership.
 
-Now, with this data, we can scrape the website to find the relevant team data for the 24/25 season.
+If Transfermarkt has not updated the new season yet, switch to `TEAM_SELECTION_MODE = PROJECTED_LEAGUES`. In this mode, edit `PROJECTED_TEAM_OVERRIDES` to manually promote, relegate, keep, or exclude teams while scraping the previous season's league pages.
+
+Set `MEMBERSHIP_SEASON_ID` for the league pages used to discover clubs. Set `SQUAD_SEASON_ID` for the squad pages used to scrape players.
 
 [Supported Team Script](https://github.com/athom031/Dream-Team-Transfers/blob/main/transfermarkt_scraper/scraped_data/scrape_and_get_supported_teams.py)
 
@@ -70,4 +75,4 @@ To simplify database management, we have categorized the collected information a
 
 ## Conclusion
 
-By scraping and organizing data from Transfermarkt, we are one step closer to creating an authentic European Transfer Market experience on our website. This database will serve as a foundation for the virtual marketplace, enhancing user engagement and realism in the 24/25 season.
+By scraping and organizing data from Transfermarkt, we are one step closer to creating an authentic European Transfer Market experience on our website. This database will serve as a foundation for the virtual marketplace, enhancing user engagement and realism for the configured season.

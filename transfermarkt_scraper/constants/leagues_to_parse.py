@@ -1,196 +1,258 @@
 ## DICTIONARY KEYS ##
 NAME = 'name'
+SLUG = 'slug'
+COMPETITION_ID = 'competition_id'
 URL = 'url'
 NATION = 'nation'
 LOGO = 'logo'
 TEAMS_TO_ADD_ELSEWHERE = 'teams_to_add_elsewhere'
 
-## LEAGUE DICTIONARY ##
-# format for leagues to be parsed to build accurate team list for 24/25 season
-# adds context of promotion/relegation from 23/24 tables
-"""
-## <LEAGUE NAME> ##
+## TEAM SELECTION MODES ##
+CURRENT_LEAGUE_PAGES = 'current_league_pages'
+PROJECTED_LEAGUES = 'projected_leagues'
 
-<if team is supported>
-<positive_id>: {
-    NAME: '<league_name>',
-    URL: '<league_url>',
-    NATION: '<league_nation>',
-    LOGO: '<league_logo>',
-    TEAMS_TO_ADD_ELSEWHERE: {
-        '<team_name>': <league_id_to_send_to>
+# Use current_league_pages when Transfermarkt already lists the target
+# season's league membership. Use projected_leagues when the new season is
+# not available yet and you need to manually move teams between leagues.
+TEAM_SELECTION_MODE = CURRENT_LEAGUE_PAGES
+
+# Transfermarkt's 25/26 season is represented by saison_id=2025.
+MEMBERSHIP_SEASON_ID = 2025
+SQUAD_SEASON_ID = 2025
+
+
+def build_league_url(slug, competition_id, season_id=MEMBERSHIP_SEASON_ID):
+    return (
+        f'https://www.transfermarkt.com/{slug}/startseite/'
+        f'wettbewerb/{competition_id}/plus/?saison_id={season_id}'
+    )
+
+
+def build_league_config(name, slug, competition_id, nation, logo, league_id):
+    return {
+        NAME: name,
+        SLUG: slug,
+        COMPETITION_ID: competition_id,
+        URL: build_league_url(slug, competition_id),
+        NATION: nation,
+        LOGO: logo,
+        TEAMS_TO_ADD_ELSEWHERE: PROJECTED_TEAM_OVERRIDES.get(league_id, {})
     }
-}
 
-<if team is not supported>
-<negative_id>: {
-    URL: '<league_url>',
-    TEAMS_TO_ADD_ELSEWHERE: {
-        '<team_name>': <league_id_to_send_to>
+
+def build_source_only_league_config(slug, competition_id, league_id):
+    return {
+        SLUG: slug,
+        COMPETITION_ID: competition_id,
+        URL: build_league_url(slug, competition_id),
+        TEAMS_TO_ADD_ELSEWHERE: PROJECTED_TEAM_OVERRIDES.get(league_id, {})
     }
-}
-"""
 
-LEAGUES_TO_PARSE = {
-    ## PREMIER LEAGUE ##
+
+## PROJECTED LEAGUE OVERRIDES ##
+# These overrides are only used when TEAM_SELECTION_MODE = PROJECTED_LEAGUES.
+#
+# Format:
+# source_league_id: {
+#     '<team_name_on_transfermarkt>': <target_supported_league_id_or_None>
+# }
+#
+# Use a target league id to move a team into another supported league.
+# Use None to exclude a team from the supported team pool.
+# Teams not listed here stay in their current supported league when the
+# source league id is positive. Teams from negative source-only leagues are
+# ignored unless explicitly moved into a supported league.
+#
+# The values below preserve the old 23/24 -> 24/25 projection logic. Update
+# this map before using projected_leagues for a different summer.
+PROJECTED_TEAM_OVERRIDES = {
+    # Premier League -> Championship
     0: {
-        NAME: 'Premier League',
-        URL: 'https://www.transfermarkt.com/premier-league/startseite/wettbewerb/GB1/plus/?saison_id=2023',
-        NATION: 'England',
-        LOGO: 'https://tmssl.akamaized.net/images/logo/header/gb1.png?lm=1521104656',
-        TEAMS_TO_ADD_ELSEWHERE: {
-            'Burnley FC': 1,
-            'Sheffield United': 1,
-            'Luton Town': 1,
-        }
+        'Burnley FC': 1,
+        'Sheffield United': 1,
+        'Luton Town': 1,
     },
-    ## CHAMPIONSHIP ##
+    # Championship -> Premier League / unsupported
     1: {
-        NAME: 'Championship',
-        URL: 'https://www.transfermarkt.com/championship/startseite/wettbewerb/GB2/plus/?saison_id=2023',
-        NATION: 'England',
-        LOGO: 'https://tmssl.akamaized.net/images/logo/header/gb2.png?lm=1643026970',
-        TEAMS_TO_ADD_ELSEWHERE: {
-            'Ipswich Town': 0,
-            'Leicester City': 0,
-            'Southampton FC': 0,
-            'Birmingham City': None,
-            'Huddersfield Town': None,
-            'Rotherham United': None,
-        }
+        'Ipswich Town': 0,
+        'Leicester City': 0,
+        'Southampton FC': 0,
+        'Birmingham City': None,
+        'Huddersfield Town': None,
+        'Rotherham United': None,
     },
-	## LEAGUE ONE ##
+    # League One -> Championship
     -1: {
-        URL: 'https://www.transfermarkt.com/league-one/startseite/wettbewerb/GB3/plus/?saison_id=2023',
-        TEAMS_TO_ADD_ELSEWHERE: {
-            'Oxford United': 1,
-            'Derby County': 1,
-            'Portsmouth FC': 1
-        }
+        'Oxford United': 1,
+        'Derby County': 1,
+        'Portsmouth FC': 1
     },
-	## LA LIGA ##
+    # La Liga -> unsupported
     2: {
-        NAME: 'La Liga',
-        URL: 'https://www.transfermarkt.com/laliga/startseite/wettbewerb/ES1/plus/?saison_id=2023',
-        NATION: 'Spain',
-        LOGO: 'https://tmssl.akamaized.net/images/logo/header/es1.png?lm=1557051003',
-        TEAMS_TO_ADD_ELSEWHERE: {
-            'Cádiz CF': None,
-            'Granada CF': None,
-            'UD Almería': None
-        }
+        'Cádiz CF': None,
+        'Granada CF': None,
+        'UD Almería': None
     },
-    ## LA LIGA 2 ##
+    # La Liga 2 -> La Liga
     -2: {
-        URL: 'https://www.transfermarkt.com/laliga2/startseite/wettbewerb/ES2/plus/?saison_id=2023',
-        TEAMS_TO_ADD_ELSEWHERE: {
-            'Real Valladolid CF': 2,
-            'CD Leganés': 2,
-            'RCD Espanyol Barcelona': 2
-        }
+        'Real Valladolid CF': 2,
+        'CD Leganés': 2,
+        'RCD Espanyol Barcelona': 2
     },
-    ## BUNDESLIGA ##
+    # Bundesliga -> unsupported
     3: {
-        NAME: 'Bundesliga',
-        URL: 'https://www.transfermarkt.com/bundesliga/startseite/wettbewerb/L1/plus/?saison_id=2023',
-        NATION: 'Germany',
-        LOGO: 'https://tmssl.akamaized.net/images/logo/header/l1.png?lm=1525905518',
-        TEAMS_TO_ADD_ELSEWHERE: {
-            '1.FC Köln': None,
-            'SV Darmstadt 98': None
-        }
+        '1.FC Köln': None,
+        'SV Darmstadt 98': None
     },
-    ## BUNDESLIGA 2 ##
+    # 2. Bundesliga -> Bundesliga
     -3: {
-        URL: 'https://www.transfermarkt.com/bundesliga/startseite/wettbewerb/L2/plus/?saison_id=2023',
-        TEAMS_TO_ADD_ELSEWHERE: {
-            'FC St. Pauli': 3,
-            'Holstein Kiel': 3
-        }
+        'FC St. Pauli': 3,
+        'Holstein Kiel': 3
     },
-	## SERIE A ##
-	4: {
-        NAME: 'Serie A',
-        URL: 'https://www.transfermarkt.com/serie-a/startseite/wettbewerb/IT1/plus/?saison_id=2023',
-        NATION: 'Italy',
-        LOGO: 'https://tmssl.akamaized.net/images/logo/header/it1.png?lm=1656073460',
-        TEAMS_TO_ADD_ELSEWHERE: {
-            'Frosinone Calcio': None,
-            'US Sassuolo': None,
-            'US Salernitana 1919': None
-        }
-	},
-	## SERIE B ##
-	-4: {
-        URL: 'https://www.transfermarkt.com/serie-b/startseite/wettbewerb/IT2/plus/?saison_id=2023',
-        TEAMS_TO_ADD_ELSEWHERE: {
-            'Parma Calcio 1913': 4,
-            'Como 1907': 4,
-            'Venezia FC': 4
-
-        }
-	},
-	## LIGUE 1 ##
-	5: {
-        NAME: 'Ligue One',
-        URL: 'https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR1/plus/?saison_id=2023',
-        NATION: 'France',
-        LOGO: 'https://tmssl.akamaized.net/images/logo/header/fr1.png?lm=1648360140',
-        TEAMS_TO_ADD_ELSEWHERE: {
-            'FC Lorient': None,
-            'FC Metz': None,
-            'Clermont Foot 63': None
-        }
-	},
-	## LIGUE 2 ##
-	-5: {
-        URL: 'https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR2/plus/?saison_id=2023',
-        TEAMS_TO_ADD_ELSEWHERE: {
-            'AJ Auxerre': 5,
-            'Angers SCO': 5,
-            'AS Saint-Étienne': 5,
-        }
-	},
-	## LIGA PORTUGAL ##
-	6: {
-        NAME: 'Liga Portugal',
-        URL: 'https://www.transfermarkt.com/liga-nos/startseite/wettbewerb/PO1/plus/?saison_id=2023',
-        NATION: 'Portugal',
-        LOGO: 'https://tmssl.akamaized.net/images/logo/header/po1.png?lm=1626110146',
-        TEAMS_TO_ADD_ELSEWHERE: {
-            'FC Vizela': None,
-            'GD Chaves': None,
-            'Portimonense SC': None
-        }
-	},
-	## LIGA PORTUGAL 2 ##
-	-6: {
-        URL: 'https://www.transfermarkt.com/liga-nos/startseite/wettbewerb/PO2/plus/?saison_id=2023',
-		TEAMS_TO_ADD_ELSEWHERE: {
-            'CD Santa Clara': 6,
-            'CD Nacional': 6,
-            'Avs Futebol': 6
-        }
-	},
-	## EREDIVISIE ##
+    # Serie A -> unsupported
+    4: {
+        'Frosinone Calcio': None,
+        'US Sassuolo': None,
+        'US Salernitana 1919': None
+    },
+    # Serie B -> Serie A
+    -4: {
+        'Parma Calcio 1913': 4,
+        'Como 1907': 4,
+        'Venezia FC': 4
+    },
+    # Ligue 1 -> unsupported
+    5: {
+        'FC Lorient': None,
+        'FC Metz': None,
+        'Clermont Foot 63': None
+    },
+    # Ligue 2 -> Ligue 1
+    -5: {
+        'AJ Auxerre': 5,
+        'Angers SCO': 5,
+        'AS Saint-Étienne': 5,
+    },
+    # Liga Portugal -> unsupported
+    6: {
+        'FC Vizela': None,
+        'GD Chaves': None,
+        'Portimonense SC': None
+    },
+    # Liga Portugal 2 -> Liga Portugal
+    -6: {
+        'CD Santa Clara': 6,
+        'CD Nacional': 6,
+        'Avs Futebol': 6
+    },
+    # Eredivisie -> unsupported
     7: {
-        NAME: 'Eredivisie',
-        URL: 'https://www.transfermarkt.com/eredivisie/startseite/wettbewerb/NL1/plus/?saison_id=2023',
-        NATION: 'Netherlands',
-        LOGO: 'https://tmssl.akamaized.net/images/logo/header/nl1.png?lm=1674743474',
-        TEAMS_TO_ADD_ELSEWHERE: {
-            'Excelsior Rotterdam': None,
-            'FC Volendam': None,
-            'Vitesse Arnhem': None
-        }
+        'Excelsior Rotterdam': None,
+        'FC Volendam': None,
+        'Vitesse Arnhem': None
     },
-	## KEUKEN KAMPIOEN DIVISIE ##
-	-7: {
-        URL: 'https://www.transfermarkt.com/eredivisie/startseite/wettbewerb/NL2/plus/?saison_id=2023',
-        TEAMS_TO_ADD_ELSEWHERE: {
-            'Willem II Tilburg': 7,
-            'FC Groningen': 7,
-            'NAC Breda': 7
-        }
-	}
+    # Keuken Kampioen Divisie -> Eredivisie
+    -7: {
+        'Willem II Tilburg': 7,
+        'FC Groningen': 7,
+        'NAC Breda': 7
+    }
 }
+
+
+## SUPPORTED LEAGUES ##
+SUPPORTED_LEAGUES = {
+    0: build_league_config(
+        'Premier League',
+        'premier-league',
+        'GB1',
+        'England',
+        'https://tmssl.akamaized.net/images/logo/header/gb1.png?lm=1521104656',
+        0
+    ),
+    1: build_league_config(
+        'Championship',
+        'championship',
+        'GB2',
+        'England',
+        'https://tmssl.akamaized.net/images/logo/header/gb2.png?lm=1643026970',
+        1
+    ),
+    2: build_league_config(
+        'La Liga',
+        'laliga',
+        'ES1',
+        'Spain',
+        'https://tmssl.akamaized.net/images/logo/header/es1.png?lm=1557051003',
+        2
+    ),
+    3: build_league_config(
+        'Bundesliga',
+        'bundesliga',
+        'L1',
+        'Germany',
+        'https://tmssl.akamaized.net/images/logo/header/l1.png?lm=1525905518',
+        3
+    ),
+    4: build_league_config(
+        'Serie A',
+        'serie-a',
+        'IT1',
+        'Italy',
+        'https://tmssl.akamaized.net/images/logo/header/it1.png?lm=1656073460',
+        4
+    ),
+    5: build_league_config(
+        'Ligue 1',
+        'ligue-1',
+        'FR1',
+        'France',
+        'https://tmssl.akamaized.net/images/logo/header/fr1.png?lm=1648360140',
+        5
+    ),
+    6: build_league_config(
+        'Liga Portugal',
+        'liga-portugal',
+        'PO1',
+        'Portugal',
+        'https://tmssl.akamaized.net/images/logo/header/po1.png?lm=1626110146',
+        6
+    ),
+    7: build_league_config(
+        'Eredivisie',
+        'eredivisie',
+        'NL1',
+        'Netherlands',
+        'https://tmssl.akamaized.net/images/logo/header/nl1.png?lm=1674743474',
+        7
+    )
+}
+
+
+## SOURCE-ONLY LEAGUES FOR PROJECTED MODE ##
+SOURCE_ONLY_LEAGUES = {
+    -1: build_source_only_league_config('league-one', 'GB3', -1),
+    -2: build_source_only_league_config('laliga2', 'ES2', -2),
+    -3: build_source_only_league_config('2-bundesliga', 'L2', -3),
+    -4: build_source_only_league_config('serie-b', 'IT2', -4),
+    -5: build_source_only_league_config('ligue-2', 'FR2', -5),
+    -6: build_source_only_league_config('liga-portugal-2', 'PO2', -6),
+    -7: build_source_only_league_config('eerste-divisie', 'NL2', -7)
+}
+
+
+# Backward-compatible name for the full set of pages used by projected mode.
+LEAGUES_TO_PARSE = {
+    **SUPPORTED_LEAGUES,
+    **SOURCE_ONLY_LEAGUES
+}
+
+
+def get_leagues_to_parse():
+    if TEAM_SELECTION_MODE == CURRENT_LEAGUE_PAGES:
+        return SUPPORTED_LEAGUES
+
+    if TEAM_SELECTION_MODE == PROJECTED_LEAGUES:
+        return LEAGUES_TO_PARSE
+
+    raise ValueError(f'Unsupported team selection mode: {TEAM_SELECTION_MODE}')
