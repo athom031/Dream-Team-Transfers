@@ -83,7 +83,18 @@ function DreamTeam() {
               />
             }
           />
-          <Route path="/transfer-summary" element={<TransferSummary />} />
+          <Route
+            path="/transfer-summary"
+            element={
+              <TransferSummary
+                NationsCSVData={NationsCSVData}
+                PlayersCSVData={PlayersCSVData}
+                PositionsCSVData={PositionsCSVData}
+                TeamsCSVData={TeamsCSVData}
+                csvLoading={csvLoading}
+              />
+            }
+          />
           <Route path="/team-restart" element={<TeamRestart />} />
           <Route
             path="/"

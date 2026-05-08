@@ -30,12 +30,31 @@ function normalizeTeamData(data) {
     ...getInitialTeamData(),
     ...data,
   };
+  const playersSold = Array.isArray(data?.players_sold)
+    ? data.players_sold
+    : [];
+  const soldPlayerIds = new Set(
+    playersSold.map((playerId) => Number(playerId))
+  );
 
   normalizedData.selected_formation =
     data?.selected_formation || DEFAULT_FORMATION;
-  normalizedData.team_positions = Array.isArray(data?.team_positions)
-    ? data.team_positions
-    : getEmptyTeam();
+  normalizedData.team_positions = (
+    Array.isArray(data?.team_positions) ? data.team_positions : getEmptyTeam()
+  )
+    .slice(0, 11)
+    .map((playerId) =>
+      playerId !== null &&
+      playerId !== undefined &&
+      soldPlayerIds.has(Number(playerId))
+        ? null
+        : playerId
+    );
+
+  while (normalizedData.team_positions.length < 11) {
+    normalizedData.team_positions.push(null);
+  }
+
   normalizedData.team_kit_updates =
     data?.team_kit_updates && typeof data.team_kit_updates === 'object'
       ? data.team_kit_updates
@@ -43,9 +62,7 @@ function normalizeTeamData(data) {
   normalizedData.players_bought = Array.isArray(data?.players_bought)
     ? data.players_bought
     : [];
-  normalizedData.players_sold = Array.isArray(data?.players_sold)
-    ? data.players_sold
-    : [];
+  normalizedData.players_sold = playersSold;
 
   return normalizedData;
 }
@@ -132,9 +149,20 @@ export function restartTeam() {
 export function sellPlayer(playerId, playerValue) {
   return initializeDB().then(() => {
     return db.get(TEAM_DATA_ID).then((doc) => {
+      const normalizedPlayerId = Number(playerId);
+
       doc.team_budget = String(Number(doc.team_budget) + playerValue);
       doc.team_value = String(Number(doc.team_value) - playerValue);
       doc.players_sold = [...doc.players_sold, playerId];
+      doc.team_positions = Array.isArray(doc.team_positions)
+        ? doc.team_positions.map((lineupPlayerId) =>
+            lineupPlayerId !== null &&
+            lineupPlayerId !== undefined &&
+            Number(lineupPlayerId) === normalizedPlayerId
+              ? null
+              : lineupPlayerId
+          )
+        : getEmptyTeam();
 
       return db.put(doc);
     });

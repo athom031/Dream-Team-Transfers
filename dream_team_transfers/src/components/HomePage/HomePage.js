@@ -78,6 +78,11 @@ function HomePage() {
     setTeamSubmitted(selectedTeam);
   };
 
+  const selectedTeamInfo =
+    selectedTeam !== null ? PREMIER_LEAGUE_TEAM_INFOS[selectedTeam] : null;
+  const activeTeamInfo =
+    teamIndex !== null ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex] : null;
+
   return (
     // if team is submitted show Loading Screen
     // after 4 seconds submit team info to DB
@@ -85,16 +90,31 @@ function HomePage() {
       <Loading />
     ) : (
       <div className="home-page">
-        {/* HOME PAGE TITLE */}
-        <h1 className="title">DREAM TEAM TRANSFERS</h1>
-
         <div className="home-page-content">
-          <div className="intro-and-selection">
-            {/* CONCEPT DIV */}
-            <div className="concept">
-              {/* BUY PLAYERS */}
+          <section className="landing-panel landing-panel-primary">
+            <div className="landing-title-block">
+              <img
+                src={DREAM_TEAM_LOGO}
+                alt=""
+                className="landing-logo-mark"
+                aria-hidden="true"
+              />
+              <div>
+                <h1 className="title">Dream Team Transfers</h1>
+                <p>
+                  Pick a Premier League club, sell smart, and rebuild the squad
+                  with talent from across Europe.
+                </p>
+              </div>
+            </div>
+
+            <div
+              className="concept"
+              aria-label="How Dream Team Transfers works"
+            >
               <div className="concept-container">
-                <div className="concept-icon-container">
+                <span className="concept-number">1</span>
+                <div className="concept-icon-container" aria-hidden="true">
                   <img
                     src={
                       process.env.PUBLIC_URL +
@@ -104,16 +124,12 @@ function HomePage() {
                     className="concept-icon"
                   />
                 </div>
-                <h2 className="concept-text">
-                  1.
-                  <br />
-                  Buy Hidden Gems Across Europe!
-                </h2>
+                <h2 className="concept-text">Buy hidden gems</h2>
               </div>
 
-              {/* SELL PLAYERS */}
               <div className="concept-container">
-                <div className="concept-icon-container">
+                <span className="concept-number">2</span>
+                <div className="concept-icon-container" aria-hidden="true">
                   <img
                     src={
                       process.env.PUBLIC_URL +
@@ -123,16 +139,12 @@ function HomePage() {
                     className="concept-icon"
                   />
                 </div>
-                <h2 className="concept-text">
-                  2.
-                  <br />
-                  Sell Unwanted Players!
-                </h2>
+                <h2 className="concept-text">Sell unwanted players</h2>
               </div>
 
-              {/* BUILD DREAM TEAM */}
               <div className="concept-container">
-                <div className="concept-icon-container">
+                <span className="concept-number">3</span>
+                <div className="concept-icon-container" aria-hidden="true">
                   <img
                     src={
                       process.env.PUBLIC_URL +
@@ -142,83 +154,96 @@ function HomePage() {
                     className="concept-icon"
                   />
                 </div>
-                <h2 className="concept-text">
-                  3.
-                  <br />
-                  Build Your Dream Team!
-                </h2>
+                <h2 className="concept-text">Build your XI</h2>
               </div>
             </div>
 
-            {/* TEAM SELECTOR */}
             <div className="team-selector">
-              <div className="team-selection-padding">
-                <div className="team-selection-background">
-                  <div className="team-picker">
-                    {/* LEFT ARROW */}
+              <div className="team-selection-background">
+                <div className="team-picker-header">
+                  <span>Choose Club</span>
+                  <strong>
+                    {activeTeamInfo ? activeTeamInfo.nickname : 'New Save'}
+                  </strong>
+                </div>
+
+                <div className="team-picker">
+                  <button
+                    type="button"
+                    className="team-arrow-button"
+                    onMouseEnter={() => setIsHoveredLeft(true)}
+                    onMouseLeave={() => setIsHoveredLeft(false)}
+                    onClick={handleLeftClick}
+                    aria-label="Previous team"
+                  >
                     <img
                       src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/left${isHoveredLeft ? '-hover' : ''}.png`}
-                      onMouseEnter={() => setIsHoveredLeft(true)}
-                      onMouseLeave={() => setIsHoveredLeft(false)}
-                      onClick={handleLeftClick}
                       className="arrow-button"
-                      alt="left arrow"
+                      alt=""
                     />
+                  </button>
 
-                    {/* TEAM PICKER ICON */}
-                    <div className="logo-container">
-                      <img
-                        src={
-                          teamIndex !== null
-                            ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].logo
-                            : DREAM_TEAM_LOGO
-                        }
-                        className="team-logo"
-                        alt={
-                          teamIndex !== null
-                            ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].alias +
-                              ' logo'
-                            : 'Dream Team Transfers Logo'
-                        }
-                      />
-                    </div>
+                  <div className="logo-container">
+                    <img
+                      src={
+                        activeTeamInfo !== null && activeTeamInfo !== undefined
+                          ? activeTeamInfo.logo
+                          : DREAM_TEAM_LOGO
+                      }
+                      className="team-logo"
+                      alt={
+                        activeTeamInfo
+                          ? `${activeTeamInfo.alias} logo`
+                          : 'Dream Team Transfers Logo'
+                      }
+                    />
+                  </div>
 
-                    {/* RIGHT ARROW */}
+                  <button
+                    type="button"
+                    className="team-arrow-button"
+                    onMouseEnter={() => setIsHoveredRight(true)}
+                    onMouseLeave={() => setIsHoveredRight(false)}
+                    onClick={handleRightClick}
+                    aria-label="Next team"
+                  >
                     <img
                       src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/right${isHoveredRight ? '-hover' : ''}.png`}
-                      onMouseEnter={() => setIsHoveredRight(true)}
-                      onMouseLeave={() => setIsHoveredRight(false)}
-                      onClick={handleRightClick}
                       className="arrow-button"
-                      alt="right arrow"
+                      alt=""
                     />
-                  </div>
+                  </button>
+                </div>
 
-                  {/* TEAM PICKER NAME */}
-                  <div className="team-name">
-                    <h1>
-                      {teamIndex !== null
-                        ? PREMIER_LEAGUE_TEAM_INFOS[teamIndex].alias
-                        : 'Select a Team'}
-                    </h1>
-                  </div>
+                <div className="team-name">
+                  <h2>
+                    {activeTeamInfo
+                      ? activeTeamInfo.alias
+                      : 'Select a Premier League club'}
+                  </h2>
+                  <p>
+                    {activeTeamInfo
+                      ? `${activeTeamInfo.name} • ${activeTeamInfo.nickname}`
+                      : 'Cycle through the league and choose who you want to rebuild.'}
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
 
-          <div className="selected-team-information">
-            {/* SLIDESHOW */}
+          <section className="landing-panel selected-team-information">
             <div className="home-page-slideshow">
               <Slideshow selectedTeam={selectedTeam} />
+              <div className="slideshow-caption">
+                {selectedTeamInfo
+                  ? selectedTeamInfo.alias
+                  : 'Premier League Rebuild'}
+              </div>
             </div>
 
-            {/* TEAM SUMMARY */}
             <div className="team-summary">
-              {/* TEAM VALUE */}
               <div className="team-value">
                 <div className="category">Value</div>
-
                 <div className="money">
                   {CURRENCY_UNIT}{' '}
                   {selectedTeam !== null
@@ -237,10 +262,8 @@ function HomePage() {
                 </div>
               </div>
 
-              {/* TEAM BUDGET */}
               <div className="team-budget">
                 <div className="category">Budget</div>
-
                 <div className="money">
                   {CURRENCY_UNIT}{' '}
                   {selectedTeam !== null
@@ -260,7 +283,6 @@ function HomePage() {
               </div>
             </div>
 
-            {/* SUBMIT BUTTON */}
             <div className="submit-button">
               <SubmitButton
                 team={selectedTeam}
@@ -272,7 +294,7 @@ function HomePage() {
                   : 'Please Pick a Team'}
               </SubmitButton>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     )

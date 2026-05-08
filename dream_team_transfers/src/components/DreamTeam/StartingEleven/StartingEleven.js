@@ -14,6 +14,7 @@ import {
   getRemoteFallbackImage,
 } from '../../../utils/local-assets';
 import { POSITION_CIRCLES } from '../../../utils/positions';
+import { sortPlayersBySquadOrder } from '../../../utils/player-sort';
 
 const MOBILE_BREAKPOINT = '(max-width: 768px)';
 const EXPORT_WIDTH = 390;
@@ -290,9 +291,11 @@ function StartingEleven({
       }
     }
 
-    setTeamPlayers(teamPlayersUpdate);
+    const rankedTeamPlayers = sortPlayersBySquadOrder(teamPlayersUpdate);
 
-    const availableSubs = teamPlayersUpdate
+    setTeamPlayers(rankedTeamPlayers);
+
+    const availableSubs = rankedTeamPlayers
       .map((player) => player.player_id)
       .filter((playerId) => !lineup.includes(playerId));
 

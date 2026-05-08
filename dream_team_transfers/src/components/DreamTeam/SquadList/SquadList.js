@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { POSITION_CIRCLES } from '../../../utils/positions';
 import calculateAge from '../../../utils/calculate-age';
+import { sortPlayersBySquadOrder } from '../../../utils/player-sort';
 
 function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
   // reading from db
@@ -185,7 +186,7 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
       }
     }
 
-    setTeamPlayers(teamPlayersUpdate);
+    setTeamPlayers(sortPlayersBySquadOrder(teamPlayersUpdate));
   }, [playersSold, playersBought, PlayersCSVData, teamPicked, kitUpdates]);
 
   useEffect(() => {

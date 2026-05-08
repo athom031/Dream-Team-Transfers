@@ -1,93 +1,272 @@
-/* TeamRestart.css */
-
 .team-restart {
-  background-color: var(--restart-brown-color);
-  width: 100vw;
-  min-height: 100vh;
-  color: var(--restart-beige-color);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  overflow-y: auto;
-}
-
-.team-restart-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100%;
-  margin: 0;
-  padding: 0;
+  min-height: calc(100dvh - clamp(64px, 8vh, 86px));
+  padding: clamp(1rem, 3vw, 2rem);
+  background: var(--restart-beige-color);
+  color: var(--dark-grey-color);
+  font-family: var(--main-font);
 }
 
-.team-restart-slideshow-container {
-  position: relative;
-  overflow: hidden;
-  width: 60vw;
-  height: 60vh;
-  padding: 0vh 0vh;
+.team-restart-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(24rem, 1.05fr);
+  gap: 1rem;
+  width: min(100%, 1180px);
+  min-height: min(720px, calc(100dvh - clamp(64px, 8vh, 86px) - 4rem));
+  margin: 0 auto;
 }
 
-.restart-warning {
-  font-size: 1.5em;
-  opacity: 0; /* Start out hidden */
-  transition: opacity 0.3s ease-in-out; /* Transition the opacity */
-  padding-top: 1em;
-  padding-bottom: 1em;
-}
-.restart-warning.show {
-  opacity: 1; /* Fully visible when the .show class is added */
-}
-
-.restart-warning.show span {
-  color: #ff0000;
-  font-weight: bold;
-}
-
-.restart-button {
-  background-color: var(--restart-beige-color);
-  color: var(--restart-brown-color);
-  border: 2px solid var(--restart-brown-color);
+.restart-panel {
+  min-width: 0;
+  border: 2px solid var(--logo-gold-color);
   border-radius: var(--border-radius);
-  cursor: pointer;
-  padding: 1em 2em;
-  font-size: 1.2em;
-  margin-top: 1em;
-  margin-bottom: 6em;
+  background: white;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
 }
 
-.restart-button:hover {
-  background-color: var(--restart-brown-color);
-  color: var(--restart-beige-color);
-  border: 2px solid var(--restart-beige-color);
+.restart-copy-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
 }
 
-.progress-bar {
-  background-color: var(--restart-brown-color);
-  border-radius: var(--border-radius);
-  border: 2px solid var(--restart-brown-color);
-  width: 50%;
-  height: 20px;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background-color: var(--restart-beige-color);
-  border-radius: var(--border-radius);
-  border: 2px solid var(--restart-beige-color);
-}
-
-.team-restart-info {
-  padding-left: 5rem;
-  width: 100vw;
+.restart-eyebrow {
+  width: fit-content;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: var(--logo-gold-color);
+  color: var(--logo-black-color);
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .restart-title {
-  font-size: 3em;
+  margin: 0;
+  color: var(--logo-black-color);
+  font-size: clamp(2.4rem, 5vw, 4.3rem);
+  line-height: 0.95;
+  letter-spacing: 2px;
 }
 
-.restart-info-text {
-  font-size: 2em;
+.restart-description {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--dark-grey-color);
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 1px;
+}
+
+.restart-impact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.25rem;
+}
+
+.restart-impact-card {
+  min-width: 0;
+  padding: 0.85rem;
+  border: 1px solid rgba(69, 69, 69, 0.14);
+  border-radius: 8px;
+  background: #fff9d6;
+}
+
+.restart-impact-card span {
+  display: block;
+  color: var(--restart-brown-color);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.restart-impact-card strong {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--logo-black-color);
+  font-size: clamp(1.05rem, 1.4vw, 1.3rem);
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+.restart-warning {
+  margin-top: auto;
+  padding: 0.85rem 1rem;
+  border: 2px solid rgba(185, 143, 68, 0.55);
+  border-radius: var(--border-radius);
+  background: #f8f1e2;
+  color: var(--dark-grey-color);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1.3;
+  opacity: 0.72;
+  transition:
+    opacity 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.restart-warning strong {
+  color: #9b1c1c;
+  text-transform: uppercase;
+}
+
+.restart-warning.show {
+  border-color: #9b1c1c;
+  background: #fff0f0;
+  opacity: 1;
+}
+
+.restart-action-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.restart-progress-track {
+  height: 0.8rem;
+  overflow: hidden;
+  border: 2px solid var(--logo-gold-color);
+  border-radius: 999px;
+  background: #f8f1e2;
+}
+
+.restart-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: #9b1c1c;
+  transition: width 0.08s linear;
+}
+
+.restart-button {
+  width: 100%;
+  min-height: 4rem;
+  padding: 0.85rem 1rem;
+  border: 2px solid #9b1c1c;
+  border-radius: var(--border-radius);
+  background: #9b1c1c;
+  color: white;
+  cursor: pointer;
+  font-family: var(--main-font);
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.restart-button:hover:not(:disabled),
+.restart-button:focus-visible {
+  background: white;
+  color: #9b1c1c;
+  transform: translateY(-1px);
+}
+
+.restart-button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.restart-preview-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1rem, 2vw, 1.25rem);
+  background: var(--dark-grey-color);
+}
+
+.restart-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: white;
+}
+
+.restart-preview-header span,
+.restart-preview-header strong {
+  font-size: 0.95rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.restart-preview-header strong {
+  color: var(--logo-gold-color);
+  text-align: right;
+}
+
+.team-restart-slideshow {
+  position: relative;
+  flex: 1;
+  min-height: 28rem;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--light-grey-color);
+}
+
+.team-restart-slideshow .slideshow,
+.team-restart-slideshow .slideshow-img {
+  width: 100%;
+  height: 100%;
+}
+
+.team-restart-slideshow .slideshow-img {
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+}
+
+@media screen and (max-width: 1023px) {
+  .team-restart {
+    padding: 1rem;
+  }
+
+  .team-restart-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .restart-impact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-restart-slideshow {
+    min-height: clamp(14rem, 52vw, 22rem);
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .team-restart {
+    padding: 0.75rem;
+  }
+
+  .restart-panel,
+  .restart-button {
+    border-radius: 8px;
+  }
+
+  .restart-copy-panel,
+  .restart-preview-panel {
+    padding: 0.85rem;
+  }
+
+  .restart-title {
+    font-size: clamp(2rem, 11vw, 3rem);
+  }
+
+  .restart-description,
+  .restart-warning {
+    font-size: 0.95rem;
+  }
 }
