@@ -991,21 +991,16 @@ function StartingEleven({
     currentPage * subsPerPage,
     (currentPage + 1) * subsPerPage
   );
+  const totalSubPages = Math.max(1, Math.ceil(subs.length / subsPerPage));
 
   const handleRightClick = () => {
-    if ((currentPage + 1) * subsPerPage < subs.length) {
-      setCurrentPage(currentPage + 1);
-    } else {
-      setCurrentPage(0);
-    }
+    setCurrentPage((prevPage) => (prevPage + 1) % totalSubPages);
   };
 
   const handleLeftClick = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    } else {
-      setCurrentPage(Math.ceil(subs.length / subsPerPage) - 1);
-    }
+    setCurrentPage(
+      (prevPage) => (prevPage + totalSubPages - 1) % totalSubPages
+    );
   };
 
   const selectedMobilePlayer = getPlayerById(selectedMobilePlayerId);
@@ -1133,14 +1128,20 @@ function StartingEleven({
         <div className="subs-bench-container">
           <div className="subs-pagination-controls">
             {/* LEFT ARROW */}
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/left${isHoveredLeft ? '-hover' : ''}.png`}
+            <button
+              type="button"
+              className="bench-arrow-button"
               onMouseEnter={() => setIsHoveredLeft(true)}
               onMouseLeave={() => setIsHoveredLeft(false)}
               onClick={handleLeftClick}
-              className="arrow-button"
-              alt="left arrow"
-            />
+              aria-label="Previous bench page"
+            >
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/left${isHoveredLeft ? '-hover' : ''}.png`}
+                className="bench-arrow-image"
+                alt=""
+              />
+            </button>
 
             {/* Subs 3x3 Grid */}
             <div className="subs-bench-grid">
@@ -1157,14 +1158,20 @@ function StartingEleven({
             </div>
 
             {/* RIGHT ARROW */}
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/right${isHoveredRight ? '-hover' : ''}.png`}
+            <button
+              type="button"
+              className="bench-arrow-button"
               onMouseEnter={() => setIsHoveredRight(true)}
               onMouseLeave={() => setIsHoveredRight(false)}
               onClick={handleRightClick}
-              className="arrow-button"
-              alt="right arrow"
-            />
+              aria-label="Next bench page"
+            >
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/team-picker-arrows/right${isHoveredRight ? '-hover' : ''}.png`}
+                className="bench-arrow-image"
+                alt=""
+              />
+            </button>
           </div>
         </div>
       </div>

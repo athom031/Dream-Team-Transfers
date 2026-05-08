@@ -225,10 +225,28 @@
   cursor: move;
 }
 
-.arrow-button {
+.bench-arrow-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: clamp(3.35rem, min(4.8vw, 7.5dvh), 5.1rem);
-  height: auto;
+  height: clamp(3.35rem, min(4.8vw, 7.5dvh), 5.1rem);
+  padding: 0;
+  border: 0;
+  background: transparent;
   cursor: pointer;
+  flex-shrink: 0;
+}
+
+.bench-arrow-button:focus-visible {
+  outline: 3px solid var(--logo-gold-color);
+  outline-offset: 3px;
+}
+
+.bench-arrow-image {
+  width: 100%;
+  height: auto;
+  pointer-events: none;
 }
 
 .subs-bench-grid {
