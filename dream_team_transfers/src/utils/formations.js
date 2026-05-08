@@ -1,3 +1,5 @@
+export const DEFAULT_FORMATION = '4-3-3';
+
 export const FORMATIONS = {
   '4-3-3': [
     ['LW', 'ST', 'RW'],

@@ -5,5 +5,12 @@
 **/__init__.pyc
 *.pyc
 
+# ignore local Python virtual environments
+.venv/
+**/.venv/
+
 # ignore all .DS_Store
 **/.DS_Store
+
+# ignore local browser verification artifacts
+.playwright-mcp/

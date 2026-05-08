@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { PREMIER_LEAGUE_TEAM_INFOS } from '../../constants/pl-team-infos';
+import {
+  PREMIER_LEAGUE_TEAM_COUNT,
+  PREMIER_LEAGUE_TEAM_INFOS,
+} from '../../constants/pl-team-infos';
 
 function Slideshow({ selectedTeam }) {
   const [slideshowPhotos, setSlideshowPhotos] = useState([]);
@@ -27,7 +30,7 @@ function Slideshow({ selectedTeam }) {
     } else {
       // if no team is selected, use random photos from all teams
       newPhotos = [];
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < PREMIER_LEAGUE_TEAM_COUNT; i++) {
         newPhotos.push(...PREMIER_LEAGUE_TEAM_INFOS[i].team_photos);
       }
     }

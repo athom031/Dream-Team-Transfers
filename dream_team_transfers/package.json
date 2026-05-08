@@ -31,6 +31,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "generate-assets": "node scripts/generate-export-assets.mjs",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -52,6 +53,7 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^3.4.2"
+    "prettier": "^3.4.2",
+    "sharp": "^0.34.5"
   }
 }

@@ -2,6 +2,7 @@ from datetime import datetime
 # project defined imports
 from constants.webpage_tags import (
     A,
+    CLASS,
     DATA_SRC,
     DIV,
     IMG,
@@ -77,6 +78,25 @@ def get_player_kit_number(col_tag):
     return kit_number
 
 
+def get_player_col_classes(col_tag):
+    return col_tag.get(CLASS, [])
+
+
+def col_has_classes(col_tag, required_classes):
+    col_classes = get_player_col_classes(col_tag)
+    return all(required_class in col_classes for required_class in required_classes)
+
+
+def get_flag_img(col_tag):
+    for img_tag in col_tag.find_all(IMG):
+        img_classes = img_tag.get(CLASS, [])
+        img_src = img_tag.get(SRC, '')
+        if 'flaggenrahmen' in img_classes or '/flagge/' in img_src:
+            return img_tag
+
+    return None
+
+
 # GET_PLAYER_NAME_POS_AND_PHOTO
 """
 <td class="posrela">
@@ -110,7 +130,8 @@ def get_player_name_pos_and_photo(col_tag):
     position = player_table_tag.find_all(TR)[-1].find(TD).text.strip()
 
     # extract player photo url from table info tag
-    portrait = player_table_tag.find(IMG)[DATA_SRC]
+    img_tag = player_table_tag.find(IMG)
+    portrait = img_tag.get(DATA_SRC) or img_tag.get(SRC)
 
     return (name, position, portrait)
 
@@ -126,13 +147,20 @@ def get_player_birth_date(col_tag, player_col):
     td_text = col_tag.text.strip()
 
     # split text to just get birthday
-    birthday, age = td_text.split(' (')
+    birthday = td_text.split(' (')[0]
 
     # convert birthday string to a datetime object
         # academy players may not have birthdays yet in the system so default their age to 17  
-    birth_date = datetime.strptime('Jun 14, 2006' if birthday == '-' else birthday, '%b %d, %Y')
+    if birthday == '-':
+        return datetime.strptime('Jun 14, 2006', '%b %d, %Y')
 
-    return birth_date
+    for date_format in ['%b %d, %Y', '%d/%m/%Y', '%d.%m.%Y']:
+        try:
+            return datetime.strptime(birthday, date_format)
+        except ValueError:
+            pass
+
+    raise ValueError(f'Unsupported birth date format: {birthday}')
 
 # GET_PLAYER_NATIONALITY
 """
@@ -141,8 +169,8 @@ def get_player_birth_date(col_tag, player_col):
 </td>
 """
 def get_player_nationality(col_tag):
-    # get first img that shows in this column
-    img_tag = col_tag.find(IMG)
+    # get first flag image that shows in this column
+    img_tag = get_flag_img(col_tag)
 
     # parse img for nation name and flag url
     (nationality, nat_flag) = (img_tag[TITLE], img_tag[SRC])
@@ -175,7 +203,7 @@ def get_player_market_value(col_tag):
     market_value_numeric_text = market_value_text[1:-1]
 
     # add context of if value was in thousand or million euros
-    multiplier = 1_000_000 if market_value_text.endswith('m') else 1_000
+    multiplier = 1_000_000 if market_value_text.lower().endswith('m') else 1_000
 
     # calculate market value in euros
     market_value = float(market_value_numeric_text) * multiplier
@@ -183,17 +211,60 @@ def get_player_market_value(col_tag):
     return market_value
 
 
-def get_player_data(player_tag): 
-
+def get_player_columns(player_tag):
     td_player_tags = player_tag.find_all(TD, recursive=False)
 
-    # parse table for player data 
-    tag_number_col = td_player_tags[0]
-    tag_player_col = td_player_tags[1]
-    tag_dob_age_col = td_player_tags[2]
-    tag_nationality_col = td_player_tags[3]
-    # ignore current club column (td_player_tags[4])
-    tag_market_value_col = td_player_tags[5]
+    tag_number_col = next(
+        (col_tag for col_tag in td_player_tags if col_tag.find(DIV, class_=PLAYER_KIT_NUMBER)),
+        None
+    )
+    tag_player_col = next(
+        (col_tag for col_tag in td_player_tags if col_tag.find(TABLE, class_=PLAYER_INFO_TABLE)),
+        None
+    )
+    tag_dob_age_col = next(
+        (col_tag for col_tag in td_player_tags if ' (' in col_tag.text),
+        None
+    )
+    tag_nationality_col = next(
+        (col_tag for col_tag in td_player_tags if get_flag_img(col_tag)),
+        None
+    )
+    tag_market_value_col = next(
+        (
+            col_tag for col_tag in reversed(td_player_tags)
+            if col_has_classes(col_tag, ['rechts', 'hauptlink'])
+        ),
+        None
+    )
+
+    if tag_market_value_col is None and td_player_tags:
+        tag_market_value_col = td_player_tags[-1]
+
+    player_cols = [
+        tag_number_col,
+        tag_player_col,
+        tag_dob_age_col,
+        tag_nationality_col,
+        tag_market_value_col
+    ]
+
+    if any(col_tag is None for col_tag in player_cols):
+        row_classes = [get_player_col_classes(col_tag) for col_tag in td_player_tags]
+        row_text = [col_tag.get_text(' ', strip=True) for col_tag in td_player_tags]
+        raise ValueError(f'Unsupported player row format: {row_classes} {row_text}')
+
+    return player_cols
+
+
+def get_player_data(player_tag):
+    (
+        tag_number_col,
+        tag_player_col,
+        tag_dob_age_col,
+        tag_nationality_col,
+        tag_market_value_col
+    ) = get_player_columns(player_tag)
         
     # 0 - tag_number_col: kit_number
     kit_number = get_player_kit_number(tag_number_col)

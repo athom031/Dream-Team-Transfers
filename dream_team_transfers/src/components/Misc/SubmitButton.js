@@ -12,16 +12,18 @@ export const getSubmitButton = () => {
       props.team !== null
         ? PREMIER_LEAGUE_TEAM_INFOS[props.team].secondary_color
         : '#FFFFFF'};
-    border: 10px solid
+    border: 3px solid
       ${(props) =>
         props.team !== null
           ? PREMIER_LEAGUE_TEAM_INFOS[props.team].third_color
           : '#5A5A5A'};
-    padding: 2vh 5vw;
-    border-radius: 20px;
+    width: 100%;
+    min-height: 4rem;
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
     font-family: 'Saira Condensed', sans-serif;
     font-weight: 900;
-    letter-spacing: 4px;
+    letter-spacing: 2px;
     cursor: pointer;
     transition:
       background-color 0.3s ease,
@@ -30,17 +32,17 @@ export const getSubmitButton = () => {
 
     /* Styles for laptops and larger screens */
     @media screen and (min-width: 1024px) {
-      font-size: 1.5vw;
+      font-size: clamp(1.15rem, 1.3vw, 1.45rem);
     }
 
     /* Styles for phones and tablets in landscape mode */
     @media screen and (max-width: 1023px) and (orientation: landscape) {
-      font-size: 2vw;
+      font-size: clamp(1rem, 2vw, 1.35rem);
     }
 
     /* Styles for phones and tablets in portrait mode */
     @media screen and (max-width: 1023px) and (orientation: portrait) {
-      font-size: 3vw;
+      font-size: clamp(1rem, 4vw, 1.35rem);
     }
 
     &:hover {

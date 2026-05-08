@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { POSITION_CIRCLES } from '../../../utils/positions';
 import calculateAge from '../../../utils/calculate-age';
+import { sortPlayersBySquadOrder } from '../../../utils/player-sort';
 
 function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
   // reading from db
@@ -31,12 +32,14 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
   }
 
   useEffect(() => {
-    getTeamData().then((data) => {
-      console.log(data);
-    });
+    if (!NationsCSVData || !PositionsCSVData || !PlayersCSVData) return;
 
     if (NationsCSVData || PositionsCSVData || PlayersCSVData) {
-      console.log(NationsCSVData, PositionsCSVData, PlayersCSVData);
+      console.log('SquadList: CSV data available:', {
+        NationsCSVData: NationsCSVData?.length,
+        PositionsCSVData: PositionsCSVData?.length,
+        PlayersCSVData: PlayersCSVData?.length,
+      });
     }
   }, [NationsCSVData, PositionsCSVData, PlayersCSVData]);
 
@@ -125,8 +128,18 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
 
   // read from db
   useEffect(() => {
+    if (!PlayersCSVData || !NationsCSVData || !PositionsCSVData) {
+      console.log('SquadList: CSV data not ready yet', {
+        PlayersCSVData: PlayersCSVData?.length,
+        NationsCSVData: NationsCSVData?.length,
+        PositionsCSVData: PositionsCSVData?.length,
+      });
+      return;
+    }
+
+    console.log('SquadList: CSV data ready, loading team data...');
     getTeamData().then((data) => {
-      console.log(data.team_kit_updates);
+      console.log('SquadList: Team data loaded:', data);
       setPlayersSold(data.players_sold);
       setPlayersBought(data.players_bought);
       setTeamBudget(data.team_budget);
@@ -134,7 +147,7 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
       setTeamPicked(data.team_picked);
       setKitUpdates(data.team_kit_updates);
     });
-  }, []);
+  }, [PlayersCSVData, NationsCSVData, PositionsCSVData]);
 
   useEffect(() => {
     const teamPlayersUpdate = [];
@@ -142,9 +155,10 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
     if (PlayersCSVData === null) return;
 
     for (let i = 0; i < PlayersCSVData.length; i++) {
+      const playerId = Number(PlayersCSVData[i].player_id);
       if (
-        playersBought.includes(Number(PlayersCSVData[i].player_id)) ||
-        (!playersSold.includes(Number(PlayersCSVData[i].player_id)) &&
+        playersBought.map((id) => Number(id)).includes(playerId) ||
+        (!playersSold.map((id) => Number(id)).includes(playerId) &&
           Number(PlayersCSVData[i].team_id) === teamPicked)
       ) {
         const {
@@ -172,7 +186,7 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
       }
     }
 
-    setTeamPlayers(teamPlayersUpdate);
+    setTeamPlayers(sortPlayersBySquadOrder(teamPlayersUpdate));
   }, [playersSold, playersBought, PlayersCSVData, teamPicked, kitUpdates]);
 
   useEffect(() => {
@@ -180,17 +194,18 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
     const relevantPositionsUpdate = {};
 
     if (
-      NationsCSVData == null ||
-      PositionsCSVData == null ||
+      NationsCSVData === null ||
+      PositionsCSVData === null ||
       NationsCSVData.length <= 0 ||
       PositionsCSVData.length <= 0
-    )
+    ) {
       return;
+    }
 
     for (let i = 0; i < teamPlayers.length; i++) {
       if (!relevantNationsUpdate[teamPlayers[i].nation_id]) {
         const nation = NationsCSVData.find(
-          (n) => n.nation_id == teamPlayers[i].nation_id
+          (n) => Number(n.nation_id) === teamPlayers[i].nation_id
         );
         if (nation) {
           relevantNationsUpdate[teamPlayers[i].nation_id] = {
@@ -202,7 +217,7 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
 
       if (!relevantPositionsUpdate[teamPlayers[i].position_id]) {
         const position = PositionsCSVData.find(
-          (p) => p.position_id == teamPlayers[i].position_id
+          (p) => Number(p.position_id) === teamPlayers[i].position_id
         );
         if (position) {
           relevantPositionsUpdate[teamPlayers[i].position_id] = {

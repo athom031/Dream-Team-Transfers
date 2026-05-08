@@ -1,10 +1,22 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './NavBar.css';
+
+const NAV_LINKS = [
+  { path: '/squad-list', label: 'Squad List' },
+  { path: '/player-market', label: 'Player Market' },
+  { path: '/transfer-summary', label: 'Transfer Summary' },
+  { path: '/team-restart', label: 'Team Restart' },
+];
 
 function NavBar() {
   const [isLogoHovered, setLogoHovered] = useState(false);
-  const [activeLink, setActiveLink] = useState('/home');
+  const [isMenuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+
+  const homeIsActive = ['/', '/home', '/starting-eleven'].includes(
+    location.pathname
+  );
 
   const handleLogoMouseEnter = () => {
     setLogoHovered(true);
@@ -14,8 +26,12 @@ function NavBar() {
     setLogoHovered(false);
   };
 
-  const handleLinkClick = (path) => {
-    setActiveLink(path);
+  const handleLinkClick = () => {
+    setMenuOpen(false);
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen((prev) => !prev);
   };
 
   return (
@@ -23,20 +39,16 @@ function NavBar() {
       <div className="nav-logo-padding-container">
         <Link
           to="/home"
-          className={`nav-logo-container ${
-            activeLink === '/home' ? 'active-link' : ''
-          }`}
+          className={`nav-logo-container ${homeIsActive ? 'active-link' : ''}`}
           onMouseEnter={handleLogoMouseEnter}
           onMouseLeave={handleLogoMouseLeave}
-          onClick={() => handleLinkClick('/home')}
+          onClick={handleLinkClick}
         >
           <img
             src={
               process.env.PUBLIC_URL +
               '/assets/navbar-icons/' +
-              (isLogoHovered || activeLink === '/home'
-                ? 'logo-hover.png'
-                : 'logo.png')
+              (isLogoHovered || homeIsActive ? 'logo-hover.png' : 'logo.png')
             }
             alt="Dream Team Logo"
             className="navbar-icon"
@@ -46,42 +58,40 @@ function NavBar() {
           <span>Team</span>
         </Link>
       </div>
-      <div className="other-nav">
+      <button
+        type="button"
+        className="nav-menu-button"
+        aria-label="Toggle navigation"
+        aria-expanded={isMenuOpen}
+        onClick={toggleMenu}
+      >
+        <span className="nav-menu-icon" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+      <div className={`other-nav ${isMenuOpen ? 'is-open' : ''}`}>
+        {NAV_LINKS.map((link) => (
+          <Link
+            key={link.path}
+            to={link.path}
+            className={`nav-link ${
+              location.pathname === link.path ? 'active-link' : ''
+            }`}
+            onClick={handleLinkClick}
+          >
+            {link.label}
+          </Link>
+        ))}
         <Link
-          to="/squad-list"
-          className={`nav-link ${
-            activeLink === '/squad-list' ? 'active-link' : ''
+          to="/home"
+          className={`nav-link mobile-home-link ${
+            homeIsActive ? 'active-link' : ''
           }`}
-          onClick={() => handleLinkClick('/squad-list')}
+          onClick={handleLinkClick}
         >
-          Squad List
-        </Link>
-        <Link
-          to="/player-market"
-          className={`nav-link ${
-            activeLink === '/player-market' ? 'active-link' : ''
-          }`}
-          onClick={() => handleLinkClick('/player-market')}
-        >
-          Player Market
-        </Link>
-        <Link
-          to="/transfer-summary"
-          className={`nav-link ${
-            activeLink === '/transfer-summary' ? 'active-link' : ''
-          }`}
-          onClick={() => handleLinkClick('/transfer-summary')}
-        >
-          Transfer Summary
-        </Link>
-        <Link
-          to="/team-restart"
-          className={`nav-link ${
-            activeLink === '/team-restart' ? 'active-link' : ''
-          }`}
-          onClick={() => handleLinkClick('/team-restart')}
-        >
-          Team Restart
+          Starting XI
         </Link>
       </div>
     </div>

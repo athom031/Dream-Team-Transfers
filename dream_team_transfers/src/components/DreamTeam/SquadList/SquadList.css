@@ -3,6 +3,11 @@
   background-color: #708090;
   color: white;
   scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: calc(100dvh - clamp(64px, 8vh, 86px));
+  overflow: hidden;
 }
 
 .squad-w_o-players {
@@ -16,16 +21,67 @@
 .squad-list-header {
   display: flex;
   justify-content: space-between;
+  align-items: stretch;
+  gap: 1rem;
   width: 100%;
   background-color: #454545;
-  padding-bottom: 1em;
+  padding: 1rem 1.25rem;
   border-bottom: 1px solid #d3d3d3;
 }
 
 .header-description {
-  width: 50%;
+  flex: 1;
+  min-width: 0;
   justify-content: center;
-  margin-left: 2em;
+}
+
+.header-description h4 {
+  margin: 0 0 0.65rem;
+  line-height: 1.35;
+}
+
+.header-description h4:last-child {
+  margin-bottom: 0;
+}
+
+.team-summary {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  gap: 1rem;
+  min-width: 18rem;
+}
+
+.team-value,
+.team-budget {
+  display: flex;
+  flex: 1;
+  min-width: 8rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem;
+  border-left: 1px solid #d3d3d3;
+  text-align: center;
+}
+
+.category {
+  font-size: 1rem;
+  border-bottom: 1px solid var(--logo-gold-color);
+}
+
+.money {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1;
+  margin-top: 0.65rem;
+  letter-spacing: 1px;
+}
+
+.unit {
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
 }
 
 .nation-cell,
@@ -36,7 +92,7 @@
 .player-kit-number {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 0.35rem;
 }
 
 .nation-cell {
@@ -51,8 +107,10 @@
 
 .squad-table {
   width: 100%;
+  min-width: 960px;
   border-collapse: collapse;
   font-family: Arial, sans-serif;
+  table-layout: fixed;
 }
 
 .squad-table-header {
@@ -64,6 +122,11 @@
   padding: 10px;
   color: white;
   text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: #454545;
+  white-space: nowrap;
 }
 
 .squad-table-sort-icon {
@@ -79,7 +142,7 @@
   color: #454545;
 }
 
-.squad-table-row:nth_child(even) {
+.squad-table-row:nth-child(even) {
   background-color: #ffffff;
   color: #454545;
 }
@@ -87,6 +150,8 @@
 .squad-table-cell {
   padding: 10px;
   text-align: left;
+  vertical-align: middle;
+  overflow-wrap: anywhere;
 }
 
 .squad-table-row:hover {
@@ -95,9 +160,13 @@
 }
 
 .table-container {
-  width: 100vw;
-  overflow-x: auto;
-  display: flex;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  max-height: calc(100dvh - clamp(64px, 8vh, 86px) - 190px);
+  overflow: auto;
+  display: block;
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .squad-table {
@@ -107,6 +176,8 @@
 .player-profile {
   border-radius: 15px;
   width: 50px;
+  height: 60px;
+  object-fit: cover;
 }
 
 .squad-list-button {
@@ -150,4 +221,97 @@
 }
 .squad-list-button:not(.active)::before {
   transition: none;
+}
+
+.kit-number-input {
+  width: 4rem;
+  padding: 0.4rem;
+}
+
+.squad-table-header-cell:nth-child(1),
+.squad-table-cell:nth-child(1) {
+  width: 90px;
+}
+
+.squad-table-header-cell:nth-child(2),
+.squad-table-cell:nth-child(2) {
+  width: 180px;
+}
+
+.squad-table-header-cell:nth-child(3),
+.squad-table-cell:nth-child(3),
+.squad-table-header-cell:nth-child(4),
+.squad-table-cell:nth-child(4),
+.squad-table-header-cell:nth-child(6),
+.squad-table-cell:nth-child(6) {
+  width: 90px;
+}
+
+.squad-table-header-cell:nth-child(5),
+.squad-table-cell:nth-child(5) {
+  width: 170px;
+}
+
+.squad-table-header-cell:nth-child(7),
+.squad-table-cell:nth-child(7),
+.squad-table-header-cell:nth-child(8),
+.squad-table-cell:nth-child(8) {
+  width: 130px;
+}
+
+@media screen and (max-width: 768px) {
+  .SquadList {
+    min-height: calc(100dvh - 66px);
+  }
+
+  .squad-list-header {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .header-description {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .header-description h4 {
+    font-size: 1rem;
+    letter-spacing: 2px;
+  }
+
+  .team-summary {
+    min-width: 0;
+    width: 100%;
+    justify-content: stretch;
+    gap: 0.5rem;
+  }
+
+  .team-value,
+  .team-budget {
+    min-width: 0;
+    padding: 0.75rem 0.5rem;
+    border: 1px solid #d3d3d3;
+  }
+
+  .money {
+    font-size: 2rem;
+  }
+
+  .table-container {
+    max-height: calc(100dvh - 66px - 260px);
+  }
+
+  .squad-table {
+    min-width: 920px;
+  }
+
+  .squad-table-header-cell,
+  .squad-table-cell {
+    padding: 0.65rem 0.55rem;
+  }
+
+  .squad-list-button {
+    min-width: 5.5rem;
+    padding: 0.75rem 1rem;
+  }
 }
