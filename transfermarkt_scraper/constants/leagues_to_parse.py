@@ -1,3 +1,5 @@
+from constants.scrape_config import MEMBERSHIP_SEASON_ID
+
 ## DICTIONARY KEYS ##
 NAME = 'name'
 SLUG = 'slug'
@@ -19,12 +21,6 @@ PROJECTED_LEAGUES = 'projected_leagues'
 # only fall back to PROJECTED_LEAGUES if the membership pages are missing or
 # incomplete for the target season.
 TEAM_SELECTION_MODE = CURRENT_LEAGUE_PAGES
-
-# To set up a league using the current league page method (following uses 26/27 as an example)
-# Use the 26/27 league membership pages to discover clubs
-# keep the 25/26 squad pages to scrape player pool going into the new season
-MEMBERSHIP_SEASON_ID = 2026
-SQUAD_SEASON_ID = 2025
 
 def _build_league_url(slug, competition_id, season_id=MEMBERSHIP_SEASON_ID):
     return (

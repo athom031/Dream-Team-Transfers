@@ -3,10 +3,10 @@ import re
 from constants.leagues_to_parse import (
     CURRENT_LEAGUE_PAGES,
     PROJECTED_LEAGUES,
-    SQUAD_SEASON_ID,
     TEAM_SELECTION_MODE,
     TEAMS_TO_ADD_ELSEWHERE
 )
+from constants.scrape_config import SQUAD_SEASON_ID
 from constants.webpage_tags import (
     BASE_WEBPAGE,
     HREF,

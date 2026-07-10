@@ -1,8 +1,12 @@
 from datetime import datetime
 # project defined imports
+from constants.scrape_config import get_default_player_birth_date
 from constants.webpage_tags import (
     A,
     CLASS,
+    CLASS_FLAG_FRAME,
+    CLASS_MAIN_LINK,
+    CLASS_RIGHT_ALIGNED,
     DATA_SRC,
     DIV,
     IMG,
@@ -17,52 +21,46 @@ from constants.webpage_tags import (
     TR
 )
 
-# FULL PLAYER TAG EXAMPLE 
+# FULL PLAYER ROW EXAMPLE AS OF 07/10/2026
 """
-<td class="zentriert rueckennummer bg_Torwart" title="Goalkeeper"><div class="rn_nummer">42</div></td>
-
-
-<td class="posrela">
-<table class="inline-table">
 <tr>
-<td rowspan="2">
-<img alt="Mark Travers" class="bilderrahmen-fixed lazy lazy" data-src="https://img.a.transfermarkt.technology/portrait/medium/357658-1702296610.jpg?lm=1" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" title="Mark Travers"> </img></td>
-<td class="hauptlink">
-<a href="/mark-travers/profil/spieler/357658">
-                Mark Travers            </a>
-</td>
+  <td class="zentriert rueckennummer bg_Torwart" title="Goalkeeper">
+    <div class="rn_nummer">-</div>
+  </td>
+  <td class="posrela">
+    <table class="inline-table">
+      <tr>
+        <td rowspan="2">
+          <img alt="Djordje Petrovic" class="bilderrahmen-fixed lazy lazy" data-src="https://img.a.transfermarkt.technology/portrait/medium/465555-1775574265.jpg?lm=1" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" title="Djordje Petrovic"/>
+        </td>
+        <td class="hauptlink">
+          <a href="/djordje-petrovic/profil/spieler/465555">Djordje Petrovic</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Goalkeeper</td>
+      </tr>
+    </table>
+  </td>
+  <td class="zentriert">08/10/1999 (26)</td>
+  <td class="zentriert">
+    <img alt="Serbia" class="flaggenrahmen" src="https://tmssl.akamaized.net//images/flagge/verysmall/215.png?lm=1520611569" title="Serbia"/>
+  </td>
+  <td class="zentriert">
+    <a href="/afc-bournemouth/startseite/verein/989" title="AFC Bournemouth">
+      <img alt="AFC Bournemouth" src="https://tmssl.akamaized.net//images/wappen/verysmall/989.png?lm=1457991811" title="AFC Bournemouth"/>
+    </a>
+  </td>
+  <td class="rechts hauptlink">
+    <a href="/djordje-petrovic/marktwertverlauf/spieler/465555">€28.00m</a>
+  </td>
 </tr>
-<tr>
-<td>
-            Goalkeeper        </td>
-</tr>
-</table>
-</td>
-
-
-<td class="zentriert">May 18, 1999 (25)</td>
-
-
-<td class="zentriert"><img alt="Ireland" class="flaggenrahmen" src="https://tmssl.akamaized.net//images/flagge/verysmall/72.png?lm=1520611569" title="Ireland"/></td>
-
-
-<td class="zentriert"><a href="/afc-bournemouth/startseite/verein/989" title="AFC Bournemouth"><img alt="AFC Bournemouth" class="" src="https://tmssl.akamaized.net//images/wappen/verysmall/989.png?lm=1457991811" title="AFC Bournemouth"/></a></td>
-
-
-<td class="rechts hauptlink"><a href="/mark-travers/marktwertverlauf/spieler/357658">€3.50m</a></td>
-
-]
 """
-
 
 # GET_PLAYER_KIT_NUMBER
 """
-Parse TD_TAG[0] for Player Kit Number
-
 <td class="zentriert rueckennummer bg_Torwart" title="Goalkeeper">
-    <div class="rn_nummer">
-        42
-    </div>
+    <div class="rn_nummer">42</div>
 </td>
 """
 def get_player_kit_number(col_tag):
@@ -91,7 +89,7 @@ def get_flag_img(col_tag):
     for img_tag in col_tag.find_all(IMG):
         img_classes = img_tag.get(CLASS, [])
         img_src = img_tag.get(SRC, '')
-        if 'flaggenrahmen' in img_classes or '/flagge/' in img_src:
+        if CLASS_FLAG_FRAME in img_classes or '/flagge/' in img_src:
             return img_tag
 
     return None
@@ -103,19 +101,14 @@ def get_flag_img(col_tag):
     <table class="inline-table">
         <tr>
             <td rowspan="2">
-                <img alt="Mark Travers" class="bilderrahmen-fixed lazy lazy" data-src="https://img.a.transfermarkt.technology/portrait/medium/357658-1702296610.jpg?lm=1" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" title="Mark Travers"> 
-                </img>
+                <img alt="Djordje Petrovic" class="bilderrahmen-fixed lazy lazy" data-src="https://img.a.transfermarkt.technology/portrait/medium/465555-1775574265.jpg?lm=1" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" title="Djordje Petrovic"/>
             </td>
             <td class="hauptlink">
-                <a href="/mark-travers/profil/spieler/357658">
-                    Mark Travers
-                </a>
+                <a href="/djordje-petrovic/profil/spieler/465555">Djordje Petrovic</a>
             </td>
         </tr>
         <tr>
-            <td>
-                Goalkeeper
-            </td>
+            <td>Goalkeeper</td>
         </tr>
     </table>
 </td>
@@ -123,38 +116,55 @@ def get_flag_img(col_tag):
 def get_player_name_pos_and_photo(col_tag):
     # get player table info
     player_table_tag = col_tag.find(TABLE, class_=PLAYER_INFO_TABLE)
+    if player_table_tag is None:
+        player_table_tag = col_tag.find(TABLE) or col_tag
 
     # extract player name from table info tag
-    name = player_table_tag.find(A).text.strip()
+    name_tag = player_table_tag.find(A)
+    name = name_tag.text.strip() if name_tag else ''
+
     # extract player position from table info tag
-    position = player_table_tag.find_all(TR)[-1].find(TD).text.strip()
+    rows = player_table_tag.find_all(TR)
+    if rows:
+        position_tag = rows[-1].find(TD)
+        position = position_tag.text.strip() if position_tag else ''
+    else:
+        position = ''
 
     # extract player photo url from table info tag
     img_tag = player_table_tag.find(IMG)
-    portrait = img_tag.get(DATA_SRC) or img_tag.get(SRC)
+    portrait = img_tag.get(DATA_SRC) or img_tag.get(SRC) if img_tag else None
 
     return (name, position, portrait)
 
 
 # GET_PLAYER_BIRTH_DATE
 """
-<td class="zentriert">
-    May 18, 1999 (25)
-</td>
+<td class="zentriert">08/10/1999 (26)</td>
 """
 def get_player_birth_date(col_tag, player_col):
     # get just string stored in td field
     td_text = col_tag.text.strip()
 
+    # handle newer Transfermarkt labels such as 'Date of birth: 08/10/1999 (26)'
+    if 'Date of birth' in td_text:
+        td_text = td_text.split('Date of birth', 1)[1]
+
     # split text to just get birthday
-    birthday = td_text.split(' (')[0]
+    birthday = td_text.split(' (')[0].strip()
+
+    # remove common prefixes like 'Date of birth:' or 'Born:'
+    for prefix in ['Date of birth:', 'Date of birth', 'Born:', 'Born', ':']:
+        if birthday.startswith(prefix):
+            birthday = birthday[len(prefix):].strip()
 
     # convert birthday string to a datetime object
-        # academy players may not have birthdays yet in the system so default their age to 17  
-    if birthday == '-':
-        return datetime.strptime('Jun 14, 2006', '%b %d, %Y')
+    # academy players may not have birthdays yet in the system so default their birthday
+    # to a player who is 17 years old for the configured squad season
+    if birthday in {'-', ''}:
+        return get_default_player_birth_date()
 
-    for date_format in ['%b %d, %Y', '%d/%m/%Y', '%d.%m.%Y']:
+    for date_format in ['%b %d, %Y', '%d/%m/%Y', '%d.%m.%Y', '%Y-%m-%d']:
         try:
             return datetime.strptime(birthday, date_format)
         except ValueError:
@@ -165,7 +175,7 @@ def get_player_birth_date(col_tag, player_col):
 # GET_PLAYER_NATIONALITY
 """
 <td class="zentriert">
-    <img alt="Ireland" class="flaggenrahmen" src="https://tmssl.akamaized.net//images/flagge/verysmall/72.png?lm=1520611569" title="Ireland"/>
+    <img alt="Serbia" class="flaggenrahmen" src="https://tmssl.akamaized.net//images/flagge/verysmall/215.png?lm=1520611569" title="Serbia"/>
 </td>
 """
 def get_player_nationality(col_tag):
@@ -181,9 +191,7 @@ def get_player_nationality(col_tag):
 # GET_PLAYER_MARKET_VALUE
 """
 <td class="rechts hauptlink">
-    <a href="/mark-travers/marktwertverlauf/spieler/357658">
-        €3.50m
-    </a>
+    <a href="/djordje-petrovic/marktwertverlauf/spieler/465555">€28.00m</a>
 </td>
 """
 def get_player_market_value(col_tag):
@@ -211,31 +219,40 @@ def get_player_market_value(col_tag):
     return market_value
 
 
+def _find_first_matching_cell(cells, matcher):
+    for cell in cells:
+        if matcher(cell):
+            return cell
+    return None
+
+
 def get_player_columns(player_tag):
     td_player_tags = player_tag.find_all(TD, recursive=False)
 
-    tag_number_col = next(
-        (col_tag for col_tag in td_player_tags if col_tag.find(DIV, class_=PLAYER_KIT_NUMBER)),
-        None
+    if not td_player_tags:
+        raise ValueError('No table cells found in player row')
+
+    tag_number_col = _find_first_matching_cell(
+        td_player_tags,
+        lambda col_tag: col_tag.find(DIV, class_=PLAYER_KIT_NUMBER) is not None,
     )
-    tag_player_col = next(
-        (col_tag for col_tag in td_player_tags if col_tag.find(TABLE, class_=PLAYER_INFO_TABLE)),
-        None
+    tag_player_col = _find_first_matching_cell(
+        td_player_tags,
+        lambda col_tag: col_tag.find(TABLE, class_=PLAYER_INFO_TABLE) is not None,
     )
-    tag_dob_age_col = next(
-        (col_tag for col_tag in td_player_tags if ' (' in col_tag.text),
-        None
-    )
-    tag_nationality_col = next(
-        (col_tag for col_tag in td_player_tags if get_flag_img(col_tag)),
-        None
-    )
-    tag_market_value_col = next(
-        (
-            col_tag for col_tag in reversed(td_player_tags)
-            if col_has_classes(col_tag, ['rechts', 'hauptlink'])
+    tag_dob_age_col = _find_first_matching_cell(
+        td_player_tags,
+        lambda col_tag: bool(col_tag.text) and (
+            ' (' in col_tag.text or 'Date of birth' in col_tag.text or 'Born:' in col_tag.text
         ),
-        None
+    )
+    tag_nationality_col = _find_first_matching_cell(
+        td_player_tags,
+        lambda col_tag: get_flag_img(col_tag) is not None,
+    )
+    tag_market_value_col = _find_first_matching_cell(
+        reversed(td_player_tags),
+        lambda col_tag: col_has_classes(col_tag, [CLASS_RIGHT_ALIGNED, CLASS_MAIN_LINK]),
     )
 
     if tag_market_value_col is None and td_player_tags:
