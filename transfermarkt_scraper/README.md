@@ -47,11 +47,19 @@ To maintain a realistic scope for the website while providing a wide range of pl
 
 The team list is configured in [`constants/leagues_to_parse.py`](https://github.com/athom031/Dream-Team-Transfers/blob/main/transfermarkt_scraper/constants/leagues_to_parse.py).
 
-By default, the scraper uses `TEAM_SELECTION_MODE = CURRENT_LEAGUE_PAGES`. In this mode it scrapes each supported Transfermarkt league page directly and treats every club on that page as part of that league. Use this when Transfermarkt has already updated the target season's league membership.
+The scraper supports two league-selection flows:
 
-If Transfermarkt has not updated the new season yet, switch to `TEAM_SELECTION_MODE = PROJECTED_LEAGUES`. In this mode, edit `PROJECTED_TEAM_OVERRIDES` to manually promote, relegate, keep, or exclude teams while scraping the previous season's league pages.
+1. **Current league pages** (`TEAM_SELECTION_MODE = CURRENT_LEAGUE_PAGES`)
+   - Default and recommended for a new season.
+   - Uses the target season's league membership pages to discover which clubs belong to each league.
+   - Uses the previous season's squad pages to scrape player rosters.
+   - Set `MEMBERSHIP_SEASON_ID` for the league pages and `SQUAD_SEASON_ID` for the squad pages.
 
-Set `MEMBERSHIP_SEASON_ID` for the league pages used to discover clubs. Set `SQUAD_SEASON_ID` for the squad pages used to scrape players.
+2. **Projected leagues** (`TEAM_SELECTION_MODE = PROJECTED_LEAGUES`)
+   - Only use this if Transfermarkt has not yet published the new season's league membership pages.
+   - Lets you define projected club moves with `PROJECTED_TEAM_OVERRIDES` when the target league structure is still incomplete.
+
+In most cases, the first option is the right one to use for a fresh transfermarkt scrape.
 
 [Supported Team Script](https://github.com/athom031/Dream-Team-Transfers/blob/main/transfermarkt_scraper/scraped_data/scrape_and_get_supported_teams.py)
 
