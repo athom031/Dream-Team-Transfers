@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 # project defined imports
 from constants.scrape_config import get_default_player_birth_date
@@ -158,19 +159,21 @@ def get_player_birth_date(col_tag, player_col):
         if birthday.startswith(prefix):
             birthday = birthday[len(prefix):].strip()
 
+    # normalize common missing values, including Transfermarkt placeholder variants
+    if re.fullmatch(r'[-()\s]*', birthday):
+        return get_default_player_birth_date()
+
     # convert birthday string to a datetime object
     # academy players may not have birthdays yet in the system so default their birthday
     # to a player who is 17 years old for the configured squad season
-    if birthday in {'-', ''}:
-        return get_default_player_birth_date()
-
     for date_format in ['%b %d, %Y', '%d/%m/%Y', '%d.%m.%Y', '%Y-%m-%d']:
         try:
             return datetime.strptime(birthday, date_format)
         except ValueError:
             pass
 
-    raise ValueError(f'Unsupported birth date format: {birthday}')
+    print(f"[get_player_birth_date] unsupported birth date '{birthday}' for player '{player_col.text.strip()}'. defaulting to placeholder date.")
+    return get_default_player_birth_date()
 
 # GET_PLAYER_NATIONALITY
 """
