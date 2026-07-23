@@ -124,7 +124,13 @@ export const PREMIER_LEAGUE_TEAM_INFOS = {
     third_color: '#FFFFFF',
     alias: 'Coventry City',
     nickname: 'Sky Blues',
-    team_photos: null,
+    team_photos: [
+      'https://images.gc.coventrycityfcservices.co.uk/fit-in/1600x1600/012c1d40-272b-11ef-98ce-df5dfb74ba96.jpg',
+      'https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/925d/live/435edee0-b1a0-11f0-b33e-69e560da4e1d.jpg',
+      'https://i2-prod.coventrytelegraph.net/article27592633.ece/ALTERNATES/s1200b/2_JS307940211.jpg',
+      'https://ichef.bbci.co.uk/ace/standard/2560/cpsprodpb/f9e7/live/cdeeabb0-cf66-11f0-8351-b196ecbe551d.jpg',
+      'https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2024/03/coventry-city-copa-inglaterra-e1710608245737.jpeg?w=1200&h=630&crop=1'
+    ],
   },
   7: {
     name: 'Crystal Palace',
@@ -194,7 +200,13 @@ export const PREMIER_LEAGUE_TEAM_INFOS = {
     third_color: '#FFFFFF',
     alias: 'Hull City',
     nickname: 'Tigers',
-    team_photos: null,
+    team_photos: [
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_l73ysjGgjhWe8TiO5H6Oz_qSy_JVhnHplkhvsyMLfpY6-dXpL2RmS4ts&s=10',
+        'https://i2-prod.hulldailymail.co.uk/article10915990.ece/ALTERNATES/s1200f/0_GettyImages-2266014411-1.jpg',
+        'https://i2-prod.hulldailymail.co.uk/article10778294.ece/ALTERNATES/s1200c/0_JS394075197.jpg',
+        'https://cdn.swanseacity.com/sites/default/files/styles/cc_960x540/public/2021-09/Hull%20City%20line-up.jpg?h=7a202119&itok=VBe3HIIW',
+        'https://media.squawka.com/images/2025/12/27213915/HullCity271225_ID3CEDF3B-scaled.jpg',
+    ],
   },
   11: {
     name: 'Ipswich Town',
@@ -207,7 +219,13 @@ export const PREMIER_LEAGUE_TEAM_INFOS = {
     third_color: '#FFFFFF',
     alias: 'Ipswich Town',
     nickname: 'Tractor Boys',
-    team_photos: null,
+    team_photos: [
+      'https://ichef.bbci.co.uk/ace/standard/930/cpsprodpb/89e0/live/5d2801d0-30cc-11f0-b5da-71555b1343d7.jpg',
+      'https://i.guim.co.uk/img/media/aab0582c1c3c8bc17e51162db78a32fcee060959/0_313_5360_3217/master/5360.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=f52b5cbc0612bd5a66a8004861d83674',
+      'https://s3.eu-west-1.amazonaws.com/gc-media-assets.gc.ipswichtownfcservices.co.uk/1aa3a4d0-4dbb-11ef-807a-e584965bae00.jpg',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4GSJDRo1VxG-xFy9NSCWIps5KDHivcU55_XPb-NTMVwZauQpqLI4OAuk&s=10',
+      'https://i.guim.co.uk/img/media/80a9850cc611d9285c2f308ad95ff8460c8addc1/0_0_6865_4577/master/6865.jpg?width=700&quality=85&auto=format&fit=max&s=791c1c452c1873287b50f8cb629eebc8',
+    ],
   },
   12: {
     name: 'Leeds United',
