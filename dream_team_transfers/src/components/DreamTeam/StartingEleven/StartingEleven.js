@@ -237,7 +237,12 @@ function StartingEleven({
   useEffect(() => {
     if (Number(teamPicked) === -1) return;
     if (TeamsCSVData === null) return;
-    setTeamBadge(TeamsCSVData[Number(teamPicked)].team_crest_small_pic);
+    const selectedTeam = TeamsCSVData.find(
+      (team) => Number(team.team_id) === Number(teamPicked)
+    );
+    if (selectedTeam) {
+      setTeamBadge(selectedTeam.team_crest_small_pic);
+    }
   }, [teamPicked, TeamsCSVData]);
 
   useEffect(() => {
