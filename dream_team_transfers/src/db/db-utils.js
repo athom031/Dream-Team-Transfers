@@ -150,10 +150,30 @@ export function sellPlayer(playerId, playerValue) {
   return initializeDB().then(() => {
     return db.get(TEAM_DATA_ID).then((doc) => {
       const normalizedPlayerId = Number(playerId);
+      const boughtPlayerIds = Array.isArray(doc.players_bought)
+        ? doc.players_bought.map((id) => Number(id))
+        : [];
+      const soldPlayerIds = Array.isArray(doc.players_sold)
+        ? doc.players_sold.map((id) => Number(id))
+        : [];
+      const isBoughtPlayer = boughtPlayerIds.includes(normalizedPlayerId);
+      const isAlreadySold = soldPlayerIds.includes(normalizedPlayerId);
+
+      if (isAlreadySold && !isBoughtPlayer) {
+        return doc;
+      }
 
       doc.team_budget = String(Number(doc.team_budget) + playerValue);
       doc.team_value = String(Number(doc.team_value) - playerValue);
-      doc.players_sold = [...doc.players_sold, playerId];
+
+      if (isBoughtPlayer) {
+        doc.players_bought = doc.players_bought.filter(
+          (id) => Number(id) !== normalizedPlayerId
+        );
+      } else {
+        doc.players_sold = [...(doc.players_sold || []), playerId];
+      }
+
       doc.team_positions = Array.isArray(doc.team_positions)
         ? doc.team_positions.map((lineupPlayerId) =>
             lineupPlayerId !== null &&

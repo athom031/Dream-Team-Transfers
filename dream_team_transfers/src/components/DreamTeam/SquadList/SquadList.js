@@ -50,13 +50,24 @@ function SquadList({ NationsCSVData, PositionsCSVData, PlayersCSVData }) {
     const handleButtonPress = () => {
       setIsButtonActive(true);
       timer.current = setTimeout(() => {
-        const playerValue = Number(
-          PlayersCSVData[playerId].player_market_value
+        const playerRecord = PlayersCSVData.find(
+          (player) => Number(player.player_id) === Number(playerId)
         );
+        const playerValue = Number(playerRecord?.player_market_value || 0);
         const currBudget = Number(teamBudget);
         const currValue = Number(teamValue);
+        const wasBought = playersBought
+          .map((id) => Number(id))
+          .includes(Number(playerId));
+
         sellPlayer(playerId, playerValue).then(() => {
-          setPlayersSold([...playersSold, playerId]);
+          if (wasBought) {
+            setPlayersBought(
+              playersBought.filter((id) => Number(id) !== Number(playerId))
+            );
+          } else {
+            setPlayersSold([...playersSold, playerId]);
+          }
           setTeamBudget(String(currBudget + playerValue));
           setTeamValue(String(currValue - playerValue));
         });

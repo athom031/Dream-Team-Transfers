@@ -107,15 +107,19 @@ function PlayerMarket({
       console.log('Team players_bought:', team.players_bought);
       console.log('Team players_sold:', team.players_sold);
 
+      const teamPicked = Number(team.team_picked);
       const availablePlayers = PlayersCSVData.filter((player) => {
         const playerId = Number(player.player_id);
         const playersBought = (team.players_bought || []).map((id) =>
           Number(id)
         );
         const playersSold = (team.players_sold || []).map((id) => Number(id));
+        const playerTeamId = Number(player.team_id);
 
         return (
-          !playersBought.includes(playerId) && !playersSold.includes(playerId)
+          !playersBought.includes(playerId) &&
+          !playersSold.includes(playerId) &&
+          playerTeamId !== teamPicked
         );
       });
 
